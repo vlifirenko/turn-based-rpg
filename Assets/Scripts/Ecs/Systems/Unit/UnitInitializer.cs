@@ -1,35 +1,36 @@
 ﻿using Scellecs.Morpeh;
 using TurnBasedRPG.Ecs.Components.Unit;
+using TurnBasedRPG.Installers;
+using TurnBasedRPG.Services;
 using TurnBasedRPG.View.Unit;
 using UnityEngine;
 using Zenject;
 
 namespace TurnBasedRPG.Ecs.Systems.Unit
 {
-    public class UnitInitializer : IInitializer 
+    public class UnitInitializer : IInitializer
     {
         public World World { get; set; }
 
-        private UnitView _debugUnitView;
-        
-        [Inject]
-        public void Construct(UnitView view)
+        private readonly GlobalConfigInstaller.UnitsConfig _unitsConfig;
+        private readonly UnitService _unitService;
+
+        public UnitInitializer(
+            GlobalConfigInstaller.UnitsConfig unitsConfig,
+            UnitService unitService)
         {
-            _debugUnitView = view;
+            _unitsConfig = unitsConfig;
+            _unitService = unitService;
         }
 
         public void OnAwake()
         {
-            var entity = World.CreateEntity();
-
-            ref var unit  = ref entity.AddComponent<UnitComponent>();
-
-            unit.Config = _debugUnitView.Config;
-            unit.View = _debugUnitView;
-            
-            Debug.Log(unit);
+            foreach (var config in _unitsConfig.startUnits)
+                _unitService.CreateUnit(config);
         }
 
-        public void Dispose() { }
+        public void Dispose()
+        {
+        }
     }
 }

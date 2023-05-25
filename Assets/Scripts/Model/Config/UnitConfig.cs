@@ -1,4 +1,5 @@
 ﻿using TurnBasedRPG.Model.Enums;
+using TurnBasedRPG.View.Unit;
 using UnityEngine;
 
 namespace TurnBasedRPG.Model.Config
@@ -6,6 +7,7 @@ namespace TurnBasedRPG.Model.Config
     [CreateAssetMenu(fileName = "NewUnit", menuName = "Config/Unit")]
     public class UnitConfig : ScriptableObject
     {
+        public UnitView prefab;
         public string id;
         public string name;
         public EUnitClass type;

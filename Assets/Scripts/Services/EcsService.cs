@@ -1,10 +1,9 @@
 ﻿using System;
 using Scellecs.Morpeh;
-using TurnBasedRPG.Ecs.Systems.Unit;
 using UnityEngine;
 using Zenject;
 
-namespace TurnBasedRPG
+namespace TurnBasedRPG.Services
 {
     public class EcsService : IInitializable, ITickable, IDisposable
     {
