@@ -8,21 +8,17 @@ namespace TurnBasedRPG
 {
     public class EcsService : IInitializable, ITickable, IDisposable
     {
-        private World _world;
-        private SystemsGroup _systems;
+        private readonly World _world;
+        private readonly SystemsGroup _systems;
+        
+        public EcsService(SystemsGroup systems, World world)
+        {
+            _systems = systems;
+            _world = world;
+        }
 
         public void Initialize()
         {
-            _world = World.Create();
-            _world.UpdateByUnity = false;
-            
-            _systems = _world.CreateSystemsGroup();
-            
-            _systems.AddInitializer(new UnitInitializer());
-            
-            //systemsGroup.AddSystem(newSystem);
-
-            _world.AddSystemsGroup(order: 0, _systems);
         }
 
         public void Tick()
@@ -34,7 +30,6 @@ namespace TurnBasedRPG
         public void Dispose()
         {
             _world.RemoveSystemsGroup(_systems);
-
         }
     }
 }

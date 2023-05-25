@@ -12,13 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09201c0e4aff479f98d9ea69a98db950, type: 3}
   m_Name: Unit_1
   m_EditorClassIdentifier: 
-  unit:
-    id: 1
-    name: Unit_1
-    type: 10
-    vita: 21
-    defence: 37
-    might: 3
-    damageBonus: 2
-    energy: 5
-    stride: 4
+  id: 1
+  name: Unit_1
+  type: 10
+  vita: 21
+  defence: 37
+  might: 3
+  damageBonus: 2
+  energy: 5
+  stride: 4
