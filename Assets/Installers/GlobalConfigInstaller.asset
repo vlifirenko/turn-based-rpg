@@ -17,3 +17,12 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 88194cb8bb9da9849b68838dd4ed56db, type: 2}
     - {fileID: 11400000, guid: 88194cb8bb9da9849b68838dd4ed56db, type: 2}
     - {fileID: 11400000, guid: 88194cb8bb9da9849b68838dd4ed56db, type: 2}
+  mapConfig:
+    width: 10
+    height: 10
+    cellSize: {x: 2, y: 2}
+    cellSpacing: {x: 0, y: 0}
+  layersConfig:
+    cell:
+      serializedVersion: 2
+      m_Bits: 64

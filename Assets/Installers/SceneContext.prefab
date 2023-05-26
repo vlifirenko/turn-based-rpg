@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scriptableObjectInstallers:
+  - {fileID: 11400000, guid: 4db05af68a1c6574b9c006e590daab91, type: 2}
   - {fileID: 11400000, guid: f96f7f90fd61a564b9f0e6a89e4c513a, type: 2}
   _monoInstallers:
   - {fileID: 174500235264317042}
@@ -78,3 +79,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d57610a897147908d5a4c8a6228966f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneData: {fileID: 0}
