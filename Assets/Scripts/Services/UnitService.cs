@@ -7,7 +7,7 @@ namespace TurnBasedRPG.Services
 {
     public class UnitService
     {
-        private World _world;
+        private readonly World _world;
 
         public UnitService(World world)
         {
@@ -17,14 +17,14 @@ namespace TurnBasedRPG.Services
         public Entity CreateUnit(UnitConfig config)
         {
             var entity = _world.CreateEntity();
+            var view = Object.Instantiate(config.prefab);
 
             ref var unit = ref entity.AddComponent<UnitComponent>();
+            
             unit.Config = config;
-            // todo unit.View = _debugUnitView;
+            unit.View = view;
 
             entity.AddComponent<VitaComponent>().Value = unit.Config.vita;
-
-            Debug.Log(entity.GetComponent<VitaComponent>());
 
             return entity;
         }

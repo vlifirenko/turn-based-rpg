@@ -15,3 +15,5 @@ MonoBehaviour:
   unitsConfig:
     startUnits:
     - {fileID: 11400000, guid: 88194cb8bb9da9849b68838dd4ed56db, type: 2}
+    - {fileID: 11400000, guid: 88194cb8bb9da9849b68838dd4ed56db, type: 2}
+    - {fileID: 11400000, guid: 88194cb8bb9da9849b68838dd4ed56db, type: 2}
