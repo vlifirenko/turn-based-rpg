@@ -28,7 +28,7 @@ namespace TurnBasedRPG.Installers
             _world = World.Create();
             _world.UpdateByUnity = false;
 
-            Container.Bind<World>().FromInstance(_world);
+            Container.BindInstance(_world);
             
             _systems = _world.CreateSystemsGroup();
             _world.AddSystemsGroup(order: 0, _systems);
@@ -48,18 +48,18 @@ namespace TurnBasedRPG.Installers
 
         private void BindServices()
         {
-            Container.BindInterfacesAndSelfTo<UnitService>().AsSingle().NonLazy();
+            Container.Bind<UnitService>().AsSingle();
         }
         
         private void BindInitializer<T>() where T : class, IInitializer
         {
-            Container.Bind<T>().AsSingle().NonLazy();
+            Container.Bind<T>().AsSingle();
             _systems.AddInitializer(Container.Resolve<T>());
         }
 
         private void BindSystem<T>() where T : class, ISystem
         {
-            Container.Bind<T>().AsSingle().NonLazy();
+            Container.Bind<T>().AsSingle();
             _systems.AddSystem(Container.Resolve<T>());
         }
     }
