@@ -1,6 +1,9 @@
-﻿using TurnBasedRPG.Installers;
+﻿using System;
+using System.Collections.Generic;
+using TurnBasedRPG.Installers;
 using TurnBasedRPG.View;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace TurnBasedRPG.Services
 {
@@ -8,6 +11,7 @@ namespace TurnBasedRPG.Services
     {
         private readonly SceneData _sceneData;
         private readonly GlobalConfigInstaller.MapConfig _mapConfig;
+        private readonly List<CellView> _cells = new List<CellView>();
 
         public BattleService(SceneData sceneData, GlobalConfigInstaller.MapConfig mapConfig)
         {
@@ -26,8 +30,22 @@ namespace TurnBasedRPG.Services
                         0f,
                         j * (_mapConfig.cellSize.y + _mapConfig.cellSpacing.y));
                     var cell = InstantiateCell(position);
+
+                    cell.Position = new Vector2Int(i, j);
+                    _cells.Add(cell);
                 }
             }
+        }
+
+        public CellView GetCellByPosition(int x, int y)
+        {
+            foreach (var cell in _cells)
+            {
+                if (cell.Position.x == x && cell.Position.y == y)
+                    return cell;
+            }
+
+            throw new Exception("Cell not found");
         }
 
         private CellView InstantiateCell(Vector3 position)

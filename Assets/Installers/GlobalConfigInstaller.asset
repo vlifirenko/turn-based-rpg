@@ -14,9 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitsConfig:
     startUnits:
-    - {fileID: 11400000, guid: 88194cb8bb9da9849b68838dd4ed56db, type: 2}
-    - {fileID: 11400000, guid: 88194cb8bb9da9849b68838dd4ed56db, type: 2}
-    - {fileID: 11400000, guid: 88194cb8bb9da9849b68838dd4ed56db, type: 2}
+    - config: {fileID: 11400000, guid: 88194cb8bb9da9849b68838dd4ed56db, type: 2}
+      position: {x: 0, y: 0}
+    - config: {fileID: 11400000, guid: 88194cb8bb9da9849b68838dd4ed56db, type: 2}
+      position: {x: 1, y: 0}
+    - config: {fileID: 11400000, guid: 88194cb8bb9da9849b68838dd4ed56db, type: 2}
+      position: {x: 2, y: 0}
   mapConfig:
     width: 10
     height: 10

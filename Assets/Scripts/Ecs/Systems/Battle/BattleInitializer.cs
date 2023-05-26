@@ -9,8 +9,7 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
         public World World { get; set; }
         private readonly BattleService _battleService;
 
-        public BattleInitializer(BattleService battleService,
-            SceneData sceneData)
+        public BattleInitializer(BattleService battleService)
         {
             _battleService = battleService;
         }

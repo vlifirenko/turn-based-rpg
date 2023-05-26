@@ -49,17 +49,17 @@ namespace TurnBasedRPG.Installers
         private void BindSystems()
         {
             // initializers
-            BindInitializer<UnitInitializer>();
             BindInitializer<BattleInitializer>();
+            BindInitializer<UnitInitializer>();
             
             // systems
+            BindSystem<SelectCellSystem>();
         }
 
         private void BindServices()
         {
+            Container.Bind<BattleService>().AsSingle();
             Container.Bind<UnitService>().AsSingle();
-            Container.Bind<BattleService
-            >().AsSingle();
         }
         
         private void BindInitializer<T>() where T : class, IInitializer

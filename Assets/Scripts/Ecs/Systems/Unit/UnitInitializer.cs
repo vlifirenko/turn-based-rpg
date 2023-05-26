@@ -25,8 +25,8 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
 
         public void OnAwake()
         {
-            foreach (var config in _unitsConfig.startUnits)
-                _unitService.CreateUnit(config);
+            foreach (var item in _unitsConfig.startUnits)
+                _unitService.CreateUnit(item.config, item.position);
         }
 
         public void Dispose()

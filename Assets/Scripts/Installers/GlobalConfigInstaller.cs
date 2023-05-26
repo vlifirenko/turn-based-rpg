@@ -15,7 +15,14 @@ namespace TurnBasedRPG.Installers
         [Serializable]
         public class UnitsConfig
         {
-            public UnitConfig[] startUnits;
+            public StartUnit[] startUnits;
+        }
+
+        [Serializable]
+        public class StartUnit
+        {
+            public UnitConfig config;
+            public Vector2Int position;
         }
 
         [Serializable]
