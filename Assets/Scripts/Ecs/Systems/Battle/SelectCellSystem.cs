@@ -25,6 +25,12 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
 
         public void OnUpdate(float deltaTime)
         {
+            MouseRaycast();
+            MouseClick();
+        }
+
+        private void MouseRaycast()
+        {
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             var hits = Physics.RaycastNonAlloc(ray, _raycastHits, Mathf.Infinity, _layersConfig.cell);
 
@@ -46,6 +52,12 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
             }
             else if (_hoveredCell != null)
                 UnhoverCell(_hoveredCell);
+        }
+
+        private void MouseClick()
+        {
+            if (!Input.GetMouseButtonUp(0))
+                return;
         }
 
         private void HoverCell(CellView cell)
