@@ -115,6 +115,7 @@ namespace TurnBasedRPG.Services
            var config = entity.GetComponent<UnitComponent>().Config;
            var vita = entity.GetComponent<VitaComponent>();
            var energy = entity.GetComponent<EnergyComponent>();
+           var stride = entity.GetComponent<StrideComponent>();
            var uiView = _canvasView.ActiveUnit;
 
            uiView.Icon.sprite = config.icon;
@@ -123,6 +124,7 @@ namespace TurnBasedRPG.Services
            uiView.VitaText.text = vita.Value.PercentText;
            uiView.EnergySlider.value = energy.Value.Percent;
            uiView.EnergyText.text = energy.Value.PercentText;
+           uiView.StrideText.text = $"Stride: {stride.Value.PercentText}";
         }
     }
 }
