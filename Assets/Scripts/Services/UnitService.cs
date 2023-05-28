@@ -25,11 +25,13 @@ namespace TurnBasedRPG.Services
         {
             var entity = _world.CreateEntity();
             var cell = _battleService.GetCellByPosition(cellPosition.x, cellPosition.y);
-            
+
             var position = cell.transform.position;
             position.y += 1f;
-            var view = Object.Instantiate(config.prefab, position, Quaternion.identity,
-                _sceneData.UnitContainer);
+            var view = Object.Instantiate(config.prefab, position, Quaternion.identity, _sceneData.UnitContainer);
+
+            cell.UnitView = view;
+            view.Entity = entity;
 
             ref var unit = ref entity.AddComponent<UnitComponent>();
 

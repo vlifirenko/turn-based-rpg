@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 54cfda69dc7846e7b02c23940c3cae77, type: 3}
-  m_Name: GlobalConfigInstaller
+  m_Name: GlobalConfig
   m_EditorClassIdentifier: 
   unitsConfig:
     startUnits:
@@ -20,6 +20,13 @@ MonoBehaviour:
       position: {x: 1, y: 0}
     - config: {fileID: 11400000, guid: 88194cb8bb9da9849b68838dd4ed56db, type: 2}
       position: {x: 2, y: 0}
+    enemyUnits:
+    - config: {fileID: 11400000, guid: feca4f6a239a77c4f9f70bc6432c8043, type: 2}
+      position: {x: 9, y: 9}
+    - config: {fileID: 11400000, guid: feca4f6a239a77c4f9f70bc6432c8043, type: 2}
+      position: {x: 8, y: 9}
+    - config: {fileID: 11400000, guid: feca4f6a239a77c4f9f70bc6432c8043, type: 2}
+      position: {x: 7, y: 9}
   mapConfig:
     width: 10
     height: 10

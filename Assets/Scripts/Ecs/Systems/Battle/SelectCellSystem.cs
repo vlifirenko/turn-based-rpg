@@ -34,21 +34,15 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             var hits = Physics.RaycastNonAlloc(ray, _raycastHits, Mathf.Infinity, _layersConfig.cell);
 
-            if (hits > 0)
+            if (hits > 0 && _raycastHits[0].transform.TryGetComponent<CellView>(out var cellView))
             {
-                for (var i = 0; i < hits; i++)
-                {
-                    if (_raycastHits[i].transform.TryGetComponent<CellView>(out var cellView))
-                    {
-                        if (_hoveredCell == cellView)
-                            return;
+                if (_hoveredCell == cellView)
+                    return;
 
-                        if (_hoveredCell != null)
-                            UnhoverCell(_hoveredCell);
-                        HoverCell(cellView);
-                        _hoveredCell = cellView;
-                    }
-                }
+                if (_hoveredCell != null)
+                    UnhoverCell(_hoveredCell);
+                HoverCell(cellView);
+                _hoveredCell = cellView;
             }
             else if (_hoveredCell != null)
                 UnhoverCell(_hoveredCell);
@@ -58,6 +52,14 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
         {
             if (!Input.GetMouseButtonUp(0))
                 return;
+
+            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            var hits = Physics.RaycastNonAlloc(ray, _raycastHits, Mathf.Infinity, _layersConfig.cell);
+
+            if (hits > 0 && _raycastHits[0].transform.TryGetComponent<CellView>(out var cellView))
+            {
+                Debug.Log(cellView.UnitView);
+            }
         }
 
         private void HoverCell(CellView cell)
@@ -69,7 +71,7 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
         private void UnhoverCell(CellView cell)
         {
             var material = cell.GetComponent<Renderer>().material;
-            material.SetColor("_BaseColor",Color.white);
+            material.SetColor("_BaseColor", Color.white);
         }
 
         public void Dispose()

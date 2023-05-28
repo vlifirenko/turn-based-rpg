@@ -26,7 +26,16 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
         public void OnAwake()
         {
             foreach (var item in _unitsConfig.startUnits)
-                _unitService.CreateUnit(item.config, item.position);
+            {
+                var entity = _unitService.CreateUnit(item.config, item.position);
+                entity.AddComponent<PlayerComponent>();
+            }
+            
+            foreach (var item in _unitsConfig.enemyUnits)
+            {
+                var entity = _unitService.CreateUnit(item.config, item.position);
+                entity.AddComponent<EnemyComponent>();
+            }
         }
 
         public void Dispose()
