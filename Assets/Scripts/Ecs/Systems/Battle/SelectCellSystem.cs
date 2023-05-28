@@ -1,5 +1,6 @@
 ﻿using Scellecs.Morpeh;
 using TurnBasedRPG.Installers;
+using TurnBasedRPG.Services;
 using TurnBasedRPG.View;
 using UnityEngine;
 
@@ -8,21 +9,19 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
     public class SelectCellSystem : ISystem
     {
         private readonly GlobalConfigInstaller.LayersConfig _layersConfig;
+        private readonly BattleService _battleService;
 
         private readonly RaycastHit[] _raycastHits = new RaycastHit[1];
         private CellView _hoveredCell;
 
         public World World { get; set; }
 
-        public SelectCellSystem(GlobalConfigInstaller.LayersConfig layersConfig)
+        public SelectCellSystem(GlobalConfigInstaller.LayersConfig layersConfig, BattleService battleService)
         {
             _layersConfig = layersConfig;
+            _battleService = battleService;
         }
-
-        public void OnAwake()
-        {
-        }
-
+        
         public void OnUpdate(float deltaTime)
         {
             MouseRaycast();
@@ -58,7 +57,10 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
 
             if (hits > 0 && _raycastHits[0].transform.TryGetComponent<CellView>(out var cellView))
             {
-                Debug.Log(cellView.UnitView);
+                if (cellView.UnitView == null)
+                    return;
+                
+                _battleService.SelectUnit(cellView.UnitView.Entity);
             }
         }
 
@@ -72,6 +74,10 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
         {
             var material = cell.GetComponent<Renderer>().material;
             material.SetColor("_BaseColor", Color.white);
+        }
+
+        public void OnAwake()
+        {
         }
 
         public void Dispose()

@@ -1,5 +1,6 @@
 ﻿using Scellecs.Morpeh;
 using TurnBasedRPG.Ecs.Components.Unit;
+using TurnBasedRPG.Model;
 using TurnBasedRPG.Model.Config;
 using TurnBasedRPG.View;
 using UnityEngine;
@@ -38,7 +39,16 @@ namespace TurnBasedRPG.Services
             unit.Config = config;
             unit.View = view;
 
-            entity.AddComponent<VitaComponent>().Value = unit.Config.vita;
+            entity.AddComponent<VitaComponent>().Value = new CurrentMax
+            {
+                Current = unit.Config.vita,
+                Max = unit.Config.vita
+            };
+            entity.AddComponent<EnergyComponent>().Value = new CurrentMax
+            {
+                Current = unit.Config.energy,
+                Max = unit.Config.energy
+            };
 
             return entity;
         }

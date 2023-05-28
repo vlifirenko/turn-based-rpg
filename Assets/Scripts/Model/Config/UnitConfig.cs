@@ -10,6 +10,7 @@ namespace TurnBasedRPG.Model.Config
         public UnitView prefab;
         public string id;
         public string name;
+        public Sprite icon;
         public EUnitClass type;
         public int vita;
         public int defence;

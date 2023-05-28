@@ -14,13 +14,16 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
 
         private readonly GlobalConfigInstaller.UnitsConfig _unitsConfig;
         private readonly UnitService _unitService;
+        private readonly BattleService _battleService;
 
         public UnitInitializer(
             GlobalConfigInstaller.UnitsConfig unitsConfig,
-            UnitService unitService)
+            UnitService unitService,
+            BattleService battleService)
         {
             _unitsConfig = unitsConfig;
             _unitService = unitService;
+            _battleService = battleService;
         }
 
         public void OnAwake()
@@ -28,14 +31,20 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
             foreach (var item in _unitsConfig.startUnits)
             {
                 var entity = _unitService.CreateUnit(item.config, item.position);
+                
                 entity.AddComponent<PlayerComponent>();
+                _battleService.AddUnit(entity);
             }
             
             foreach (var item in _unitsConfig.enemyUnits)
             {
                 var entity = _unitService.CreateUnit(item.config, item.position);
+                
                 entity.AddComponent<EnemyComponent>();
+                _battleService.AddUnit(entity);
             }
+            
+            _battleService.InitBattleData();
         }
 
         public void Dispose()

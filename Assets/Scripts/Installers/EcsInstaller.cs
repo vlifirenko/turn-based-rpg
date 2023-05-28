@@ -12,6 +12,7 @@ namespace TurnBasedRPG.Installers
     public class EcsInstaller : MonoInstaller
     {
         [SerializeField] private SceneData sceneData; 
+        [SerializeField] private CanvasView canvasView; 
         
         private World _world;
         private SystemsGroup _systems;
@@ -22,7 +23,7 @@ namespace TurnBasedRPG.Installers
             BindDebug();
             BindServices();
             BindSystems();
-            
+
             Container
                 .BindInterfacesAndSelfTo<EcsService>()
                 .AsSingle()
@@ -40,6 +41,7 @@ namespace TurnBasedRPG.Installers
             _world.AddSystemsGroup(order: 0, _systems);
 
             Container.BindInstance(sceneData);
+            Container.BindInstance(canvasView);
         }
 
         private void BindDebug()
@@ -51,15 +53,14 @@ namespace TurnBasedRPG.Installers
             // initializers
             BindInitializer<BattleInitializer>();
             BindInitializer<UnitInitializer>();
-            
             // systems
             BindSystem<SelectCellSystem>();
         }
 
         private void BindServices()
         {
-            Container.Bind<BattleService>().AsSingle();
             Container.Bind<UnitService>().AsSingle();
+            Container.Bind<BattleService>().AsSingle();
         }
         
         private void BindInitializer<T>() where T : class, IInitializer

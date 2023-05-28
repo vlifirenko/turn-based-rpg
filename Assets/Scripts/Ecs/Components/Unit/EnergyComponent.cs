@@ -3,7 +3,7 @@ using TurnBasedRPG.Model;
 
 namespace TurnBasedRPG.Ecs.Components.Unit
 {
-    public struct VitaComponent : IComponent
+    public struct EnergyComponent : IComponent
     {
         public CurrentMax Value;
     }
