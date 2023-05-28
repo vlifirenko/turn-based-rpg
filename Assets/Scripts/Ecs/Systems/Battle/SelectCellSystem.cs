@@ -25,7 +25,8 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
         public void OnUpdate(float deltaTime)
         {
             MouseRaycast();
-            MouseClick();
+            MouseLeftClick();
+            MouseRightClick();
         }
 
         private void MouseRaycast()
@@ -47,7 +48,7 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
                 UnhoverCell(_hoveredCell);
         }
 
-        private void MouseClick()
+        private void MouseLeftClick()
         {
             if (!Input.GetMouseButtonUp(0))
                 return;
@@ -61,6 +62,23 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
                     return;
                 
                 _battleService.SelectUnit(cellView.UnitView.Entity);
+            }
+        }
+        
+        private void MouseRightClick()
+        {
+            if (!Input.GetMouseButtonUp(1))
+                return;
+
+            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            var hits = Physics.RaycastNonAlloc(ray, _raycastHits, Mathf.Infinity, _layersConfig.cell);
+
+            if (hits > 0 && _raycastHits[0].transform.TryGetComponent<CellView>(out var cellView))
+            {
+                if (cellView.UnitView == null)
+                    _battleService.MoveTo(cellView);
+                else
+                    _battleService.Attack(cellView);
             }
         }
 

@@ -72,6 +72,20 @@ namespace TurnBasedRPG.Services
         {
         }
 
+        public void MoveTo(CellView targetCell)
+        {
+            Debug.Log($"move {targetCell}");
+        }
+
+        public void Attack(CellView targetCell)
+        {
+            var targetEntity = targetCell.UnitView.Entity;
+            if (targetEntity.Has<PlayerComponent>())
+                return;
+            
+            
+        }
+
         public void NextUnit()
         {
             _battleData.CurrentUnitIndex += 1;
