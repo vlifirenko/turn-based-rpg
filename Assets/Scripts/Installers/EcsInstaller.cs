@@ -1,6 +1,7 @@
 ﻿using System;
 using Scellecs.Morpeh;
 using TurnBasedRPG.Ecs.Systems.Battle;
+using TurnBasedRPG.Ecs.Systems.Debug;
 using TurnBasedRPG.Ecs.Systems.Unit;
 using TurnBasedRPG.Services;
 using TurnBasedRPG.View;
@@ -53,8 +54,10 @@ namespace TurnBasedRPG.Installers
             // initializers
             BindInitializer<BattleInitializer>();
             BindInitializer<UnitInitializer>();
+            
             // systems
             BindSystem<SelectCellSystem>();
+            BindSystem<DebugSystem>();
         }
 
         private void BindServices()

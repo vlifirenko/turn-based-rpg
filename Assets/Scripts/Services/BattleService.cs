@@ -28,12 +28,6 @@ namespace TurnBasedRPG.Services
             _battleData = new BattleData();
         }
 
-        public void InitBattleData()
-        {
-            var currentUnit = _battleData.GetCurrentUnit();
-            UpdateUnitUi(currentUnit);
-        }
-
         public void CreateMap()
         {
             for (var i = 0; i < _mapConfig.width; i++)
@@ -50,6 +44,12 @@ namespace TurnBasedRPG.Services
                     _cells.Add(cell);
                 }
             }
+        }
+
+        public void InitBattleData()
+        {
+            var currentUnit = _battleData.GetCurrentUnit();
+            UpdateUnitUi(currentUnit);
         }
 
         public CellView GetCellByPosition(int x, int y)
@@ -70,6 +70,15 @@ namespace TurnBasedRPG.Services
         
         public void SelectUnit(Entity entity)
         {
+        }
+
+        public void NextUnit()
+        {
+            _battleData.CurrentUnitIndex += 1;
+            _battleData.CurrentUnitIndex %= _battleData.UnitOrder.Count;
+            
+            var currentUnit = _battleData.GetCurrentUnit();
+            UpdateUnitUi(currentUnit);
         }
 
         private CellView InstantiateCell(Vector3 position)
