@@ -1,6 +1,7 @@
 ﻿using System;
 using Scellecs.Morpeh;
 using TurnBasedRPG.Ecs.Systems.Battle;
+using TurnBasedRPG.Ecs.Systems.Debug;
 using TurnBasedRPG.Ecs.Systems.Unit;
 using TurnBasedRPG.Services;
 using TurnBasedRPG.View;
@@ -12,6 +13,7 @@ namespace TurnBasedRPG.Installers
     public class EcsInstaller : MonoInstaller
     {
         [SerializeField] private SceneData sceneData; 
+        [SerializeField] private CanvasView canvasView; 
         
         private World _world;
         private SystemsGroup _systems;
@@ -22,7 +24,7 @@ namespace TurnBasedRPG.Installers
             BindDebug();
             BindServices();
             BindSystems();
-            
+
             Container
                 .BindInterfacesAndSelfTo<EcsService>()
                 .AsSingle()
@@ -40,6 +42,7 @@ namespace TurnBasedRPG.Installers
             _world.AddSystemsGroup(order: 0, _systems);
 
             Container.BindInstance(sceneData);
+            Container.BindInstance(canvasView);
         }
 
         private void BindDebug()
@@ -54,12 +57,13 @@ namespace TurnBasedRPG.Installers
             
             // systems
             BindSystem<SelectCellSystem>();
+            BindSystem<DebugSystem>();
         }
 
         private void BindServices()
         {
-            Container.Bind<BattleService>().AsSingle();
             Container.Bind<UnitService>().AsSingle();
+            Container.Bind<BattleService>().AsSingle();
         }
         
         private void BindInitializer<T>() where T : class, IInitializer

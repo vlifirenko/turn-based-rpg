@@ -1,5 +1,6 @@
 ﻿using Scellecs.Morpeh;
 using TurnBasedRPG.Ecs.Components.Unit;
+using TurnBasedRPG.Model;
 using TurnBasedRPG.Model.Config;
 using TurnBasedRPG.View;
 using UnityEngine;
@@ -25,18 +26,22 @@ namespace TurnBasedRPG.Services
         {
             var entity = _world.CreateEntity();
             var cell = _battleService.GetCellByPosition(cellPosition.x, cellPosition.y);
-            
+
             var position = cell.transform.position;
             position.y += 1f;
-            var view = Object.Instantiate(config.prefab, position, Quaternion.identity,
-                _sceneData.UnitContainer);
+            var view = Object.Instantiate(config.prefab, position, Quaternion.identity, _sceneData.UnitContainer);
+
+            cell.UnitView = view;
+            view.Entity = entity;
 
             ref var unit = ref entity.AddComponent<UnitComponent>();
 
             unit.Config = config;
             unit.View = view;
 
-            entity.AddComponent<VitaComponent>().Value = unit.Config.vita;
+            entity.AddComponent<VitaComponent>().Value = new CurrentMax(unit.Config.vita);
+            entity.AddComponent<EnergyComponent>().Value = new CurrentMax(unit.Config.energy);
+            entity.AddComponent<StrideComponent>().Value = new CurrentMax(unit.Config.stride);
 
             return entity;
         }

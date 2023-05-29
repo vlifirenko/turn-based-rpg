@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using Scellecs.Morpeh;
+using TurnBasedRPG.Ecs.Components.Unit;
 using TurnBasedRPG.Installers;
+using TurnBasedRPG.Model;
 using TurnBasedRPG.View;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -13,10 +16,16 @@ namespace TurnBasedRPG.Services
         private readonly GlobalConfigInstaller.MapConfig _mapConfig;
         private readonly List<CellView> _cells = new List<CellView>();
 
-        public BattleService(SceneData sceneData, GlobalConfigInstaller.MapConfig mapConfig)
+        private CanvasView _canvasView;
+        private BattleData _battleData;
+
+        public BattleService(SceneData sceneData, GlobalConfigInstaller.MapConfig mapConfig, CanvasView canvasView)
         {
             _sceneData = sceneData;
             _mapConfig = mapConfig;
+            _canvasView = canvasView;
+            
+            _battleData = new BattleData();
         }
 
         public void CreateMap()
@@ -37,6 +46,12 @@ namespace TurnBasedRPG.Services
             }
         }
 
+        public void InitBattleData()
+        {
+            var currentUnit = _battleData.GetCurrentUnit();
+            UpdateUnitUi(currentUnit);
+        }
+
         public CellView GetCellByPosition(int x, int y)
         {
             foreach (var cell in _cells)
@@ -45,7 +60,39 @@ namespace TurnBasedRPG.Services
                     return cell;
             }
 
-            throw new Exception("Cell not found");
+            throw new Exception($"Cell not found, cells size: {_cells.Count}");
+        }
+
+        public void AddUnit(Entity entity)
+        {
+            _battleData.UnitOrder.Add(entity);
+        }
+        
+        public void SelectUnit(Entity entity)
+        {
+        }
+
+        public void MoveTo(CellView targetCell)
+        {
+            Debug.Log($"move {targetCell}");
+        }
+
+        public void Attack(CellView targetCell)
+        {
+            var targetEntity = targetCell.UnitView.Entity;
+            if (targetEntity.Has<PlayerComponent>())
+                return;
+            
+            
+        }
+
+        public void NextUnit()
+        {
+            _battleData.CurrentUnitIndex += 1;
+            _battleData.CurrentUnitIndex %= _battleData.UnitOrder.Count;
+            
+            var currentUnit = _battleData.GetCurrentUnit();
+            UpdateUnitUi(currentUnit);
         }
 
         private CellView InstantiateCell(Vector3 position)
@@ -61,6 +108,23 @@ namespace TurnBasedRPG.Services
             cell.transform.localScale = scale;
 
             return cell;
+        }
+
+        private void UpdateUnitUi(Entity entity)
+        {
+           var config = entity.GetComponent<UnitComponent>().Config;
+           var vita = entity.GetComponent<VitaComponent>();
+           var energy = entity.GetComponent<EnergyComponent>();
+           var stride = entity.GetComponent<StrideComponent>();
+           var uiView = _canvasView.ActiveUnit;
+
+           uiView.Icon.sprite = config.icon;
+           uiView.NameText.text = config.name;
+           uiView.VitaSlider.value = vita.Value.Percent;
+           uiView.VitaText.text = vita.Value.PercentText;
+           uiView.EnergySlider.value = energy.Value.Percent;
+           uiView.EnergyText.text = energy.Value.PercentText;
+           uiView.StrideText.text = $"Stride: {stride.Value.PercentText}";
         }
     }
 }

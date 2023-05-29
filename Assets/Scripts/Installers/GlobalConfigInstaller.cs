@@ -16,10 +16,11 @@ namespace TurnBasedRPG.Installers
         public class UnitsConfig
         {
             public StartUnit[] startUnits;
+            public StartUnit[] enemyUnits;
         }
 
         [Serializable]
-        public class StartUnit
+        public struct StartUnit
         {
             public UnitConfig config;
             public Vector2Int position;
@@ -35,7 +36,7 @@ namespace TurnBasedRPG.Installers
         }
         
         [Serializable]
-        public class LayersConfig
+        public struct LayersConfig
         {
             public LayerMask cell;
         }

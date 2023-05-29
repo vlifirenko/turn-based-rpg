@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09201c0e4aff479f98d9ea69a98db950, type: 3}
+  m_Name: Unit_Enemy_3
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 1096060995904320734, guid: 8bf208d005216704f93e24cd6e78c85e, type: 3}
+  id: 1
+  name: Unit_Enemy_3
+  icon: {fileID: 0}
+  type: 10
+  vita: 21
+  defence: 37
+  might: 3
+  damageBonus: 2
+  energy: 5
+  stride: 4

@@ -1,5 +1,6 @@
 ﻿using Scellecs.Morpeh;
 using TurnBasedRPG.Model.Config;
+using TurnBasedRPG.View.Ui;
 using TurnBasedRPG.View.Unit;
 
 namespace TurnBasedRPG.Ecs.Components.Unit
@@ -8,5 +9,6 @@ namespace TurnBasedRPG.Ecs.Components.Unit
     {
         public UnitConfig Config;
         public UnitView View;
+        public UiUnitVita UiView;
     }
 }

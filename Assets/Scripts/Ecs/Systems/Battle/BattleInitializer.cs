@@ -1,6 +1,5 @@
 ﻿using Scellecs.Morpeh;
 using TurnBasedRPG.Services;
-using TurnBasedRPG.View;
 
 namespace TurnBasedRPG.Ecs.Systems.Battle
 {
