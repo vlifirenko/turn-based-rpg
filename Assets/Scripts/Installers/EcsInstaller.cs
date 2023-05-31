@@ -63,6 +63,7 @@ namespace TurnBasedRPG.Installers
         private void BindServices()
         {
             Container.Bind<UnitService>().AsSingle();
+            Container.Bind<DiceService>().AsSingle();
             Container.Bind<BattleService>().AsSingle();
         }
         

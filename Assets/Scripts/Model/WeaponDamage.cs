@@ -4,7 +4,7 @@ using TurnBasedRPG.Model.Enums;
 namespace TurnBasedRPG.Model
 {
     [Serializable]
-    public class Damage
+    public class WeaponDamage
     {
         public int diceCount = 1;
         public EDice dice = EDice.D6;
