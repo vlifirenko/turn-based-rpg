@@ -21,7 +21,7 @@ namespace TurnBasedRPG.Installers
         public override void InstallBindings()
         {
             BindWorld();
-            BindDebug();
+            BindScene();
             BindServices();
             BindSystems();
 
@@ -40,13 +40,12 @@ namespace TurnBasedRPG.Installers
             
             _systems = _world.CreateSystemsGroup();
             _world.AddSystemsGroup(order: 0, _systems);
-
-            Container.BindInstance(sceneData);
-            Container.BindInstance(canvasView);
         }
 
-        private void BindDebug()
+        private void BindScene()
         {
+            Container.BindInstance(sceneData);
+            Container.BindInstance(canvasView);
         }
 
         private void BindSystems()
@@ -57,6 +56,7 @@ namespace TurnBasedRPG.Installers
             
             // systems
             BindSystem<SelectCellSystem>();
+            BindSystem<AttackSystem>();
             BindSystem<DebugSystem>();
         }
 

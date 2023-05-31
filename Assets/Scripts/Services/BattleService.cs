@@ -24,7 +24,7 @@ namespace TurnBasedRPG.Services
             _sceneData = sceneData;
             _mapConfig = mapConfig;
             _canvasView = canvasView;
-            
+
             _battleData = new BattleData();
         }
 
@@ -67,7 +67,7 @@ namespace TurnBasedRPG.Services
         {
             _battleData.UnitOrder.Add(entity);
         }
-        
+
         public void SelectUnit(Entity entity)
         {
         }
@@ -82,15 +82,19 @@ namespace TurnBasedRPG.Services
             var targetEntity = targetCell.UnitView.Entity;
             if (targetEntity.Has<PlayerComponent>())
                 return;
-            
-            
+
+            var attackerEntity = _battleData.GetCurrentUnit();
+            attackerEntity.AddComponent<AttackComponent>() = new AttackComponent
+            {
+                target = targetEntity
+            };
         }
 
         public void NextUnit()
         {
             _battleData.CurrentUnitIndex += 1;
             _battleData.CurrentUnitIndex %= _battleData.UnitOrder.Count;
-            
+
             var currentUnit = _battleData.GetCurrentUnit();
             UpdateUnitUi(currentUnit);
         }
@@ -112,19 +116,19 @@ namespace TurnBasedRPG.Services
 
         private void UpdateUnitUi(Entity entity)
         {
-           var config = entity.GetComponent<UnitComponent>().Config;
-           var vita = entity.GetComponent<VitaComponent>();
-           var energy = entity.GetComponent<EnergyComponent>();
-           var stride = entity.GetComponent<StrideComponent>();
-           var uiView = _canvasView.ActiveUnit;
+            var config = entity.GetComponent<UnitComponent>().Config;
+            var vita = entity.GetComponent<VitaComponent>();
+            var energy = entity.GetComponent<EnergyComponent>();
+            var stride = entity.GetComponent<StrideComponent>();
+            var uiView = _canvasView.ActiveUnit;
 
-           uiView.Icon.sprite = config.icon;
-           uiView.NameText.text = config.name;
-           uiView.VitaSlider.value = vita.Value.Percent;
-           uiView.VitaText.text = vita.Value.PercentText;
-           uiView.EnergySlider.value = energy.Value.Percent;
-           uiView.EnergyText.text = energy.Value.PercentText;
-           uiView.StrideText.text = $"Stride: {stride.Value.PercentText}";
+            uiView.Icon.sprite = config.icon;
+            uiView.NameText.text = config.name;
+            uiView.VitaSlider.value = vita.Value.Percent;
+            uiView.VitaText.text = vita.Value.PercentText;
+            uiView.EnergySlider.value = energy.Value.Percent;
+            uiView.EnergyText.text = energy.Value.PercentText;
+            uiView.StrideText.text = $"Stride: {stride.Value.PercentText}";
         }
     }
 }
