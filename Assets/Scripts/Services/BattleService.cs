@@ -4,8 +4,10 @@ using Scellecs.Morpeh;
 using TurnBasedRPG.Ecs.Components.Unit;
 using TurnBasedRPG.Installers;
 using TurnBasedRPG.Model;
+using TurnBasedRPG.Signals;
 using TurnBasedRPG.View;
 using UnityEngine;
+using Zenject;
 using Object = UnityEngine.Object;
 
 namespace TurnBasedRPG.Services
@@ -17,13 +19,18 @@ namespace TurnBasedRPG.Services
         private readonly List<CellView> _cells = new List<CellView>();
 
         private CanvasView _canvasView;
+        private readonly SignalBus _signalBus;
         private BattleData _battleData;
 
-        public BattleService(SceneData sceneData, GlobalConfigInstaller.MapConfig mapConfig, CanvasView canvasView)
+        public BattleData BattleData => _battleData;
+
+        public BattleService(SceneData sceneData, GlobalConfigInstaller.MapConfig mapConfig, CanvasView canvasView,
+            SignalBus signalBus)
         {
             _sceneData = sceneData;
             _mapConfig = mapConfig;
             _canvasView = canvasView;
+            _signalBus = signalBus;
 
             _battleData = new BattleData();
         }
@@ -45,13 +52,7 @@ namespace TurnBasedRPG.Services
                 }
             }
         }
-
-        public void InitBattleData()
-        {
-            var currentUnit = _battleData.GetCurrentUnit();
-            UpdateUnitUi(currentUnit);
-        }
-
+        
         public CellView GetCellByPosition(int x, int y)
         {
             foreach (var cell in _cells)
@@ -100,8 +101,7 @@ namespace TurnBasedRPG.Services
             _battleData.CurrentUnitIndex += 1;
             _battleData.CurrentUnitIndex %= _battleData.UnitOrder.Count;
 
-            var currentUnit = _battleData.GetCurrentUnit();
-            UpdateUnitUi(currentUnit);
+            _signalBus.Fire(new SetActiveUnitSignal(_battleData.GetCurrentUnit()));
         }
 
         private CellView InstantiateCell(Vector3 position)
@@ -117,23 +117,6 @@ namespace TurnBasedRPG.Services
             cell.transform.localScale = scale;
 
             return cell;
-        }
-
-        private void UpdateUnitUi(Entity entity)
-        {
-            var config = entity.GetComponent<UnitComponent>().config;
-            var vita = entity.GetComponent<VitaComponent>();
-            var energy = entity.GetComponent<EnergyComponent>();
-            var stride = entity.GetComponent<StrideComponent>();
-            var uiView = _canvasView.ActiveUnit;
-
-            uiView.Icon.sprite = config.icon;
-            uiView.NameText.text = config.name;
-            uiView.VitaSlider.value = vita.Value.Percent;
-            uiView.VitaText.text = vita.Value.PercentText;
-            uiView.EnergySlider.value = energy.Value.Percent;
-            uiView.EnergyText.text = energy.Value.PercentText;
-            uiView.StrideText.text = $"Stride: {stride.Value.PercentText}";
         }
     }
 }

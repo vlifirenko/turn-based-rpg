@@ -68,6 +68,7 @@ namespace TurnBasedRPG.Installers
             Container.Bind<UnitService>().AsSingle();
             Container.Bind<DiceService>().AsSingle();
             Container.Bind<BattleService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<UiService>().AsSingle();
         }
 
         private void BindSignals()
@@ -75,6 +76,8 @@ namespace TurnBasedRPG.Installers
             SignalBusInstaller.Install(Container);
             
             Container.DeclareSignal<VitaChangedSignal>();
+            Container.DeclareSignal<StrideChangedSignal>();
+            Container.DeclareSignal<SetActiveUnitSignal>();
         }
         
         private void BindInitializer<T>() where T : class, IInitializer

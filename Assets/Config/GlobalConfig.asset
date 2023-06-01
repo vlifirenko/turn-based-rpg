@@ -27,6 +27,8 @@ MonoBehaviour:
       position: {x: 8, y: 9}
     - config: {fileID: 11400000, guid: d89b2e589b51f2f4e81a12626d3b9ecb, type: 2}
       position: {x: 7, y: 9}
+    stopDistance: 0.01
+    moveSpeed: 5
   mapConfig:
     width: 10
     height: 10

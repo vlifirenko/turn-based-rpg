@@ -6,8 +6,9 @@ namespace TurnBasedRPG.Model
     public class BattleData
     {
         public List<Entity> UnitOrder = new List<Entity>();
-        public int CurrentUnitIndex;
 
-        public Entity GetCurrentUnit() => UnitOrder[CurrentUnitIndex];
+        public int? CurrentUnitIndex { get; set; }
+
+        public Entity GetCurrentUnit() => CurrentUnitIndex != null ? UnitOrder[CurrentUnitIndex.Value] : null;
     }
 }

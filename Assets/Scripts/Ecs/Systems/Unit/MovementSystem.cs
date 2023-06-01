@@ -1,7 +1,10 @@
 ﻿using Scellecs.Morpeh;
 using TurnBasedRPG.Ecs.Components.Unit;
+using TurnBasedRPG.Installers;
 using TurnBasedRPG.Services;
+using TurnBasedRPG.Signals;
 using UnityEngine;
+using Zenject;
 
 namespace TurnBasedRPG.Ecs.Systems.Unit
 {
@@ -9,12 +12,17 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
     {
         public World World { get; set; }
         private readonly BattleService _battleService;
+        private readonly GlobalConfigInstaller.UnitsConfig _unitsConfig;
+        private readonly SignalBus _signalBus;
 
         private Filter _filter;
 
-        public MovementSystem(BattleService battleService)
+        public MovementSystem(BattleService battleService, GlobalConfigInstaller.UnitsConfig unitsConfig,
+            SignalBus signalBus)
         {
             _battleService = battleService;
+            _unitsConfig = unitsConfig;
+            _signalBus = signalBus;
         }
 
         public void OnAwake() => _filter = World.Filter.With<MovementComponent>();
@@ -60,13 +68,27 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
             var movement = entity.GetComponent<MovementComponent>();
             var targetCell = movement.targetCell;
             ref var unit = ref entity.GetComponent<UnitComponent>();
+            var destination = new Vector3(
+                targetCell.transform.position.x,
+                unit.view.transform.position.y,
+                targetCell.transform.position.z); 
 
-            var position = Vector3.Lerp(
+            var position = Vector3.MoveTowards(
                 unit.view.transform.position,
-                new Vector3(targetCell.transform.position.x, unit.view.transform.position.y,
-                    targetCell.transform.position.z),
-                2f * deltaTime);
-            unit.view.transform.position = position;
+                destination,
+                _unitsConfig.moveSpeed * deltaTime);
+
+            if (Vector3.Distance(position, destination) > _unitsConfig.stopDistance)
+                unit.view.transform.position = position;
+            else
+            {
+                ref var stride = ref entity.GetComponent<StrideComponent>();
+                stride.Value.Current -= 1;
+                _signalBus.Fire(new StrideChangedSignal(stride.Value));
+                unit.view.transform.position = destination;
+                unit.cellView = movement.targetCell;
+                entity.RemoveComponent<MovementComponent>();
+            }
         }
 
 

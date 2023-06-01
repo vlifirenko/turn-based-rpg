@@ -5,7 +5,6 @@ using TurnBasedRPG.Services;
 using TurnBasedRPG.Signals;
 using TurnBasedRPG.Utils;
 using TurnBasedRPG.View;
-using TurnBasedRPG.View.Unit;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -38,10 +37,18 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
             _signalBus.GetStream<VitaChangedSignal>()
                 .Subscribe(OnVitaChanged)
                 .AddTo(_disposable);
-            
+
             foreach (var item in _unitsConfig.startUnits)
             {
                 var entity = _unitService.CreateUnit(item.config, item.position);
+                
+                //todo debug
+                if (!_battleService.BattleData.CurrentUnitIndex.HasValue)
+                {
+                    _battleService.BattleData.CurrentUnitIndex = 0;
+                    _signalBus.Fire(new SetActiveUnitSignal(entity));
+                }
+                //
 
                 entity.AddComponent<PlayerComponent>();
                 _battleService.AddUnit(entity);
@@ -56,8 +63,6 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
                 _battleService.AddUnit(entity);
                 InstantiateUnitUi(entity);
             }
-
-            _battleService.InitBattleData();
         }
 
         private void InstantiateUnitUi(Entity entity)
