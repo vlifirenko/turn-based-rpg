@@ -4,6 +4,7 @@ using TurnBasedRPG.Ecs.Systems.Battle;
 using TurnBasedRPG.Ecs.Systems.Debug;
 using TurnBasedRPG.Ecs.Systems.Unit;
 using TurnBasedRPG.Services;
+using TurnBasedRPG.Signals;
 using TurnBasedRPG.View;
 using UnityEngine;
 using Zenject;
@@ -20,6 +21,7 @@ namespace TurnBasedRPG.Installers
 
         public override void InstallBindings()
         {
+            BindSignals();
             BindWorld();
             BindScene();
             BindServices();
@@ -65,6 +67,13 @@ namespace TurnBasedRPG.Installers
             Container.Bind<UnitService>().AsSingle();
             Container.Bind<DiceService>().AsSingle();
             Container.Bind<BattleService>().AsSingle();
+        }
+
+        private void BindSignals()
+        {
+            SignalBusInstaller.Install(Container);
+            
+            Container.DeclareSignal<VitaChangedSignal>();
         }
         
         private void BindInitializer<T>() where T : class, IInitializer
