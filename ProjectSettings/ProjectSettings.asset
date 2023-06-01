@@ -625,7 +625,7 @@ PlayerSettings:
   webGLDecompressionFallback: 0
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Standalone: MORPEH_BURST;ZEN_SIGNALS_ADD_UNIRX
+    Standalone: MORPEH_BURST;ZEN_SIGNALS_ADD_UNIRX;MORPEH
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

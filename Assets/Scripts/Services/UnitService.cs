@@ -36,12 +36,13 @@ namespace TurnBasedRPG.Services
 
             ref var unit = ref entity.AddComponent<UnitComponent>();
 
-            unit.Config = config;
-            unit.View = view;
+            unit.config = config;
+            unit.view = view;
+            unit.cellView = cell;
 
-            entity.AddComponent<VitaComponent>().Value = new CurrentMax(unit.Config.vita);
-            entity.AddComponent<EnergyComponent>().Value = new CurrentMax(unit.Config.energy);
-            entity.AddComponent<StrideComponent>().Value = new CurrentMax(unit.Config.stride);
+            entity.AddComponent<VitaComponent>().Value = new CurrentMax(unit.config.vita);
+            entity.AddComponent<EnergyComponent>().Value = new CurrentMax(unit.config.energy);
+            entity.AddComponent<StrideComponent>().Value = new CurrentMax(unit.config.stride);
 
             return entity;
         }

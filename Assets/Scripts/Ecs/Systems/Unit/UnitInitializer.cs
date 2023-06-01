@@ -64,10 +64,10 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
         {
             ref var unit = ref entity.GetComponent<UnitComponent>();
             var uiView = Object.Instantiate(_canvasView.UnitVitaContainer.Prefab, _canvasView.UnitVitaContainer.transform);
-            var position = _canvasView.Canvas.WorldToCanvasPosition(unit.View.transform.position, Camera.main);
+            var position = _canvasView.Canvas.WorldToCanvasPosition(unit.view.transform.position, Camera.main);
 
             uiView.GetComponent<RectTransform>().anchoredPosition = position;
-            unit.UiView = uiView;
+            unit.uiView = uiView;
             
             _signalBus.Fire(new VitaChangedSignal(entity));
         }
@@ -78,8 +78,8 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
             var unit = entity.GetComponent<UnitComponent>();
             var vita = entity.GetComponent<VitaComponent>();
             
-            unit.UiView.VitaSlider.value = vita.Value.Percent;
-            unit.UiView.VitaText.text = vita.Value.PercentText;
+            unit.uiView.VitaSlider.value = vita.Value.Percent;
+            unit.uiView.VitaText.text = vita.Value.PercentText;
         }
 
         public void Dispose() => _disposable.Dispose();

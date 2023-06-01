@@ -74,7 +74,12 @@ namespace TurnBasedRPG.Services
 
         public void MoveTo(CellView targetCell)
         {
-            Debug.Log($"move {targetCell}");
+            var unitEntity = _battleData.GetCurrentUnit();
+
+            unitEntity.AddComponent<MovementComponent>() = new MovementComponent
+            {
+                destination = targetCell.Position
+            };
         }
 
         public void Attack(CellView targetCell)
@@ -116,7 +121,7 @@ namespace TurnBasedRPG.Services
 
         private void UpdateUnitUi(Entity entity)
         {
-            var config = entity.GetComponent<UnitComponent>().Config;
+            var config = entity.GetComponent<UnitComponent>().config;
             var vita = entity.GetComponent<VitaComponent>();
             var energy = entity.GetComponent<EnergyComponent>();
             var stride = entity.GetComponent<StrideComponent>();
