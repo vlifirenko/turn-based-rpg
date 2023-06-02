@@ -18,5 +18,6 @@ namespace TurnBasedRPG.Model.Config
         public int damageBonus;
         public int energy;
         public int stride;
+        public int attacks = 1;
     }
 }

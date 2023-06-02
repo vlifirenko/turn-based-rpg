@@ -6,17 +6,19 @@ using TurnBasedRPG.Installers;
 using TurnBasedRPG.Model;
 using TurnBasedRPG.Signals;
 using TurnBasedRPG.View;
+using UniRx;
 using UnityEngine;
 using Zenject;
 using Object = UnityEngine.Object;
 
 namespace TurnBasedRPG.Services
 {
-    public class BattleService
+    public class BattleService : IInitializable, IDisposable
     {
         private readonly SceneData _sceneData;
         private readonly GlobalConfigInstaller.MapConfig _mapConfig;
         private readonly List<CellView> _cells = new List<CellView>();
+        private readonly CompositeDisposable _disposable = new CompositeDisposable();
 
         private CanvasView _canvasView;
         private readonly SignalBus _signalBus;
@@ -31,8 +33,14 @@ namespace TurnBasedRPG.Services
             _mapConfig = mapConfig;
             _canvasView = canvasView;
             _signalBus = signalBus;
+        }
 
+        public void Initialize()
+        {
             _battleData = new BattleData();
+            _canvasView.NextTurnButton.OnClickAsObservable()
+                .Subscribe(_ => NextTurn())
+                .AddTo(_disposable);
         }
 
         public void CreateMap()
@@ -52,7 +60,7 @@ namespace TurnBasedRPG.Services
                 }
             }
         }
-        
+
         public CellView GetCellByPosition(int x, int y)
         {
             foreach (var cell in _cells)
@@ -64,10 +72,7 @@ namespace TurnBasedRPG.Services
             throw new Exception($"Cell not found, cells size: {_cells.Count}");
         }
 
-        public void AddUnit(Entity entity)
-        {
-            _battleData.UnitOrder.Add(entity);
-        }
+        public void AddUnit(Entity entity) => _battleData.UnitOrder.Add(entity);
 
         public void SelectUnit(Entity entity)
         {
@@ -104,6 +109,11 @@ namespace TurnBasedRPG.Services
             _signalBus.Fire(new SetActiveUnitSignal(_battleData.GetCurrentUnit()));
         }
 
+        public void NextTurn()
+        {
+            NextUnit();
+        }
+
         private CellView InstantiateCell(Vector3 position)
         {
             var prefab = _sceneData.CellsContainer.Prefab;
@@ -118,5 +128,7 @@ namespace TurnBasedRPG.Services
 
             return cell;
         }
+
+        public void Dispose() => _disposable?.Dispose();
     }
 }

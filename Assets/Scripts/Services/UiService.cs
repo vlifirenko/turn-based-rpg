@@ -29,13 +29,14 @@ namespace TurnBasedRPG.Services
             _signalBus.GetStream<SetActiveUnitSignal>()
                 .Subscribe(OnSetActiveUnit)
                 .AddTo(_disposable);
+            
+            _signalBus.GetStream<AttacksLeftChangedSignal>()
+                .Subscribe(OnAttacksLeftChanged)
+                .AddTo(_disposable);
         }
 
-        private void OnStrideChanged(StrideChangedSignal signal)
-        {
-            var uiView = _canvasView.ActiveUnit;
-            uiView.StrideText.text = $"Stride: {signal.value.PercentText}";
-        }
+        private void OnStrideChanged(StrideChangedSignal signal) 
+            => _canvasView.ActiveUnit.StrideText.text = $"Stride: {signal.value.PercentText}";
 
         private void OnSetActiveUnit(SetActiveUnitSignal signal)
         {
@@ -44,6 +45,7 @@ namespace TurnBasedRPG.Services
             var vita = entity.GetComponent<VitaComponent>();
             var energy = entity.GetComponent<EnergyComponent>();
             var stride = entity.GetComponent<StrideComponent>();
+            var attacksLeft = entity.GetComponent<AttacksLeftComponent>();
             var uiView = _canvasView.ActiveUnit;
 
             uiView.Icon.sprite = config.icon;
@@ -53,7 +55,11 @@ namespace TurnBasedRPG.Services
             uiView.EnergySlider.value = energy.Value.Percent;
             uiView.EnergyText.text = energy.Value.PercentText;
             uiView.StrideText.text = $"Stride: {stride.Value.PercentText}";
+            uiView.AttacksText.text = $"Attacks: {attacksLeft.Value.PercentText}";
         }
+
+        private void OnAttacksLeftChanged(AttacksLeftChangedSignal signal)
+            => _canvasView.ActiveUnit.AttacksText.text = $"Attacks: {signal.value.PercentText}";
 
         public void Dispose() => _disposable?.Dispose();
     }

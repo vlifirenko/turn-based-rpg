@@ -43,6 +43,7 @@ namespace TurnBasedRPG.Services
             entity.AddComponent<VitaComponent>().Value = new CurrentMax(unit.config.vita);
             entity.AddComponent<EnergyComponent>().Value = new CurrentMax(unit.config.energy);
             entity.AddComponent<StrideComponent>().Value = new CurrentMax(unit.config.stride);
+            entity.AddComponent<AttacksLeftComponent>().Value = new CurrentMax(unit.config.attacks);
 
             return entity;
         }

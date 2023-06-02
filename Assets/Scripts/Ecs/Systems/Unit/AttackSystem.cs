@@ -28,7 +28,14 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
         {
             foreach (var entity in _filter)
             {
-                Attack(entity);
+                ref var attacksLeft = ref entity.GetComponent<AttacksLeftComponent>();
+                if (attacksLeft.Value.Current > 0)
+                {
+                    Attack(entity);
+                    attacksLeft.Value.Current -= 1;
+                    _signalBus.Fire(new AttacksLeftChangedSignal(attacksLeft.Value));
+                }
+                
                 entity.RemoveComponent<AttackComponent>();
             }
         }

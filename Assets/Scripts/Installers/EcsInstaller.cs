@@ -1,5 +1,6 @@
 ﻿using System;
 using Scellecs.Morpeh;
+using TurnBasedRPG.Ecs.Components.Unit;
 using TurnBasedRPG.Ecs.Systems.Battle;
 using TurnBasedRPG.Ecs.Systems.Debug;
 using TurnBasedRPG.Ecs.Systems.Unit;
@@ -67,7 +68,7 @@ namespace TurnBasedRPG.Installers
         {
             Container.Bind<UnitService>().AsSingle();
             Container.Bind<DiceService>().AsSingle();
-            Container.Bind<BattleService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<BattleService>().AsSingle();
             Container.BindInterfacesAndSelfTo<UiService>().AsSingle();
         }
 
@@ -78,6 +79,7 @@ namespace TurnBasedRPG.Installers
             Container.DeclareSignal<VitaChangedSignal>();
             Container.DeclareSignal<StrideChangedSignal>();
             Container.DeclareSignal<SetActiveUnitSignal>();
+            Container.DeclareSignal<AttacksLeftChangedSignal>();
         }
         
         private void BindInitializer<T>() where T : class, IInitializer

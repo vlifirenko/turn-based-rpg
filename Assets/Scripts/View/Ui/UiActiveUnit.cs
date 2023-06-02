@@ -13,6 +13,7 @@ namespace TurnBasedRPG.View.Ui
         [SerializeField] private Slider energySlider;
         [SerializeField] private TMP_Text energyText;
         [SerializeField] private TMP_Text strideText;
+        [SerializeField] private TMP_Text attacksText;
 
         public Image Icon => icon;
 
@@ -27,5 +28,7 @@ namespace TurnBasedRPG.View.Ui
         public TMP_Text EnergyText => energyText;
 
         public TMP_Text StrideText => strideText;
+
+        public TMP_Text AttacksText => attacksText;
     }
 }
