@@ -38,29 +38,33 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
                     return;
                 }
 
-                ref var movement = ref entity.GetComponent<MovementComponent>();
+                var movement = entity.GetComponent<MovementComponent>();
                 if (movement.targetCell == null)
-                {
-                    var destinationCell = _battleService.GetCellByPosition(movement.destination.x,
-                        movement.destination.y);
-                    var unitCell = entity.GetComponent<UnitComponent>().cellView;
-                    var position = unitCell.Position;
-
-                    if (destinationCell.Position.x > position.x)
-                        position.x++;
-                    else if (destinationCell.Position.x < position.x)
-                        position.x--;
-                    if (destinationCell.Position.y > position.y)
-                        position.y++;
-                    else if (destinationCell.Position.y < position.y)
-                        position.y--;
-
-                    var targetCell = _battleService.GetCellByPosition(position.x, position.y);
-                    movement.targetCell = targetCell;
-                }
+                    FindNextCell(entity);
 
                 MoveTo(entity, deltaTime);
             }
+        }
+
+        private void FindNextCell(Entity entity)
+        {
+            ref var movement = ref entity.GetComponent<MovementComponent>();
+            var destinationCell = _battleService.GetCellByPosition(movement.destination.x,
+                movement.destination.y);
+            var unitCell = entity.GetComponent<UnitComponent>().cellView;
+            var position = unitCell.Position;
+
+            if (destinationCell.Position.x > position.x)
+                position.x++;
+            else if (destinationCell.Position.x < position.x)
+                position.x--;
+            if (destinationCell.Position.y > position.y)
+                position.y++;
+            else if (destinationCell.Position.y < position.y)
+                position.y--;
+
+            var targetCell = _battleService.GetCellByPosition(position.x, position.y);
+            movement.targetCell = targetCell;
         }
 
         private void MoveTo(Entity entity, float deltaTime)
@@ -71,7 +75,7 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
             var destination = new Vector3(
                 targetCell.transform.position.x,
                 unit.view.transform.position.y,
-                targetCell.transform.position.z); 
+                targetCell.transform.position.z);
 
             var position = Vector3.MoveTowards(
                 unit.view.transform.position,
@@ -87,10 +91,13 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
                 _signalBus.Fire(new StrideChangedSignal(stride.Value));
                 unit.view.transform.position = destination;
                 unit.cellView = movement.targetCell;
-                entity.RemoveComponent<MovementComponent>();
+
+                if (stride.Value.Current == 0 || unit.cellView.Position == movement.destination)
+                    entity.RemoveComponent<MovementComponent>();
+                else
+                    FindNextCell(entity);
             }
         }
-
 
         public void Dispose()
         {
