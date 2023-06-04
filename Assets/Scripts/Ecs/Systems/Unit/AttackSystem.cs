@@ -12,14 +12,16 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
     {
         private readonly DiceService _diceService;
         private readonly SignalBus _signalBus;
+        private readonly UnitService _unitService;
         public World World { get; set; }
 
         private Filter _filter;
 
-        public AttackSystem(DiceService diceService, SignalBus signalBus)
+        public AttackSystem(DiceService diceService, SignalBus signalBus, UnitService unitService)
         {
             _diceService = diceService;
             _signalBus = signalBus;
+            _unitService = unitService;
         }
 
         public void OnAwake() => _filter = World.Filter.With<AttackComponent>();
@@ -29,13 +31,13 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
             foreach (var entity in _filter)
             {
                 ref var attacksLeft = ref entity.GetComponent<AttacksLeftComponent>();
-                if (attacksLeft.Value.Current > 0)
+                if (attacksLeft.Value.Current > 0 && CheckRange(entity))
                 {
                     Attack(entity);
                     attacksLeft.Value.Current -= 1;
                     _signalBus.Fire(new AttacksLeftChangedSignal(attacksLeft.Value));
                 }
-                
+
                 entity.RemoveComponent<AttackComponent>();
             }
         }
@@ -47,7 +49,6 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
             var might = _diceService.RollDice(EDice.D100) + config.might;
             var defence = attack.target.GetComponent<UnitComponent>().config.defence;
 
-            var success = false;
             if (might >= defence)
             {
                 var damage = _diceService.RollDice(EDice.D4, 2);
@@ -55,13 +56,28 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
 
                 targetVita.Value.Current = Mathf.Clamp(targetVita.Value.Current - damage, 0, targetVita.Value.Max);
                 _signalBus.Fire(new VitaChangedSignal(attack.target));
-                
+
                 UnityEngine.Debug.Log($"Attack: {might}/{defence}, Damage: {damage}");
             }
             else
             {
                 UnityEngine.Debug.Log($"Miss {might}/{defence}");
             }
+        }
+
+        private bool CheckRange(Entity entity)
+        {
+            var weapon = _unitService.GetEquippedWeapon(entity);
+            var unitCell = entity.GetComponent<UnitComponent>().cellView;
+            var targetEntity = entity.GetComponent<AttackComponent>().target;
+            var targetCell = targetEntity.GetComponent<UnitComponent>().cellView;
+            var distanceToTarget = Vector2.Distance(targetCell.Position, unitCell.Position);
+
+            var result = Mathf.RoundToInt(distanceToTarget) <= weapon.range;
+            if (!result)
+                UnityEngine.Debug.Log($"Distance: {distanceToTarget}, weapon range: {weapon.range}");
+
+            return result;
         }
 
         public void Dispose()

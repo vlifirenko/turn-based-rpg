@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385842f5e76f4545bdd1a308e27f30db, type: 3}
+  m_Name: Item_2
+  m_EditorClassIdentifier: 
+  id: IT#FC95
+  name: "\u041E\u043F\u0430\u0441\u043D\u0430\u044F \u0431\u0440\u0438\u0442\u0432\u0430"
+  weaponDamage:
+    diceCount: 1
+    dice: 4
+    bonus: 1
+  isTwoHanded: 0
+  distance: 10
+  cost: 30
+  charges: 0
+  range: 1
+  slot: 10
+  description: 

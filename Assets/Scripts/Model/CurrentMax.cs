@@ -14,5 +14,7 @@
         public float Percent => (float) Current / Max;
         
         public string PercentText => $"{Current}/{Max}";
+
+        public void SetMax() => Current = Max;
     }
 }

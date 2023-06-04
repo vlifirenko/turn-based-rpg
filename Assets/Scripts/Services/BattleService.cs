@@ -105,12 +105,26 @@ namespace TurnBasedRPG.Services
         {
             _battleData.CurrentUnitIndex += 1;
             _battleData.CurrentUnitIndex %= _battleData.UnitOrder.Count;
+            
+            var currentUnit = _battleData.GetCurrentUnit();
+            if (currentUnit.Has<EnemyComponent>())
+                currentUnit.AddComponent<AiTurnComponent>();
 
             _signalBus.Fire(new SetActiveUnitSignal(_battleData.GetCurrentUnit()));
         }
 
         public void NextTurn()
         {
+            var currentUnit = _battleData.GetCurrentUnit();
+            
+            ref var stride = ref currentUnit.GetComponent<StrideComponent>();
+            stride.Value.SetMax();
+            ref var attackLeft = ref currentUnit.GetComponent<AttacksLeftComponent>();
+            attackLeft.Value.SetMax();
+
+            if (currentUnit.Has<AiTurnComponent>())
+                currentUnit.RemoveComponent<AiTurnComponent>();
+            
             NextUnit();
         }
 

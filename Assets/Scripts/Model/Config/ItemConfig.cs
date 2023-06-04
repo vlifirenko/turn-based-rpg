@@ -14,6 +14,7 @@ namespace TurnBasedRPG.Model.Config
         public EItemDistance distance;
         public int cost;
         public int charges;
+        public int range;
         public EItemSlot slot;
         public string description;
     }

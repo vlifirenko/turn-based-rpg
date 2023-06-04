@@ -19,5 +19,6 @@ namespace TurnBasedRPG.Model.Config
         public int energy;
         public int stride;
         public int attacks = 1;
+        public ItemConfig[] items;
     }
 }

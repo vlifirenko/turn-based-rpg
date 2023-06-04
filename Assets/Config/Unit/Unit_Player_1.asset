@@ -23,3 +23,6 @@ MonoBehaviour:
   damageBonus: 2
   energy: 5
   stride: 4
+  attacks: 1
+  items:
+  - {fileID: 11400000, guid: ba15645f3a1028047a32a93d1b4ea84a, type: 2}
