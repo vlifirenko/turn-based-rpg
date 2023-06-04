@@ -6,7 +6,7 @@ using TurnBasedRPG.Signals;
 using UnityEngine;
 using Zenject;
 
-namespace TurnBasedRPG.Ecs.Systems.Unit
+namespace TurnBasedRPG.Ecs.Systems.Battle
 {
     public class AttackSystem : ISystem
     {
