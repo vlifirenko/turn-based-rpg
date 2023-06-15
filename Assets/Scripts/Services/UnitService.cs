@@ -6,6 +6,7 @@ using TurnBasedRPG.Model.Config;
 using TurnBasedRPG.Model.Unit;
 using TurnBasedRPG.View;
 using UnityEngine;
+using Zenject;
 
 namespace TurnBasedRPG.Services
 {
@@ -14,14 +15,17 @@ namespace TurnBasedRPG.Services
         private readonly World _world;
         private readonly SceneData _sceneData;
         private readonly BattleService _battleService;
+        private readonly SignalBus _signalBus;
 
         public UnitService(World world,
             SceneData sceneData,
-            BattleService battleService)
+            BattleService battleService,
+            SignalBus signalBus)
         {
             _world = world;
             _sceneData = sceneData;
             _battleService = battleService;
+            _signalBus = signalBus;
         }
 
         public AUnit CreateUnit(UnitConfig config, Vector2Int cellPosition, bool isPlayer = false)
@@ -32,7 +36,7 @@ namespace TurnBasedRPG.Services
             if (isPlayer)
                 unit = new PlayerUnit(entity);
             else
-                unit = new EnemyUnit(entity);
+                unit = new AiUnit(entity, _signalBus);
             
             var cell = _battleService.GetCellByPosition(cellPosition.x, cellPosition.y);
 

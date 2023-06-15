@@ -1,5 +1,6 @@
 ﻿using Scellecs.Morpeh;
 using TurnBasedRPG.Ecs.Components.Unit;
+using TurnBasedRPG.Model.Unit;
 using TurnBasedRPG.Services;
 
 namespace TurnBasedRPG.Ecs.Systems.Battle
@@ -22,8 +23,8 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
         {
             foreach (var entity in _filter)
             {
-                UnityEngine.Debug.Log("Enemy turn");
-                _battleService.NextTurn();
+                var unit = entity.GetComponent<UnitComponent>().Unit as AiUnit;
+                unit.MakeTurn();
             }
         }
 
