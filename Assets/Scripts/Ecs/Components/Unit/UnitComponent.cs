@@ -1,5 +1,4 @@
 ﻿using Scellecs.Morpeh;
-using TurnBasedRPG.Model.Config;
 using TurnBasedRPG.Model.Unit;
 using TurnBasedRPG.View;
 using TurnBasedRPG.View.Ui;
@@ -10,8 +9,7 @@ namespace TurnBasedRPG.Ecs.Components.Unit
     public struct UnitComponent : IComponent
     {
         public AUnit Unit;
-        public UnitView view;
-        public CellView cellView;
-        public UiUnitVita uiView;
+        public CellView CellView;
+        public UiUnitVita UiView;
     }
 }

@@ -68,9 +68,9 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
         private bool CheckRange(Entity entity)
         {
             var weapon = _unitService.GetEquippedWeapon(entity);
-            var unitCell = entity.GetComponent<UnitComponent>().cellView;
+            var unitCell = entity.GetComponent<UnitComponent>().CellView;
             var targetEntity = entity.GetComponent<AttackComponent>().Target;
-            var targetCell = targetEntity.Entity.GetComponent<UnitComponent>().cellView;
+            var targetCell = targetEntity.Entity.GetComponent<UnitComponent>().CellView;
             var distanceToTarget = Vector2.Distance(targetCell.Position, unitCell.Position);
 
             var result = Mathf.RoundToInt(distanceToTarget) <= weapon.range;

@@ -51,7 +51,7 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
             ref var movement = ref entity.GetComponent<MovementComponent>();
             var destinationCell = _battleService.GetCellByPosition(movement.destination.x,
                 movement.destination.y);
-            var unitCell = entity.GetComponent<UnitComponent>().cellView;
+            var unitCell = entity.GetComponent<UnitComponent>().CellView;
             var position = unitCell.Position;
 
             if (destinationCell.Position.x > position.x)
@@ -71,28 +71,29 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
         {
             var movement = entity.GetComponent<MovementComponent>();
             var targetCell = movement.targetCell;
-            ref var unit = ref entity.GetComponent<UnitComponent>();
+            ref var unit = ref entity.GetComponent<UnitComponent>().Unit;
+            ref var cellView = ref entity.GetComponent<UnitComponent>().CellView;
             var destination = new Vector3(
                 targetCell.transform.position.x,
-                unit.view.transform.position.y,
+                unit.View.transform.position.y,
                 targetCell.transform.position.z);
 
             var position = Vector3.MoveTowards(
-                unit.view.transform.position,
+                unit.View.transform.position,
                 destination,
                 _unitsConfig.moveSpeed * deltaTime);
 
             if (Vector3.Distance(position, destination) > _unitsConfig.stopDistance)
-                unit.view.transform.position = position;
+                unit.View.transform.position = position;
             else
             {
                 ref var stride = ref entity.GetComponent<StrideComponent>();
                 stride.Value.Current -= 1;
                 _signalBus.Fire(new StrideChangedSignal(stride.Value));
-                unit.view.transform.position = destination;
-                unit.cellView = movement.targetCell;
+                unit.View.transform.position = destination;
+                cellView = movement.targetCell;
 
-                if (stride.Value.Current == 0 || unit.cellView.Position == movement.destination)
+                if (stride.Value.Current == 0 || cellView.Position == movement.destination)
                     MovementEnd(entity);
                 else
                     FindNextCell(entity);

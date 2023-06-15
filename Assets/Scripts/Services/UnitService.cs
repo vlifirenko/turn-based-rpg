@@ -44,21 +44,18 @@ namespace TurnBasedRPG.Services
             var rotation = Quaternion.Euler(0,
                 isPlayer ? 0f : 180f,
                 0);
-            var view = Object.Instantiate(config.prefab, position, rotation, _sceneData.UnitContainer);
+            unit.CreateView(position, rotation, _sceneData.UnitContainer);
+            unit.InitializeView();
 
-            cell.UnitView = view;
-            view.Unit = unit;
+            cell.UnitView = unit.View;
 
             ref var unitComponent = ref entity.AddComponent<UnitComponent>();
 
             unitComponent.Unit = unit;
-            unitComponent.view = view;
-            unitComponent.cellView = cell;
+            unitComponent.CellView = cell;
 
-            entity.AddComponent<AnimatorComponent>().Value = view.Animator;
-            // test animator
-            view.Animator.SetState(EAnimatorState.IdleCombat);
-
+            entity.AddComponent<AnimatorComponent>().Value = unit.View.Animator;
+            
             entity.AddComponent<VitaComponent>().Value = new CurrentMax(config.vita);
             entity.AddComponent<EnergyComponent>().Value = new CurrentMax(config.energy);
             entity.AddComponent<StrideComponent>().Value = new CurrentMax(config.stride);
