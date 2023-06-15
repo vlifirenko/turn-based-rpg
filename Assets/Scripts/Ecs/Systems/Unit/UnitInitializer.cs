@@ -1,6 +1,7 @@
 ﻿using Scellecs.Morpeh;
 using TurnBasedRPG.Ecs.Components.Unit;
 using TurnBasedRPG.Installers;
+using TurnBasedRPG.Model.Unit;
 using TurnBasedRPG.Services;
 using TurnBasedRPG.Signals;
 using TurnBasedRPG.Utils;
@@ -40,51 +41,51 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
 
             foreach (var item in _unitsConfig.startUnits)
             {
-                var entity = _unitService.CreateUnit(item.config, item.position, true);
+                var unit = _unitService.CreateUnit(item.config, item.position, true);
                 
                 //todo debug
                 if (!_battleService.BattleData.CurrentUnitIndex.HasValue)
                 {
                     _battleService.BattleData.CurrentUnitIndex = 0;
-                    _signalBus.Fire(new SetActiveUnitSignal(entity));
+                    _signalBus.Fire(new SetActiveUnitSignal(unit));
                 }
                 //
 
-                entity.AddComponent<PlayerComponent>();
-                _battleService.AddUnit(entity);
-                InstantiateUnitUi(entity);
+                unit.Entity.AddComponent<PlayerComponent>();
+                _battleService.AddUnit(unit);
+                InstantiateUnitUi(unit);
             }
 
             foreach (var item in _unitsConfig.enemyUnits)
             {
-                var entity = _unitService.CreateUnit(item.config, item.position);
+                var unit = _unitService.CreateUnit(item.config, item.position);
 
-                entity.AddComponent<EnemyComponent>();
-                _battleService.AddUnit(entity);
-                InstantiateUnitUi(entity);
+                unit.Entity.AddComponent<EnemyComponent>();
+                _battleService.AddUnit(unit);
+                InstantiateUnitUi(unit);
             }
         }
 
-        private void InstantiateUnitUi(Entity entity)
+        private void InstantiateUnitUi(AUnit unit)
         {
-            ref var unit = ref entity.GetComponent<UnitComponent>();
+            ref var unitComponent = ref unit.Entity.GetComponent<UnitComponent>();
             var uiView = Object.Instantiate(_canvasView.UnitVitaContainer.Prefab, _canvasView.UnitVitaContainer.transform);
-            var position = _canvasView.Canvas.WorldToCanvasPosition(unit.view.transform.position, Camera.main);
+            var position = _canvasView.Canvas.WorldToCanvasPosition(unitComponent.view.transform.position, Camera.main);
 
             uiView.GetComponent<RectTransform>().anchoredPosition = position;
-            unit.uiView = uiView;
+            unitComponent.uiView = uiView;
             
-            _signalBus.Fire(new VitaChangedSignal(entity));
+            _signalBus.Fire(new VitaChangedSignal(unit));
         }
 
         private void OnVitaChanged(VitaChangedSignal signal)
         {
-            var entity = signal.entity;
-            var unit = entity.GetComponent<UnitComponent>();
-            var vita = entity.GetComponent<VitaComponent>();
+            var unit = signal.entity;
+            var unitComponent = unit.Entity.GetComponent<UnitComponent>();
+            var vita = unit.Entity.GetComponent<VitaComponent>();
             
-            unit.uiView.VitaSlider.value = vita.Value.Percent;
-            unit.uiView.VitaText.text = vita.Value.PercentText;
+            unitComponent.uiView.VitaSlider.value = vita.Value.Percent;
+            unitComponent.uiView.VitaText.text = vita.Value.PercentText;
         }
 
         public void Dispose() => _disposable.Dispose();

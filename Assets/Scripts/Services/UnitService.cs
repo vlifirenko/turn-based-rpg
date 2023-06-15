@@ -3,6 +3,7 @@ using TurnBasedRPG.Ecs.Components.Unit;
 using TurnBasedRPG.Extensions;
 using TurnBasedRPG.Model;
 using TurnBasedRPG.Model.Config;
+using TurnBasedRPG.Model.Unit;
 using TurnBasedRPG.View;
 using UnityEngine;
 
@@ -23,9 +24,16 @@ namespace TurnBasedRPG.Services
             _battleService = battleService;
         }
 
-        public Entity CreateUnit(UnitConfig config, Vector2Int cellPosition, bool isPlayer = false)
+        public AUnit CreateUnit(UnitConfig config, Vector2Int cellPosition, bool isPlayer = false)
         {
             var entity = _world.CreateEntity();
+
+            AUnit unit;
+            if (isPlayer)
+                unit = new PlayerUnit(entity);
+            else
+                unit = new EnemyUnit(entity);
+            
             var cell = _battleService.GetCellByPosition(cellPosition.x, cellPosition.y);
 
             var position = cell.transform.position;
@@ -35,24 +43,25 @@ namespace TurnBasedRPG.Services
             var view = Object.Instantiate(config.prefab, position, rotation, _sceneData.UnitContainer);
 
             cell.UnitView = view;
-            view.Entity = entity;
+            view.Unit = unit;
 
-            ref var unit = ref entity.AddComponent<UnitComponent>();
+            ref var unitComponent = ref entity.AddComponent<UnitComponent>();
 
-            unit.config = config;
-            unit.view = view;
-            unit.cellView = cell;
+            unitComponent.Unit = unit;
+            unitComponent.config = config;
+            unitComponent.view = view;
+            unitComponent.cellView = cell;
 
             entity.AddComponent<AnimatorComponent>().Value = view.Animator;
             // test animator
             view.Animator.SetState(EAnimatorState.IdleCombat);
 
-            entity.AddComponent<VitaComponent>().Value = new CurrentMax(unit.config.vita);
-            entity.AddComponent<EnergyComponent>().Value = new CurrentMax(unit.config.energy);
-            entity.AddComponent<StrideComponent>().Value = new CurrentMax(unit.config.stride);
-            entity.AddComponent<AttacksLeftComponent>().Value = new CurrentMax(unit.config.attacks);
+            entity.AddComponent<VitaComponent>().Value = new CurrentMax(unitComponent.config.vita);
+            entity.AddComponent<EnergyComponent>().Value = new CurrentMax(unitComponent.config.energy);
+            entity.AddComponent<StrideComponent>().Value = new CurrentMax(unitComponent.config.stride);
+            entity.AddComponent<AttacksLeftComponent>().Value = new CurrentMax(unitComponent.config.attacks);
 
-            return entity;
+            return unit;
         }
 
         public ItemConfig GetEquippedWeapon(Entity entity)

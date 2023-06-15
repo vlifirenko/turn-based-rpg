@@ -1,5 +1,6 @@
 ﻿using Scellecs.Morpeh;
 using TurnBasedRPG.Model.Config;
+using TurnBasedRPG.Model.Unit;
 using UnityEngine;
 
 namespace TurnBasedRPG.View.Unit
@@ -9,7 +10,7 @@ namespace TurnBasedRPG.View.Unit
         [SerializeField] private UnitConfig config;
         [SerializeField] private Animator animator;
 
-        public Entity Entity { get; set; }
+        public AUnit Unit { get; set; }
 
         public UnitConfig Config => config;
 

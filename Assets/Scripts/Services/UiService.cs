@@ -40,12 +40,12 @@ namespace TurnBasedRPG.Services
 
         private void OnSetActiveUnit(SetActiveUnitSignal signal)
         {
-            var entity = signal.activeUnit;
-            var config = entity.GetComponent<UnitComponent>().config;
-            var vita = entity.GetComponent<VitaComponent>();
-            var energy = entity.GetComponent<EnergyComponent>();
-            var stride = entity.GetComponent<StrideComponent>();
-            var attacksLeft = entity.GetComponent<AttacksLeftComponent>();
+            var unit = signal.activeUnit;
+            var config = unit.Entity.GetComponent<UnitComponent>().config;
+            var vita = unit.Entity.GetComponent<VitaComponent>();
+            var energy = unit.Entity.GetComponent<EnergyComponent>();
+            var stride = unit.Entity.GetComponent<StrideComponent>();
+            var attacksLeft = unit.Entity.GetComponent<AttacksLeftComponent>();
             var uiView = _canvasView.ActiveUnit;
 
             uiView.Icon.sprite = config.icon;

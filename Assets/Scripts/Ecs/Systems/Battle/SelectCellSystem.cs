@@ -61,7 +61,7 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
                 if (cellView.UnitView == null)
                     return;
                 
-                _battleService.SelectUnit(cellView.UnitView.Entity);
+                _battleService.SelectUnit(cellView.UnitView.Unit);
             }
         }
         

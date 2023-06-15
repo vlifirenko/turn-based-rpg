@@ -1,12 +1,13 @@
 ﻿using Scellecs.Morpeh;
+using TurnBasedRPG.Model.Unit;
 
 namespace TurnBasedRPG.Signals
 {
     public class VitaChangedSignal
     {
-        public Entity entity;
+        public AUnit entity;
 
-        public VitaChangedSignal(Entity entity)
+        public VitaChangedSignal(AUnit entity)
         {
             this.entity = entity;
         }

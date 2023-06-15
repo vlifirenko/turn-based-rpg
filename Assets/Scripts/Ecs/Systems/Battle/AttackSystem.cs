@@ -47,15 +47,15 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
             var config = entity.GetComponent<UnitComponent>().config;
             var attack = entity.GetComponent<AttackComponent>();
             var might = _diceService.RollDice(EDice.D100) + config.might;
-            var defence = attack.target.GetComponent<UnitComponent>().config.defence;
+            var defence = attack.Target.Entity.GetComponent<UnitComponent>().config.defence;
 
             if (might >= defence)
             {
                 var damage = _diceService.RollDice(EDice.D4, 2);
-                ref var targetVita = ref attack.target.GetComponent<VitaComponent>();
+                ref var targetVita = ref attack.Target.Entity.GetComponent<VitaComponent>();
 
                 targetVita.Value.Current = Mathf.Clamp(targetVita.Value.Current - damage, 0, targetVita.Value.Max);
-                _signalBus.Fire(new VitaChangedSignal(attack.target));
+                _signalBus.Fire(new VitaChangedSignal(attack.Target));
 
                 UnityEngine.Debug.Log($"Attack: {might}/{defence}, Damage: {damage}");
             }
@@ -69,8 +69,8 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
         {
             var weapon = _unitService.GetEquippedWeapon(entity);
             var unitCell = entity.GetComponent<UnitComponent>().cellView;
-            var targetEntity = entity.GetComponent<AttackComponent>().target;
-            var targetCell = targetEntity.GetComponent<UnitComponent>().cellView;
+            var targetEntity = entity.GetComponent<AttackComponent>().Target;
+            var targetCell = targetEntity.Entity.GetComponent<UnitComponent>().cellView;
             var distanceToTarget = Vector2.Distance(targetCell.Position, unitCell.Position);
 
             var result = Mathf.RoundToInt(distanceToTarget) <= weapon.range;

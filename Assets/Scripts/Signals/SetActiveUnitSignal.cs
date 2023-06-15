@@ -1,12 +1,13 @@
 ﻿using Scellecs.Morpeh;
+using TurnBasedRPG.Model.Unit;
 
 namespace TurnBasedRPG.Signals
 {
     public class SetActiveUnitSignal
     {
-        public Entity activeUnit;
+        public AUnit activeUnit;
 
-        public SetActiveUnitSignal(Entity activeUnit)
+        public SetActiveUnitSignal(AUnit activeUnit)
         {
             this.activeUnit = activeUnit;
         }

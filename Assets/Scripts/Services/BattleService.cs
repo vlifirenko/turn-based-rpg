@@ -5,6 +5,7 @@ using TurnBasedRPG.Ecs.Components.Unit;
 using TurnBasedRPG.Extensions;
 using TurnBasedRPG.Installers;
 using TurnBasedRPG.Model;
+using TurnBasedRPG.Model.Unit;
 using TurnBasedRPG.Signals;
 using TurnBasedRPG.View;
 using UniRx;
@@ -73,9 +74,9 @@ namespace TurnBasedRPG.Services
             throw new Exception($"Cell not found, cells size: {_cells.Count}");
         }
 
-        public void AddUnit(Entity entity) => _battleData.UnitOrder.Add(entity);
+        public void AddUnit(AUnit unit) => _battleData.UnitOrder.Add(unit);
 
-        public void SelectUnit(Entity entity)
+        public void SelectUnit(AUnit unit)
         {
         }
 
@@ -84,14 +85,14 @@ namespace TurnBasedRPG.Services
 
         public void Attack(CellView targetCell)
         {
-            var targetEntity = targetCell.UnitView.Entity;
-            if (targetEntity.Has<PlayerComponent>())
+            var unit = targetCell.UnitView.Unit;
+            if (unit.Entity.Has<PlayerComponent>())
                 return;
 
             var attackerEntity = _battleData.GetCurrentUnit();
-            attackerEntity.AddComponent<AttackComponent>() = new AttackComponent
+            attackerEntity.Entity.AddComponent<AttackComponent>() = new AttackComponent
             {
-                target = targetEntity
+                Target = unit
             };
         }
 
@@ -101,8 +102,8 @@ namespace TurnBasedRPG.Services
             _battleData.CurrentUnitIndex %= _battleData.UnitOrder.Count;
             
             var currentUnit = _battleData.GetCurrentUnit();
-            if (currentUnit.Has<EnemyComponent>())
-                currentUnit.AddComponent<AiTurnComponent>();
+            if (currentUnit.Entity.Has<EnemyComponent>())
+                currentUnit.Entity.AddComponent<AiTurnComponent>();
 
             _signalBus.Fire(new SetActiveUnitSignal(_battleData.GetCurrentUnit()));
         }
@@ -111,13 +112,13 @@ namespace TurnBasedRPG.Services
         {
             var currentUnit = _battleData.GetCurrentUnit();
             
-            ref var stride = ref currentUnit.GetComponent<StrideComponent>();
+            ref var stride = ref currentUnit.Entity.GetComponent<StrideComponent>();
             stride.Value.SetMax();
-            ref var attackLeft = ref currentUnit.GetComponent<AttacksLeftComponent>();
+            ref var attackLeft = ref currentUnit.Entity.GetComponent<AttacksLeftComponent>();
             attackLeft.Value.SetMax();
 
-            if (currentUnit.Has<AiTurnComponent>())
-                currentUnit.RemoveComponent<AiTurnComponent>();
+            if (currentUnit.Entity.Has<AiTurnComponent>())
+                currentUnit.Entity.RemoveComponent<AiTurnComponent>();
             
             NextUnit();
         }
