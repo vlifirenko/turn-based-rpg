@@ -1,5 +1,6 @@
 ﻿using Scellecs.Morpeh;
 using TurnBasedRPG.Ecs.Components.Unit;
+using TurnBasedRPG.Extensions;
 using TurnBasedRPG.Model;
 using TurnBasedRPG.Model.Config;
 using TurnBasedRPG.View;
@@ -41,6 +42,9 @@ namespace TurnBasedRPG.Services
             unit.config = config;
             unit.view = view;
             unit.cellView = cell;
+            
+            // test animator
+            view.Animator.SetState(EAnimatorState.IdleCombat);
 
             entity.AddComponent<VitaComponent>().Value = new CurrentMax(unit.config.vita);
             entity.AddComponent<EnergyComponent>().Value = new CurrentMax(unit.config.energy);
