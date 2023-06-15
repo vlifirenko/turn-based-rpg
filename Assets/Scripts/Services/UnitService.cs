@@ -22,14 +22,16 @@ namespace TurnBasedRPG.Services
             _battleService = battleService;
         }
 
-        public Entity CreateUnit(UnitConfig config, Vector2Int cellPosition)
+        public Entity CreateUnit(UnitConfig config, Vector2Int cellPosition, bool isPlayer = false)
         {
             var entity = _world.CreateEntity();
             var cell = _battleService.GetCellByPosition(cellPosition.x, cellPosition.y);
 
             var position = cell.transform.position;
-            position.y += 1f;
-            var view = Object.Instantiate(config.prefab, position, Quaternion.identity, _sceneData.UnitContainer);
+            var rotation = Quaternion.Euler(0,
+                isPlayer ? 0f : 180f,
+                0);
+            var view = Object.Instantiate(config.prefab, position, rotation, _sceneData.UnitContainer);
 
             cell.UnitView = view;
             view.Entity = entity;
@@ -53,7 +55,7 @@ namespace TurnBasedRPG.Services
             // todo debug
             var unit = entity.GetComponent<UnitComponent>();
             var weapon = unit.config.items[0];
-            
+
             return weapon;
         }
     }

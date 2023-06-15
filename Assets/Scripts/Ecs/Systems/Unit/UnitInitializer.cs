@@ -40,7 +40,7 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
 
             foreach (var item in _unitsConfig.startUnits)
             {
-                var entity = _unitService.CreateUnit(item.config, item.position);
+                var entity = _unitService.CreateUnit(item.config, item.position, true);
                 
                 //todo debug
                 if (!_battleService.BattleData.CurrentUnitIndex.HasValue)
