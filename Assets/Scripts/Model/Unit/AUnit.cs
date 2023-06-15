@@ -1,4 +1,5 @@
-﻿using Scellecs.Morpeh;
+﻿using System;
+using Scellecs.Morpeh;
 using TurnBasedRPG.Ecs.Components.Unit;
 using TurnBasedRPG.Extensions;
 using UnityEngine;
@@ -16,12 +17,13 @@ namespace TurnBasedRPG.Model.Unit
 
         public Entity Entity => _entity;
 
-        public void MoveTo(Vector2Int destination)
+        public void MoveTo(Vector2Int destination, Action onMovementComplete = null)
         {
             _entity.GetComponent<AnimatorComponent>().Value.SetState(EAnimatorState.Move);
             _entity.AddComponent<MovementComponent>() = new MovementComponent
             {
-                destination = destination
+                destination = destination,
+                OnMovementComplete = onMovementComplete
             };
         }
     }

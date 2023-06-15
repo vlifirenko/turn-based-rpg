@@ -80,8 +80,7 @@ namespace TurnBasedRPG.Services
         {
         }
 
-        public void MoveTo(CellView targetCell) 
-            => _battleData.GetCurrentUnit().MoveTo(targetCell.Position);
+        public void MoveTo(CellView targetCell) => _battleData.GetCurrentUnit().MoveTo(targetCell.Position);
 
         public void Attack(CellView targetCell)
         {
@@ -100,7 +99,7 @@ namespace TurnBasedRPG.Services
         {
             _battleData.CurrentUnitIndex += 1;
             _battleData.CurrentUnitIndex %= _battleData.UnitOrder.Count;
-            
+
             var currentUnit = _battleData.GetCurrentUnit();
             if (currentUnit.Entity.Has<EnemyComponent>())
                 currentUnit.Entity.AddComponent<AiTurnComponent>();
@@ -111,7 +110,7 @@ namespace TurnBasedRPG.Services
         public void NextTurn()
         {
             var currentUnit = _battleData.GetCurrentUnit();
-            
+
             ref var stride = ref currentUnit.Entity.GetComponent<StrideComponent>();
             stride.Value.SetMax();
             ref var attackLeft = ref currentUnit.Entity.GetComponent<AttacksLeftComponent>();
@@ -119,7 +118,7 @@ namespace TurnBasedRPG.Services
 
             if (currentUnit.Entity.Has<AiTurnComponent>())
                 currentUnit.Entity.RemoveComponent<AiTurnComponent>();
-            
+
             NextUnit();
         }
 

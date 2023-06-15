@@ -1,4 +1,5 @@
-﻿using Scellecs.Morpeh;
+﻿using System;
+using Scellecs.Morpeh;
 using TurnBasedRPG.View;
 using UnityEngine;
 
@@ -8,5 +9,6 @@ namespace TurnBasedRPG.Ecs.Components.Unit
     {
         public Vector2Int destination;
         public CellView targetCell;
+        public Action OnMovementComplete;
     }
 }

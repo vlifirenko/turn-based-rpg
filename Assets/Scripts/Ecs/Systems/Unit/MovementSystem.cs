@@ -34,7 +34,7 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
                 ref var stride = ref entity.GetComponent<StrideComponent>();
                 if (stride.Value.Current == 0)
                 {
-                    entity.RemoveComponent<MovementComponent>();
+                    MovementEnd(entity);
                     return;
                 }
 
@@ -93,10 +93,16 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
                 unit.cellView = movement.targetCell;
 
                 if (stride.Value.Current == 0 || unit.cellView.Position == movement.destination)
-                    entity.RemoveComponent<MovementComponent>();
+                    MovementEnd(entity);
                 else
                     FindNextCell(entity);
             }
+        }
+
+        private static void MovementEnd(Entity entity)
+        {
+            entity.GetComponent<MovementComponent>().OnMovementComplete?.Invoke();
+            entity.RemoveComponent<MovementComponent>();
         }
 
         public void Dispose()
