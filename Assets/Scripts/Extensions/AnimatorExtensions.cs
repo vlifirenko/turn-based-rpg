@@ -12,6 +12,7 @@ namespace TurnBasedRPG.Extensions
     public enum EAnimatorState
     {
         Idle = 0,
-        IdleCombat = 1
+        IdleCombat = 1,
+        Move = 2
     }
 }

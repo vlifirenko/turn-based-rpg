@@ -42,7 +42,8 @@ namespace TurnBasedRPG.Services
             unit.config = config;
             unit.view = view;
             unit.cellView = cell;
-            
+
+            entity.AddComponent<AnimatorComponent>().Value = view.Animator;
             // test animator
             view.Animator.SetState(EAnimatorState.IdleCombat);
 

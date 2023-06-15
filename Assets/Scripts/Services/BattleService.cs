@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Scellecs.Morpeh;
 using TurnBasedRPG.Ecs.Components.Unit;
+using TurnBasedRPG.Extensions;
 using TurnBasedRPG.Installers;
 using TurnBasedRPG.Model;
 using TurnBasedRPG.Signals;
@@ -78,15 +79,8 @@ namespace TurnBasedRPG.Services
         {
         }
 
-        public void MoveTo(CellView targetCell)
-        {
-            var unitEntity = _battleData.GetCurrentUnit();
-
-            unitEntity.AddComponent<MovementComponent>() = new MovementComponent
-            {
-                destination = targetCell.Position
-            };
-        }
+        public void MoveTo(CellView targetCell) 
+            => _battleData.GetCurrentUnit().MoveTo(targetCell.Position);
 
         public void Attack(CellView targetCell)
         {
