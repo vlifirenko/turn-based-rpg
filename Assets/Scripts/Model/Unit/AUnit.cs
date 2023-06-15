@@ -5,20 +5,23 @@ using TurnBasedRPG.Extensions;
 using TurnBasedRPG.Model.Config;
 using TurnBasedRPG.View.Unit;
 using UnityEngine;
+using Zenject;
 using Object = UnityEngine.Object;
 
 namespace TurnBasedRPG.Model.Unit
 {
     public abstract class AUnit
     {
+        protected readonly SignalBus SignalBus;
         private readonly Entity _entity;
         private readonly UnitConfig _config;
         private UnitView _view;
 
-        protected AUnit(Entity entity, UnitConfig config)
+        protected AUnit(Entity entity, UnitConfig config, SignalBus signalBus)
         {
             _entity = entity;
             _config = config;
+            SignalBus = signalBus;
         }
 
         public Entity Entity => _entity;
@@ -34,6 +37,11 @@ namespace TurnBasedRPG.Model.Unit
         public void InitializeView()
         {
             _view.Animator.SetState(EAnimatorState.IdleCombat);
+        }
+        
+        public virtual void StartTurn()
+        {
+            Debug.Log("default start turn");
         }
 
         public void MoveTo(Vector2Int destination, Action onMovementComplete = null)

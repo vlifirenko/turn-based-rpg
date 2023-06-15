@@ -34,7 +34,7 @@ namespace TurnBasedRPG.Services
 
             AUnit unit;
             if (isPlayer)
-                unit = new PlayerUnit(entity, config);
+                unit = new PlayerUnit(entity, config, _signalBus);
             else
                 unit = new AiUnit(entity, config, _signalBus);
             

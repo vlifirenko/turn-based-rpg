@@ -7,18 +7,14 @@ namespace TurnBasedRPG.Model.Unit
 {
     public class AiUnit : AUnit
     {
-        private readonly SignalBus _signalBus;
-        
-        public AiUnit(Entity entity, UnitConfig config, SignalBus signalBus) : base(entity, config)
+        public AiUnit(Entity entity, UnitConfig config, SignalBus signalBus) : base(entity, config, signalBus)
         {
-            _signalBus = signalBus;
         }
 
-        public void MakeTurn()
+        public override void StartTurn()
         {
             UnityEngine.Debug.Log("ai turn");
-            
-            _signalBus.Fire(new NextTurnSignal());
+            SignalBus.Fire(new NextTurnSignal());
         }
     }
 }

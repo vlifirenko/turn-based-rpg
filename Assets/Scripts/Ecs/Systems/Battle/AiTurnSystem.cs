@@ -23,8 +23,8 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
         {
             foreach (var entity in _filter)
             {
-                var unit = entity.GetComponent<UnitComponent>().Unit as AiUnit;
-                unit.MakeTurn();
+                var unit = entity.GetComponent<UnitComponent>().Unit;
+                unit.StartTurn();
             }
         }
 
