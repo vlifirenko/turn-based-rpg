@@ -44,10 +44,10 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
 
         private void Attack(Entity entity)
         {
-            var config = entity.GetComponent<UnitComponent>().config;
+            var config = entity.GetComponent<UnitComponent>().Unit.Config;
             var attack = entity.GetComponent<AttackComponent>();
             var might = _diceService.RollDice(EDice.D100) + config.might;
-            var defence = attack.Target.Entity.GetComponent<UnitComponent>().config.defence;
+            var defence = attack.Target.Entity.GetComponent<UnitComponent>().Unit.Config.defence;
 
             if (might >= defence)
             {

@@ -34,9 +34,9 @@ namespace TurnBasedRPG.Services
 
             AUnit unit;
             if (isPlayer)
-                unit = new PlayerUnit(entity);
+                unit = new PlayerUnit(entity, config);
             else
-                unit = new AiUnit(entity, _signalBus);
+                unit = new AiUnit(entity, config, _signalBus);
             
             var cell = _battleService.GetCellByPosition(cellPosition.x, cellPosition.y);
 
@@ -52,7 +52,6 @@ namespace TurnBasedRPG.Services
             ref var unitComponent = ref entity.AddComponent<UnitComponent>();
 
             unitComponent.Unit = unit;
-            unitComponent.config = config;
             unitComponent.view = view;
             unitComponent.cellView = cell;
 
@@ -60,10 +59,10 @@ namespace TurnBasedRPG.Services
             // test animator
             view.Animator.SetState(EAnimatorState.IdleCombat);
 
-            entity.AddComponent<VitaComponent>().Value = new CurrentMax(unitComponent.config.vita);
-            entity.AddComponent<EnergyComponent>().Value = new CurrentMax(unitComponent.config.energy);
-            entity.AddComponent<StrideComponent>().Value = new CurrentMax(unitComponent.config.stride);
-            entity.AddComponent<AttacksLeftComponent>().Value = new CurrentMax(unitComponent.config.attacks);
+            entity.AddComponent<VitaComponent>().Value = new CurrentMax(config.vita);
+            entity.AddComponent<EnergyComponent>().Value = new CurrentMax(config.energy);
+            entity.AddComponent<StrideComponent>().Value = new CurrentMax(config.stride);
+            entity.AddComponent<AttacksLeftComponent>().Value = new CurrentMax(config.attacks);
 
             return unit;
         }
@@ -71,8 +70,8 @@ namespace TurnBasedRPG.Services
         public ItemConfig GetEquippedWeapon(Entity entity)
         {
             // todo debug
-            var unit = entity.GetComponent<UnitComponent>();
-            var weapon = unit.config.items[0];
+            var unit = entity.GetComponent<UnitComponent>().Unit;
+            var weapon = unit.Config.items[0];
 
             return weapon;
         }

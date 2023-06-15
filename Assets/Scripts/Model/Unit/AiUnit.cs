@@ -1,4 +1,5 @@
 ﻿using Scellecs.Morpeh;
+using TurnBasedRPG.Model.Config;
 using TurnBasedRPG.Signals;
 using Zenject;
 
@@ -8,7 +9,7 @@ namespace TurnBasedRPG.Model.Unit
     {
         private readonly SignalBus _signalBus;
         
-        public AiUnit(Entity entity, SignalBus signalBus) : base(entity)
+        public AiUnit(Entity entity, UnitConfig config, SignalBus signalBus) : base(entity, config)
         {
             _signalBus = signalBus;
         }

@@ -41,7 +41,7 @@ namespace TurnBasedRPG.Services
         private void OnSetActiveUnit(SetActiveUnitSignal signal)
         {
             var unit = signal.activeUnit;
-            var config = unit.Entity.GetComponent<UnitComponent>().config;
+            var config = unit.Entity.GetComponent<UnitComponent>().Unit.Config;
             var vita = unit.Entity.GetComponent<VitaComponent>();
             var energy = unit.Entity.GetComponent<EnergyComponent>();
             var stride = unit.Entity.GetComponent<StrideComponent>();
