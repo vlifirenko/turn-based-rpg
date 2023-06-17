@@ -10,19 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09201c0e4aff479f98d9ea69a98db950, type: 3}
-  m_Name: Unit_Player_1
+  m_Name: MadAvenger
   m_EditorClassIdentifier: 
   prefab: {fileID: 1096060995904320734, guid: 0db8c8bd7c0f7b14597e5566e274bc30, type: 3}
   id: 1
-  name: Player_1
+  name: Mad Avenger
   icon: {fileID: 0}
-  type: 10
-  vita: 21
-  defence: 37
-  might: 3
+  type: 30
+  vita: 23
+  defence: 39
+  might: 5
   damageBonus: 2
   energy: 5
   stride: 4
   attacks: 1
   items:
-  - {fileID: 11400000, guid: ba15645f3a1028047a32a93d1b4ea84a, type: 2}
+  - {fileID: 11400000, guid: cfe20d7c519960147a668774c7d80971, type: 2}
+  - {fileID: 11400000, guid: 575a53f6c0daee246b01582122ad630c, type: 2}

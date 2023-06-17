@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09201c0e4aff479f98d9ea69a98db950, type: 3}
-  m_Name: Unit_Player_2
+  m_Name: Arcanist
   m_EditorClassIdentifier: 
   prefab: {fileID: 1096060995904320734, guid: 0db8c8bd7c0f7b14597e5566e274bc30, type: 3}
   id: 1
-  name: Player_2
+  name: Arcanist
   icon: {fileID: 0}
   type: 10
   vita: 21
@@ -25,4 +25,5 @@ MonoBehaviour:
   stride: 4
   attacks: 1
   items:
-  - {fileID: 11400000, guid: 0577d22bcdfdb334595d6cab158e1ff8, type: 2}
+  - {fileID: 11400000, guid: ba15645f3a1028047a32a93d1b4ea84a, type: 2}
+  - {fileID: 11400000, guid: 575a53f6c0daee246b01582122ad630c, type: 2}
