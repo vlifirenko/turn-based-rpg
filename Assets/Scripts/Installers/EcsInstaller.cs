@@ -54,7 +54,7 @@ namespace TurnBasedRPG.Installers
         private void BindSystems()
         {
             // initializers
-            BindInitializer<BattleInitializer>();
+            BindInitializer<BattleInitializer>(); // first create map and then units FIX
             BindInitializer<UnitInitializer>();
             
             // systems

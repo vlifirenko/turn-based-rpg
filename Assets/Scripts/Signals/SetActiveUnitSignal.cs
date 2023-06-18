@@ -1,5 +1,4 @@
-﻿using Scellecs.Morpeh;
-using TurnBasedRPG.Model.Unit;
+﻿using TurnBasedRPG.Model.Unit;
 
 namespace TurnBasedRPG.Signals
 {

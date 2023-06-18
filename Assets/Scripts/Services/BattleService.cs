@@ -21,10 +21,12 @@ namespace TurnBasedRPG.Services
         private readonly GlobalConfigInstaller.MapConfig _mapConfig;
         private readonly List<CellView> _cells = new List<CellView>();
         private readonly CompositeDisposable _disposable = new CompositeDisposable();
-
-        private CanvasView _canvasView;
+        private readonly CanvasView _canvasView;
         private readonly SignalBus _signalBus;
+
         private BattleData _battleData;
+        private AUnit _activeUnit;
+        private readonly List<AUnit> _allUnits = new List<AUnit>();
 
         public BattleData BattleData => _battleData;
 
@@ -79,13 +81,13 @@ namespace TurnBasedRPG.Services
             throw new Exception($"Cell not found, cells size: {_cells.Count}");
         }
 
-        public void AddUnit(AUnit unit) => _battleData.UnitOrder.Add(unit);
+        public void AddUnit(AUnit unit) => _allUnits.Add(unit);
 
         public void SelectUnit(AUnit unit)
         {
         }
 
-        public void MoveTo(CellView targetCell) => _battleData.GetCurrentUnit().MoveTo(targetCell.Position);
+        public void MoveTo(CellView targetCell) => _activeUnit.MoveTo(targetCell.Position);
 
         public void Attack(CellView targetCell)
         {
@@ -93,38 +95,47 @@ namespace TurnBasedRPG.Services
             if (unit.Entity.Has<PlayerComponent>())
                 return;
 
-            var attackerEntity = _battleData.GetCurrentUnit();
-            attackerEntity.Entity.AddComponent<AttackComponent>() = new AttackComponent
+            _activeUnit.Entity.AddComponent<AttackComponent>() = new AttackComponent
             {
                 Target = unit
             };
         }
 
-        public void NextUnit()
+        public void NextTurn()
         {
-            _battleData.CurrentUnitIndex += 1;
-            _battleData.CurrentUnitIndex %= _battleData.UnitOrder.Count;
+            if (_activeUnit != null)
+            {
+                ref var stride = ref _activeUnit.Entity.GetComponent<StrideComponent>();
+                stride.Value.SetMax();
+                ref var attackLeft = ref _activeUnit.Entity.GetComponent<AttacksLeftComponent>();
+                attackLeft.Value.SetMax();
 
-            var currentUnit = _battleData.GetCurrentUnit();
-            if (currentUnit.Entity.Has<EnemyComponent>())
-                currentUnit.Entity.AddComponent<AiTurnComponent>();
+                if (_activeUnit.Entity.Has<AiTurnComponent>())
+                    _activeUnit.Entity.RemoveComponent<AiTurnComponent>();
+                
+                var currentUnitIndex = _allUnits.IndexOf(_activeUnit);
+                currentUnitIndex += 1;
+                currentUnitIndex %= _allUnits.Count;
 
-            _signalBus.Fire(new SetActiveUnitSignal(_battleData.GetCurrentUnit()));
+                SetActiveUnit(_allUnits[currentUnitIndex]);
+            }
+            else
+            {
+                _allUnits.Sort((unit, aUnit) => unit.Initiative.CompareTo(aUnit.Initiative));
+                SetActiveUnit(_allUnits[0]);
+            }
+            
+            if (_activeUnit.Entity.Has<EnemyComponent>())
+                _activeUnit.Entity.AddComponent<AiTurnComponent>();
+
+            _signalBus.Fire(new SetActiveUnitSignal(_activeUnit));
         }
 
-        private void NextTurn()
+        private void SetActiveUnit(AUnit activeUnit)
         {
-            var currentUnit = _battleData.GetCurrentUnit();
-
-            ref var stride = ref currentUnit.Entity.GetComponent<StrideComponent>();
-            stride.Value.SetMax();
-            ref var attackLeft = ref currentUnit.Entity.GetComponent<AttacksLeftComponent>();
-            attackLeft.Value.SetMax();
-
-            if (currentUnit.Entity.Has<AiTurnComponent>())
-                currentUnit.Entity.RemoveComponent<AiTurnComponent>();
-
-            NextUnit();
+            _activeUnit?.Deselect();
+            _activeUnit = activeUnit;
+            _activeUnit.Select();
         }
 
         private CellView InstantiateCell(Vector3 position)

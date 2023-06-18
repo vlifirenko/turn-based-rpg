@@ -42,14 +42,6 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
             foreach (var item in _unitsConfig.startUnits)
             {
                 var unit = _unitService.CreateUnit(item.config, item.position, true);
-                
-                //todo debug
-                if (!_battleService.BattleData.CurrentUnitIndex.HasValue)
-                {
-                    _battleService.BattleData.CurrentUnitIndex = 0;
-                    _signalBus.Fire(new SetActiveUnitSignal(unit));
-                }
-                //
 
                 unit.Entity.AddComponent<PlayerComponent>();
                 _battleService.AddUnit(unit);
@@ -64,6 +56,8 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
                 _battleService.AddUnit(unit);
                 InstantiateUnitUi(unit);
             }
+            
+            _battleService.NextTurn();
         }
 
         private void InstantiateUnitUi(AUnit unit)

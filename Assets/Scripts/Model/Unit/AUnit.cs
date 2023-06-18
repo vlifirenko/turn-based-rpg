@@ -16,6 +16,7 @@ namespace TurnBasedRPG.Model.Unit
         private readonly Entity _entity;
         private readonly UnitConfig _config;
         private UnitView _view;
+        private int _initiative;
 
         protected AUnit(Entity entity, UnitConfig config, SignalBus signalBus)
         {
@@ -28,6 +29,19 @@ namespace TurnBasedRPG.Model.Unit
         public UnitConfig Config => _config;
         public UnitView View => _view;
 
+        public int Initiative
+        {
+            get => _initiative;
+            set
+            {
+                if (_entity.Has<InitiativeComponent>())
+                    _entity.GetComponent<InitiativeComponent>().Value = value;
+                else
+                    _entity.AddComponent<InitiativeComponent>().Value = value;
+                _initiative = value;
+            }
+        }
+
         public void CreateView(Vector3 position, Quaternion rotation, Transform parent)
         {
             _view = Object.Instantiate(_config.prefab, position, rotation, parent);
@@ -38,7 +52,7 @@ namespace TurnBasedRPG.Model.Unit
         {
             _view.Animator.SetState(EAnimatorState.IdleCombat);
         }
-        
+
         public virtual void StartTurn()
         {
             Debug.Log("default start turn");
@@ -56,5 +70,9 @@ namespace TurnBasedRPG.Model.Unit
                 OnMovementComplete = onMovementComplete
             };
         }
+
+        public void Select() => _view.Selected.SetActive(true);
+
+        public void Deselect() => _view.Selected.SetActive(false);
     }
 }

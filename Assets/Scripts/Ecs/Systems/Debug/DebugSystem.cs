@@ -17,8 +17,8 @@ namespace TurnBasedRPG.Ecs.Systems.Debug
 
         public void OnUpdate(float deltaTime)
         {
-            if (Input.GetKeyUp(KeyCode.F1))
-                _battleService.NextUnit();
+            /*if (Input.GetKeyUp(KeyCode.F1))
+                _battleService.NextUnit();*/
         }
 
         public void OnAwake()
