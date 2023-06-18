@@ -63,7 +63,10 @@ namespace TurnBasedRPG.Model.Unit
             if (_entity.Has<MovementComponent>())
                 return;
 
-            _entity.GetComponent<AnimatorComponent>().Value.SetState(EAnimatorState.Move);
+            var animator = _entity.GetComponent<AnimatorComponent>().Value;
+            animator.SetState(EAnimatorState.Move);
+            onMovementComplete += () => { animator.SetState(EAnimatorState.IdleCombat); };
+
             _entity.AddComponent<MovementComponent>() = new MovementComponent
             {
                 destination = destination,
