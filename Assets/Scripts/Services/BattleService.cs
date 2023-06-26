@@ -109,9 +109,6 @@ namespace TurnBasedRPG.Services
                 stride.Value.SetMax();
                 ref var attackLeft = ref _activeUnit.Entity.GetComponent<AttacksLeftComponent>();
                 attackLeft.Value.SetMax();
-
-                if (_activeUnit.Entity.Has<AiTurnComponent>())
-                    _activeUnit.Entity.RemoveComponent<AiTurnComponent>();
                 
                 var currentUnitIndex = _allUnits.IndexOf(_activeUnit);
                 currentUnitIndex += 1;
@@ -125,9 +122,7 @@ namespace TurnBasedRPG.Services
                 SetActiveUnit(_allUnits[0]);
             }
             
-            if (_activeUnit.Entity.Has<EnemyComponent>())
-                _activeUnit.Entity.AddComponent<AiTurnComponent>();
-
+            _activeUnit.StartTurn();
             _signalBus.Fire(new SetActiveUnitSignal(_activeUnit));
         }
 

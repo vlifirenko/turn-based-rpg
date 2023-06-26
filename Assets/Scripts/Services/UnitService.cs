@@ -1,6 +1,6 @@
-﻿using Scellecs.Morpeh;
+﻿using System.Collections.Generic;
+using Scellecs.Morpeh;
 using TurnBasedRPG.Ecs.Components.Unit;
-using TurnBasedRPG.Extensions;
 using TurnBasedRPG.Model;
 using TurnBasedRPG.Model.Config;
 using TurnBasedRPG.Model.Unit;
@@ -16,6 +16,9 @@ namespace TurnBasedRPG.Services
         private readonly SceneData _sceneData;
         private readonly BattleService _battleService;
         private readonly SignalBus _signalBus;
+
+        public List<AUnit> PlayerUnits { get; private set; } = new List<AUnit>();
+        public List<AUnit> EnemyUnits { get; private set; } = new List<AUnit>();
 
         public UnitService(World world,
             SceneData sceneData,
@@ -34,9 +37,15 @@ namespace TurnBasedRPG.Services
 
             AUnit unit;
             if (isPlayer)
+            {
                 unit = new PlayerUnit(entity, config, _signalBus);
+                PlayerUnits.Add(unit);
+            }
             else
-                unit = new AiUnit(entity, config, _signalBus);
+            {
+                unit = new EnemyUnit(entity, config, _signalBus);
+                EnemyUnits.Add(unit);
+            }
             
             var cell = _battleService.GetCellByPosition(cellPosition.x, cellPosition.y);
 

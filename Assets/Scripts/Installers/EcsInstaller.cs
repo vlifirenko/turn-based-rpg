@@ -60,7 +60,7 @@ namespace TurnBasedRPG.Installers
             // systems
             BindSystem<SelectCellSystem>();
             BindSystem<AttackSystem>();
-            BindSystem<AiTurnSystem>();
+            BindSystem<EnemyTurnSystem>();
             BindSystem<MovementSystem>();
             BindSystem<DebugSystem>();
         }
