@@ -87,7 +87,7 @@ namespace TurnBasedRPG.Services
         {
         }
 
-        public void MoveTo(CellView targetCell) => _activeUnit.MoveTo(targetCell.Position);
+        public void MoveTo(CellView targetCell) => _activeUnit.MoveTo(targetCell);
 
         public void Attack(CellView targetCell)
         {

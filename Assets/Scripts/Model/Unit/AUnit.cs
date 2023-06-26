@@ -3,6 +3,7 @@ using Scellecs.Morpeh;
 using TurnBasedRPG.Ecs.Components.Unit;
 using TurnBasedRPG.Extensions;
 using TurnBasedRPG.Model.Config;
+using TurnBasedRPG.View;
 using TurnBasedRPG.View.Unit;
 using UnityEngine;
 using Zenject;
@@ -58,7 +59,7 @@ namespace TurnBasedRPG.Model.Unit
             Debug.Log("default start turn");
         }
 
-        public void MoveTo(Vector2Int destination, Action onMovementComplete = null)
+        public void MoveTo(CellView targetCell, Action onMovementComplete = null)
         {
             if (_entity.Has<MovementComponent>())
                 return;
@@ -69,7 +70,25 @@ namespace TurnBasedRPG.Model.Unit
 
             _entity.AddComponent<MovementComponent>() = new MovementComponent
             {
-                destination = destination,
+                destination = targetCell.Position,
+                OnMovementComplete = onMovementComplete
+            };
+        }
+        
+        public void MoveTo(AUnit targetUnit, Action onMovementComplete = null)
+        {
+            if (_entity.Has<MovementComponent>())
+                return;
+
+            var animator = _entity.GetComponent<AnimatorComponent>().Value;
+            animator.SetState(EAnimatorState.Move);
+            onMovementComplete += () => { animator.SetState(EAnimatorState.IdleCombat); };
+
+            var targetCell = targetUnit.Entity.GetComponent<UnitComponent>().CellView;
+            
+            _entity.AddComponent<MovementComponent>() = new MovementComponent
+            {
+                destination = targetCell.Position,
                 OnMovementComplete = onMovementComplete
             };
         }
@@ -77,5 +96,27 @@ namespace TurnBasedRPG.Model.Unit
         public void Select() => _view.Selected.SetActive(true);
 
         public void Deselect() => _view.Selected.SetActive(false);
+
+        public bool CheckRange(AUnit target)
+        {
+            var weapon = GetEquippedWeapon();
+            var unitCell = Entity.GetComponent<UnitComponent>().CellView;
+            var targetCell = target.Entity.GetComponent<UnitComponent>().CellView;
+            var distanceToTarget = Vector2.Distance(targetCell.Position, unitCell.Position);
+
+            var result = Mathf.RoundToInt(distanceToTarget) <= weapon.range;
+            if (!result)
+                UnityEngine.Debug.Log($"[Check Range] distance: {distanceToTarget}, weapon range: {weapon.range}");
+
+            return result;
+        }
+        
+        public ItemConfig GetEquippedWeapon()
+        {
+            // todo debug
+            var weapon = Config.items[0];
+
+            return weapon;
+        }
     }
 }

@@ -72,14 +72,5 @@ namespace TurnBasedRPG.Services
 
             return unit;
         }
-
-        public ItemConfig GetEquippedWeapon(Entity entity)
-        {
-            // todo debug
-            var unit = entity.GetComponent<UnitComponent>().Unit;
-            var weapon = unit.Config.items[0];
-
-            return weapon;
-        }
     }
 }

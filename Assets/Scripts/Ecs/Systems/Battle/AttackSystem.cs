@@ -30,8 +30,11 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
         {
             foreach (var entity in _filter)
             {
+                var unit = entity.GetComponent<UnitComponent>().Unit;
+                var attack = entity.GetComponent<AttackComponent>();
                 ref var attacksLeft = ref entity.GetComponent<AttacksLeftComponent>();
-                if (attacksLeft.Value.Current > 0 && CheckRange(entity))
+                
+                if (attacksLeft.Value.Current > 0 && unit.CheckRange(attack.Target))
                 {
                     Attack(entity);
                     attacksLeft.Value.Current -= 1;
@@ -64,22 +67,7 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
                 UnityEngine.Debug.Log($"Miss {might}/{defence}");
             }
         }
-
-        private bool CheckRange(Entity entity)
-        {
-            var weapon = _unitService.GetEquippedWeapon(entity);
-            var unitCell = entity.GetComponent<UnitComponent>().CellView;
-            var targetEntity = entity.GetComponent<AttackComponent>().Target;
-            var targetCell = targetEntity.Entity.GetComponent<UnitComponent>().CellView;
-            var distanceToTarget = Vector2.Distance(targetCell.Position, unitCell.Position);
-
-            var result = Mathf.RoundToInt(distanceToTarget) <= weapon.range;
-            if (!result)
-                UnityEngine.Debug.Log($"Distance: {distanceToTarget}, weapon range: {weapon.range}");
-
-            return result;
-        }
-
+        
         public void Dispose()
         {
         }

@@ -44,11 +44,11 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
         {
             var unit = entity.GetComponent<UnitComponent>().Unit;
             ref var enemyTurn = ref entity.GetComponent<EnemyTurnComponent>();
-            
+
             AUnit nearestUnit = null;
             CellView cellView = null;
             var minDistance = Mathf.Infinity;
-            
+
             foreach (var playerUnit in _unitService.PlayerUnits)
             {
                 var distance = Vector3.Distance(playerUnit.View.transform.position, unit.View.transform.position);
@@ -61,10 +61,30 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
             }
 
             enemyTurn.target = nearestUnit;
-            unit.MoveTo(cellView.Position, () =>
+            enemyTurn.stage = EEnemyTurnStage.MoveToTarget;
+            unit.MoveTo(cellView, () =>
             {
-                _signalBus.Fire(new NextTurnSignal());
+                if (unit.CheckRange(nearestUnit))
+                {
+                    ref var enemyTurnLamba = ref entity.GetComponent<EnemyTurnComponent>();
+                    enemyTurnLamba.stage = EEnemyTurnStage.AttackTarget;
+                    AttackTarget(entity);
+                }
+                else
+                    EndTurn(entity);
             });
+        }
+
+        private void AttackTarget(Entity entity)
+        {
+            UnityEngine.Debug.Log("Enemy attack");
+            EndTurn(entity);
+        }
+
+        private void EndTurn(Entity entity)
+        {
+            entity.RemoveComponent<EnemyTurnComponent>();
+            _signalBus.Fire(new NextTurnSignal());
         }
 
         public void Dispose()
