@@ -89,7 +89,7 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
             {
                 ref var stride = ref entity.GetComponent<StrideComponent>();
                 stride.Value.Current -= 1;
-                _signalBus.Fire(new StrideChangedSignal(stride.Value));
+                _signalBus.Fire(new StrideChangedSignal(stride.Value, entity.GetComponent<UnitComponent>().unit));
                 unit.View.transform.position = destination;
                 cellView = movement.targetCell;
 

@@ -26,8 +26,8 @@ namespace TurnBasedRPG.Services
                 .Subscribe(OnStrideChanged)
                 .AddTo(_disposable);
             
-            _signalBus.GetStream<SetActiveUnitSignal>()
-                .Subscribe(OnSetActiveUnit)
+            _signalBus.GetStream<UnitUpdatedSignal>()
+                .Subscribe(OnUnitUpdated)
                 .AddTo(_disposable);
             
             _signalBus.GetStream<AttacksLeftChangedSignal>()
@@ -35,28 +35,27 @@ namespace TurnBasedRPG.Services
                 .AddTo(_disposable);
         }
 
-        private void OnStrideChanged(StrideChangedSignal signal)
-        {
-            //todo _canvasView.UnitView.StrideText.text = $"Stride: {signal.value.PercentText}";
-        }
+        private void OnStrideChanged(StrideChangedSignal signal) 
+            => signal.unit.UiView.StrideText.text = $"Stride: {signal.value.PercentText}";
 
-        private void OnSetActiveUnit(SetActiveUnitSignal signal)
+        private void OnUnitUpdated(UnitUpdatedSignal signal)
         {
-            var unit = signal.activeUnit;
+            var unit = signal.unit;
             var config = unit.Entity.GetComponent<UnitComponent>().unit.Config;
             var vita = unit.Entity.GetComponent<VitaComponent>();
             var energy = unit.Entity.GetComponent<EnergyComponent>();
             var stride = unit.Entity.GetComponent<StrideComponent>();
             var attacksLeft = unit.Entity.GetComponent<AttacksLeftComponent>();
-            //todo var uiView = _canvasView.UnitView;
-            //uiView.Icon.sprite = config.icon;
-            //uiView.NameText.text = config.name;
-            //uiView.VitaSlider.value = vita.Value.Percent;
-            //uiView.VitaText.text = vita.Value.PercentText;
-            //uiView.EnergySlider.value = energy.Value.Percent;
-            //uiView.EnergyText.text = energy.Value.PercentText;
-            //uiView.StrideText.text = $"Stride: {stride.Value.PercentText}";
-            //uiView.AttacksText.text = $"Attacks: {attacksLeft.Value.PercentText}";
+            var uiView = unit.UiView;
+            
+            uiView.Icon.sprite = config.icon;
+            uiView.NameText.text = config.name;
+            uiView.VitaSlider.value = vita.Value.Percent;
+            uiView.VitaText.text = vita.Value.PercentText;
+            uiView.EnergySlider.value = energy.Value.Percent;
+            uiView.EnergyText.text = energy.Value.PercentText;
+            uiView.StrideText.text = $"Stride: {stride.Value.PercentText}";
+            uiView.AttacksText.text = $"Attacks: {attacksLeft.Value.PercentText}";
         }
 
         private void OnAttacksLeftChanged(AttacksLeftChangedSignal signal)

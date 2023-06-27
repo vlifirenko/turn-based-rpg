@@ -82,6 +82,7 @@ namespace TurnBasedRPG.Installers
             Container.DeclareSignal<SetActiveUnitSignal>();
             Container.DeclareSignal<AttacksLeftChangedSignal>();
             Container.DeclareSignal<NextTurnSignal>();
+            Container.DeclareSignal<UnitUpdatedSignal>();
         }
         
         private void BindInitializer<T>() where T : class, IInitializer

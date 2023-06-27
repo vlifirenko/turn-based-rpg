@@ -31,6 +31,7 @@ namespace TurnBasedRPG.Model.Unit
         public UnitConfig Config => _config;
         public UnitView View => _view;
         public UiUnitView UiView { get; set; }
+        public bool IsPlayer { get; set; }
 
         public int Initiative
         {

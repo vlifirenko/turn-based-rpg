@@ -7,11 +7,15 @@ namespace TurnBasedRPG.View
     public class CanvasView : MonoBehaviour
     {
         [SerializeField] private Canvas canvas;
-        [SerializeField] private UiUnitContainer unitContainer;
+        [SerializeField] private UiUnitContainer playerUnits;
+        [SerializeField] private UiUnitContainer enemyUnits;
         [SerializeField] private Button nextTurnButton;
 
-        public UiUnitContainer UnitContainer => unitContainer;
         public Canvas Canvas => canvas;
         public Button NextTurnButton => nextTurnButton;
+
+        public UiUnitContainer PlayerUnits => playerUnits;
+
+        public UiUnitContainer EnemyUnits => enemyUnits;
     }
 }
