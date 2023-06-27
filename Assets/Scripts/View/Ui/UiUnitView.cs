@@ -15,21 +15,21 @@ namespace TurnBasedRPG.View.Ui
         [SerializeField] private TMP_Text energyText;
         [SerializeField] private TMP_Text strideText;
         [SerializeField] private TMP_Text attacksText;
+        [SerializeField] private GameObject attackPanel;
+        [SerializeField] private TMP_Text chanceText;
+        [SerializeField] private GameObject selected;
 
         public Image Icon => icon;
-
         public TMP_Text NameText => nameText;
-
         public Slider VitaSlider => vitaSlider;
-
         public TMP_Text VitaText => vitaText;
-
         public Slider EnergySlider => energySlider;
-
         public TMP_Text EnergyText => energyText;
-
         public TMP_Text StrideText => strideText;
-
         public TMP_Text AttacksText => attacksText;
+        public GameObject AttackPanel => attackPanel;
+        public TMP_Text ChanceText => chanceText;
+
+        public GameObject Selected => selected;
     }
 }

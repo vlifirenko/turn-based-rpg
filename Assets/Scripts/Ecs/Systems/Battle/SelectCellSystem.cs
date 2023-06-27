@@ -86,12 +86,18 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
         {
             var material = cell.GetComponent<Renderer>().material;
             material.SetColor("_BaseColor", Color.green);
+            
+            if (cell.UnitView != null)
+                cell.UnitView.Unit.Hover();
         }
 
         private void UnhoverCell(CellView cell)
         {
             var material = cell.GetComponent<Renderer>().material;
             material.SetColor("_BaseColor", Color.white);
+            
+            if (cell.UnitView != null)
+                cell.UnitView.Unit.Unhover();
         }
 
         public void OnAwake()

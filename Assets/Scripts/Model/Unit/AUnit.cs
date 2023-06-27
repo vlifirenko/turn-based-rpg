@@ -127,5 +127,9 @@ namespace TurnBasedRPG.Model.Unit
                 onComplete = onAttackComplete
             };
         }
+
+        public void Hover() => UiView.Selected.SetActive(true);
+
+        public void Unhover() => UiView.Selected.SetActive(false);
     }
 }
