@@ -2,7 +2,7 @@
 
 namespace TurnBasedRPG.View.Ui
 {
-    public class UiUnitVitaContainer : AUiContainer<AUiContainerItem>
+    public class UiUnitContainer : AUiContainer<UiUnitView>
     {
     }
 }

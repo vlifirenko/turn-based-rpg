@@ -8,8 +8,8 @@ namespace TurnBasedRPG.Ecs.Components.Unit
 {
     public struct UnitComponent : IComponent
     {
-        public AUnit Unit;
-        public CellView CellView;
-        public UiUnitVita UiView;
+        public AUnit unit;
+        public CellView cellView;
+        public UiUnitVita uiView;
     }
 }

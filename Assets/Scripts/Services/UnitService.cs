@@ -60,8 +60,8 @@ namespace TurnBasedRPG.Services
 
             ref var unitComponent = ref entity.AddComponent<UnitComponent>();
 
-            unitComponent.Unit = unit;
-            unitComponent.CellView = cell;
+            unitComponent.unit = unit;
+            unitComponent.cellView = cell;
 
             entity.AddComponent<AnimatorComponent>().Value = unit.View.Animator;
             

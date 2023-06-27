@@ -4,6 +4,7 @@ using TurnBasedRPG.Ecs.Components.Unit;
 using TurnBasedRPG.Extensions;
 using TurnBasedRPG.Model.Config;
 using TurnBasedRPG.View;
+using TurnBasedRPG.View.Ui;
 using TurnBasedRPG.View.Unit;
 using UnityEngine;
 using Zenject;
@@ -29,6 +30,7 @@ namespace TurnBasedRPG.Model.Unit
         public Entity Entity => _entity;
         public UnitConfig Config => _config;
         public UnitView View => _view;
+        public UiUnitView UiView { get; set; }
 
         public int Initiative
         {
@@ -81,7 +83,7 @@ namespace TurnBasedRPG.Model.Unit
             animator.SetState(EAnimatorState.Move);
             onMovementComplete += () => { animator.SetState(EAnimatorState.IdleCombat); };
 
-            var targetCell = targetUnit.Entity.GetComponent<UnitComponent>().CellView;
+            var targetCell = targetUnit.Entity.GetComponent<UnitComponent>().cellView;
             
             _entity.AddComponent<MovementComponent>() = new MovementComponent
             {
@@ -97,8 +99,8 @@ namespace TurnBasedRPG.Model.Unit
         public bool CheckRange(AUnit target)
         {
             var weapon = GetEquippedWeapon();
-            var unitCell = Entity.GetComponent<UnitComponent>().CellView;
-            var targetCell = target.Entity.GetComponent<UnitComponent>().CellView;
+            var unitCell = Entity.GetComponent<UnitComponent>().cellView;
+            var targetCell = target.Entity.GetComponent<UnitComponent>().cellView;
             var distanceToTarget = Vector2.Distance(targetCell.Position, unitCell.Position);
 
             var result = Mathf.RoundToInt(distanceToTarget) <= weapon.range;

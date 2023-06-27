@@ -51,7 +51,7 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
             ref var movement = ref entity.GetComponent<MovementComponent>();
             var destinationCell = _battleService.GetCellByPosition(movement.destination.x,
                 movement.destination.y);
-            var unitCell = entity.GetComponent<UnitComponent>().CellView;
+            var unitCell = entity.GetComponent<UnitComponent>().cellView;
             var position = unitCell.Position;
 
             if (destinationCell.Position.x > position.x)
@@ -71,8 +71,8 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
         {
             var movement = entity.GetComponent<MovementComponent>();
             var targetCell = movement.targetCell;
-            ref var unit = ref entity.GetComponent<UnitComponent>().Unit;
-            ref var cellView = ref entity.GetComponent<UnitComponent>().CellView;
+            ref var unit = ref entity.GetComponent<UnitComponent>().unit;
+            ref var cellView = ref entity.GetComponent<UnitComponent>().cellView;
             var destination = new Vector3(
                 targetCell.transform.position.x,
                 unit.View.transform.position.y,

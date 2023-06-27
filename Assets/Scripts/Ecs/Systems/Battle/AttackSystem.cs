@@ -30,7 +30,7 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
         {
             foreach (var entity in _filter)
             {
-                var unit = entity.GetComponent<UnitComponent>().Unit;
+                var unit = entity.GetComponent<UnitComponent>().unit;
                 var attack = entity.GetComponent<AttackComponent>();
                 ref var attacksLeft = ref entity.GetComponent<AttacksLeftComponent>();
                 
@@ -48,10 +48,10 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
 
         private void Attack(Entity entity)
         {
-            var config = entity.GetComponent<UnitComponent>().Unit.Config;
+            var config = entity.GetComponent<UnitComponent>().unit.Config;
             var attack = entity.GetComponent<AttackComponent>();
             var might = _diceService.RollDice(EDice.D100) + config.might;
-            var defence = attack.target.Entity.GetComponent<UnitComponent>().Unit.Config.defence;
+            var defence = attack.target.Entity.GetComponent<UnitComponent>().unit.Config.defence;
 
             if (might >= defence)
             {

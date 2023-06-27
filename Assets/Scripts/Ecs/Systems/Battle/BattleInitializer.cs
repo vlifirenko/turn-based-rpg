@@ -27,7 +27,7 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
             var filter = World.Filter.With<UnitComponent>();
             foreach (var entity in filter)
             {
-                var unit = entity.GetComponent<UnitComponent>().Unit;
+                var unit = entity.GetComponent<UnitComponent>().unit;
                 var randomInitiative = Random.Range(0, filter.Count() + 1);
 
                 unit.Initiative = randomInitiative;

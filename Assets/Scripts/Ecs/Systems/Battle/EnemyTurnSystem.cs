@@ -42,7 +42,7 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
 
         private void LookingForTarget(Entity entity)
         {
-            var unit = entity.GetComponent<UnitComponent>().Unit;
+            var unit = entity.GetComponent<UnitComponent>().unit;
             ref var enemyTurn = ref entity.GetComponent<EnemyTurnComponent>();
 
             AUnit nearestUnit = null;
@@ -56,7 +56,7 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
                 {
                     minDistance = distance;
                     nearestUnit = playerUnit;
-                    cellView = playerUnit.Entity.GetComponent<UnitComponent>().CellView;
+                    cellView = playerUnit.Entity.GetComponent<UnitComponent>().cellView;
                 }
             }
 
@@ -87,7 +87,7 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
         private void AttackTarget(Entity entity)
         {
             var enemyTurn = entity.GetComponent<EnemyTurnComponent>();
-            var unit = entity.GetComponent<UnitComponent>().Unit;
+            var unit = entity.GetComponent<UnitComponent>().unit;
 
             unit.Attack(enemyTurn.target, () => EndTurn(entity));
         }

@@ -1,10 +1,11 @@
 ﻿using TMPro;
+using TurnBasedRPG.View.Ui.Common;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace TurnBasedRPG.View.Ui
 {
-    public class UiActiveUnit : AUiView
+    public class UiUnitView : AUiContainerItem
     {
         [SerializeField] private Image icon;
         [SerializeField] private TMP_Text nameText;
