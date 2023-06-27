@@ -12,10 +12,6 @@ namespace TurnBasedRPG.Model.Unit
         {
         }
 
-        public override void StartTurn()
-        {
-            UnityEngine.Debug.Log("enemy turn");
-            Entity.AddComponent<EnemyTurnComponent>();
-        }
+        public override void StartTurn() => Entity.AddComponent<EnemyTurnComponent>();
     }
 }

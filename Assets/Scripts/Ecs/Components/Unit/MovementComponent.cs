@@ -9,6 +9,6 @@ namespace TurnBasedRPG.Ecs.Components.Unit
     {
         public Vector2Int destination;
         public CellView targetCell;
-        public Action OnMovementComplete;
+        public Action onMovementComplete;
     }
 }

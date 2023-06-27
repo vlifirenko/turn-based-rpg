@@ -61,24 +61,35 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
             }
 
             enemyTurn.target = nearestUnit;
-            enemyTurn.stage = EEnemyTurnStage.MoveToTarget;
-            unit.MoveTo(cellView, () =>
+
+            if (unit.CheckRange(nearestUnit))
             {
-                if (unit.CheckRange(nearestUnit))
+                enemyTurn.stage = EEnemyTurnStage.AttackTarget;
+                AttackTarget(entity);
+            }
+            else
+            {
+                enemyTurn.stage = EEnemyTurnStage.MoveToTarget;
+                unit.MoveTo(cellView, () =>
                 {
-                    ref var enemyTurnLamba = ref entity.GetComponent<EnemyTurnComponent>();
-                    enemyTurnLamba.stage = EEnemyTurnStage.AttackTarget;
-                    AttackTarget(entity);
-                }
-                else
-                    EndTurn(entity);
-            });
+                    if (unit.CheckRange(nearestUnit))
+                    {
+                        ref var enemyTurnLamba = ref entity.GetComponent<EnemyTurnComponent>();
+                        enemyTurnLamba.stage = EEnemyTurnStage.AttackTarget;
+                        AttackTarget(entity);
+                    }
+                    else
+                        EndTurn(entity);
+                });
+            }
         }
 
         private void AttackTarget(Entity entity)
         {
-            UnityEngine.Debug.Log("Enemy attack");
-            EndTurn(entity);
+            var enemyTurn = entity.GetComponent<EnemyTurnComponent>();
+            var unit = entity.GetComponent<UnitComponent>().Unit;
+
+            unit.Attack(enemyTurn.target, () => EndTurn(entity));
         }
 
         private void EndTurn(Entity entity)

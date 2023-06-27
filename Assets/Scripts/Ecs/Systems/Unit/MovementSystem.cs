@@ -102,7 +102,7 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
 
         private static void MovementEnd(Entity entity)
         {
-            entity.GetComponent<MovementComponent>().OnMovementComplete?.Invoke();
+            entity.GetComponent<MovementComponent>().onMovementComplete?.Invoke();
             entity.RemoveComponent<MovementComponent>();
         }
 

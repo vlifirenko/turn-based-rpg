@@ -34,13 +34,14 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
                 var attack = entity.GetComponent<AttackComponent>();
                 ref var attacksLeft = ref entity.GetComponent<AttacksLeftComponent>();
                 
-                if (attacksLeft.Value.Current > 0 && unit.CheckRange(attack.Target))
+                if (attacksLeft.Value.Current > 0 && unit.CheckRange(attack.target))
                 {
                     Attack(entity);
                     attacksLeft.Value.Current -= 1;
                     _signalBus.Fire(new AttacksLeftChangedSignal(attacksLeft.Value));
                 }
 
+                attack.onComplete?.Invoke();
                 entity.RemoveComponent<AttackComponent>();
             }
         }
@@ -50,15 +51,15 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
             var config = entity.GetComponent<UnitComponent>().Unit.Config;
             var attack = entity.GetComponent<AttackComponent>();
             var might = _diceService.RollDice(EDice.D100) + config.might;
-            var defence = attack.Target.Entity.GetComponent<UnitComponent>().Unit.Config.defence;
+            var defence = attack.target.Entity.GetComponent<UnitComponent>().Unit.Config.defence;
 
             if (might >= defence)
             {
                 var damage = _diceService.RollDice(EDice.D4, 2);
-                ref var targetVita = ref attack.Target.Entity.GetComponent<VitaComponent>();
+                ref var targetVita = ref attack.target.Entity.GetComponent<VitaComponent>();
 
                 targetVita.Value.Current = Mathf.Clamp(targetVita.Value.Current - damage, 0, targetVita.Value.Max);
-                _signalBus.Fire(new VitaChangedSignal(attack.Target));
+                _signalBus.Fire(new VitaChangedSignal(attack.target));
 
                 UnityEngine.Debug.Log($"Attack: {might}/{defence}, Damage: {damage}");
             }

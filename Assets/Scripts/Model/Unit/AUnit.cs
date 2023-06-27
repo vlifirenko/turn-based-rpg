@@ -54,10 +54,7 @@ namespace TurnBasedRPG.Model.Unit
             _view.Animator.SetState(EAnimatorState.IdleCombat);
         }
 
-        public virtual void StartTurn()
-        {
-            Debug.Log("default start turn");
-        }
+        public virtual void StartTurn() { }
 
         public void MoveTo(CellView targetCell, Action onMovementComplete = null)
         {
@@ -71,7 +68,7 @@ namespace TurnBasedRPG.Model.Unit
             _entity.AddComponent<MovementComponent>() = new MovementComponent
             {
                 destination = targetCell.Position,
-                OnMovementComplete = onMovementComplete
+                onMovementComplete = onMovementComplete
             };
         }
         
@@ -89,7 +86,7 @@ namespace TurnBasedRPG.Model.Unit
             _entity.AddComponent<MovementComponent>() = new MovementComponent
             {
                 destination = targetCell.Position,
-                OnMovementComplete = onMovementComplete
+                onMovementComplete = onMovementComplete
             };
         }
 
@@ -117,6 +114,15 @@ namespace TurnBasedRPG.Model.Unit
             var weapon = Config.items[0];
 
             return weapon;
+        }
+
+        public void Attack(AUnit target, Action onAttackComplete = null)
+        {
+            Entity.AddComponent<AttackComponent>() = new AttackComponent
+            {
+                target = target,
+                onComplete = onAttackComplete
+            };
         }
     }
 }

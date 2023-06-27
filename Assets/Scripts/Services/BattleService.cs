@@ -91,14 +91,11 @@ namespace TurnBasedRPG.Services
 
         public void Attack(CellView targetCell)
         {
-            var unit = targetCell.UnitView.Unit;
-            if (unit.Entity.Has<PlayerComponent>())
+            var target = targetCell.UnitView.Unit;
+            if (target.Entity.Has<PlayerComponent>())
                 return;
-
-            _activeUnit.Entity.AddComponent<AttackComponent>() = new AttackComponent
-            {
-                Target = unit
-            };
+            
+            _activeUnit.Attack(target);
         }
 
         public void NextTurn()
