@@ -139,9 +139,11 @@ namespace TurnBasedRPG.Model.Unit
             {
                 var weapon = activeUnit.GetEquippedWeapon();
                 var view = activeUnit.UiView;
+                var chance = 0;
+                
+                // todo set chance
 
-
-                view.WeaponText.text = $"{weapon.Name}\nDamage {weapon.GetDamageText()}\nRange {weapon.Range}";
+                view.WeaponText.text = $"{weapon.Name}\nDamage {weapon.GetDamageText()}\nRange {weapon.Range}\nChance {chance}%";
                 view.WeaponPanel.SetActive(true);
             }
         }
