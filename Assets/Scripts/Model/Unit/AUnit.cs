@@ -141,7 +141,7 @@ namespace TurnBasedRPG.Model.Unit
                 var view = activeUnit.UiView;
 
 
-                view.WeaponText.text = $"{weapon.Name}\nDamage {weapon.GetDamageText()}";
+                view.WeaponText.text = $"{weapon.Name}\nDamage {weapon.GetDamageText()}\nRange {weapon.Range}";
                 view.WeaponPanel.SetActive(true);
             }
         }

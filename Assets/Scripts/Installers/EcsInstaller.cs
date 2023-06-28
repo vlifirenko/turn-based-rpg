@@ -77,7 +77,6 @@ namespace TurnBasedRPG.Installers
         {
             SignalBusInstaller.Install(Container);
             
-            Container.DeclareSignal<VitaChangedSignal>();
             Container.DeclareSignal<StrideChangedSignal>();
             Container.DeclareSignal<SetActiveUnitSignal>();
             Container.DeclareSignal<AttacksLeftChangedSignal>();

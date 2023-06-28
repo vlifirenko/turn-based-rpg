@@ -82,6 +82,8 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
                 unit.View.transform.position,
                 destination,
                 _unitsConfig.moveSpeed * deltaTime);
+            
+            cellView.UnitView = null;
 
             if (Vector3.Distance(position, destination) > _unitsConfig.stopDistance)
                 unit.View.transform.position = position;
@@ -92,6 +94,7 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
                 _signalBus.Fire(new StrideChangedSignal(stride.Value, entity.GetComponent<UnitComponent>().unit));
                 unit.View.transform.position = destination;
                 cellView = movement.targetCell;
+                cellView.UnitView = unit.View;
 
                 if (stride.Value.Current == 0 || cellView.Position == movement.destination)
                     MovementEnd(entity);

@@ -36,10 +36,6 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
 
         public void OnAwake()
         {
-            _signalBus.GetStream<VitaChangedSignal>()
-                .Subscribe(OnVitaChanged)
-                .AddTo(_disposable);
-
             foreach (var item in _unitsConfig.startUnits)
             {
                 var unit = _unitService.CreateUnit(item.config, item.position, true);
@@ -68,16 +64,6 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
             unit.UiView = uiView;
             
             _signalBus.Fire(new UnitUpdatedSignal(unit));
-        }
-
-        private void OnVitaChanged(VitaChangedSignal signal)
-        {
-            var unit = signal.entity;
-            var unitComponent = unit.Entity.GetComponent<UnitComponent>();
-            var vita = unit.Entity.GetComponent<VitaComponent>();
-
-            unitComponent.uiView.VitaSlider.value = vita.Value.Percent;
-            unitComponent.uiView.VitaText.text = vita.Value.PercentText;
         }
 
         public void Dispose() => _disposable.Dispose();

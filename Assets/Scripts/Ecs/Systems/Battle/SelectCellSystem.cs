@@ -76,6 +76,7 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
 
             if (hits > 0 && _raycastHits[0].transform.TryGetComponent<CellView>(out var cellView))
             {
+                UnityEngine.Debug.Log($"{cellView.name}:{cellView.UnitView?.name}");
                 if (cellView.UnitView == null)
                     _battleService.MoveTo(cellView);
                 else

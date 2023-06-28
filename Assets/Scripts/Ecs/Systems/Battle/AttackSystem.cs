@@ -59,7 +59,7 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
                 ref var targetVita = ref attack.target.Entity.GetComponent<VitaComponent>();
 
                 targetVita.Value.Current = Mathf.Clamp(targetVita.Value.Current - damage, 0, targetVita.Value.Max);
-                _signalBus.Fire(new VitaChangedSignal(attack.target));
+                _signalBus.Fire(new UnitUpdatedSignal(attack.target));
 
                 UnityEngine.Debug.Log($"Attack: {might}/{defence}, Damage: {damage}");
             }
