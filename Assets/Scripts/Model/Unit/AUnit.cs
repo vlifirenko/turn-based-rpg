@@ -128,8 +128,22 @@ namespace TurnBasedRPG.Model.Unit
             };
         }
 
-        public void Hover() => UiView.Selected.SetActive(true);
+        public void Hover(AUnit activeUnit = null)
+        {
+            UiView.Selected.SetActive(true);
+            if (activeUnit != null)
+            {
+                activeUnit.UiView.WeaponPanel.SetActive(true);
+            }
+        }
 
-        public void Unhover() => UiView.Selected.SetActive(false);
+        public void Unhover(AUnit activeUnit = null)
+        {
+            UiView.Selected.SetActive(false);
+            if (activeUnit != null)
+            {
+                activeUnit.UiView.WeaponPanel.SetActive(false);
+            }
+        }
     }
 }

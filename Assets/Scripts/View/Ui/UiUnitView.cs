@@ -18,6 +18,8 @@ namespace TurnBasedRPG.View.Ui
         [SerializeField] private GameObject attackPanel;
         [SerializeField] private TMP_Text chanceText;
         [SerializeField] private GameObject selected;
+        [SerializeField] private GameObject weaponPanel;
+        [SerializeField] private TMP_Text weaponText;
 
         public Image Icon => icon;
         public TMP_Text NameText => nameText;
@@ -29,7 +31,8 @@ namespace TurnBasedRPG.View.Ui
         public TMP_Text AttacksText => attacksText;
         public GameObject AttackPanel => attackPanel;
         public TMP_Text ChanceText => chanceText;
-
         public GameObject Selected => selected;
+        public GameObject WeaponPanel => weaponPanel;
+        public TMP_Text WeaponText => weaponText;
     }
 }

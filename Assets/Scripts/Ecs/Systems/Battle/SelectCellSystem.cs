@@ -16,12 +16,13 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
 
         public World World { get; set; }
 
-        public SelectCellSystem(GlobalConfigInstaller.LayersConfig layersConfig, BattleService battleService)
+        public SelectCellSystem(GlobalConfigInstaller.LayersConfig layersConfig, BattleService battleService,
+            UnitService unitService)
         {
             _layersConfig = layersConfig;
             _battleService = battleService;
         }
-        
+
         public void OnUpdate(float deltaTime)
         {
             MouseRaycast();
@@ -60,11 +61,11 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
             {
                 if (cellView.UnitView == null)
                     return;
-                
+
                 _battleService.SelectUnit(cellView.UnitView.Unit);
             }
         }
-        
+
         private void MouseRightClick()
         {
             if (!Input.GetMouseButtonUp(1))
@@ -86,18 +87,28 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
         {
             var material = cell.GetComponent<Renderer>().material;
             material.SetColor("_BaseColor", Color.green);
-            
+
             if (cell.UnitView != null)
-                cell.UnitView.Unit.Hover();
+            {
+                if (cell.UnitView.Unit.IsPlayer)
+                    cell.UnitView.Unit.Hover();
+                else
+                    cell.UnitView.Unit.Hover(_battleService.ActiveUnit);
+            }
         }
 
         private void UnhoverCell(CellView cell)
         {
             var material = cell.GetComponent<Renderer>().material;
             material.SetColor("_BaseColor", Color.white);
-            
+
             if (cell.UnitView != null)
-                cell.UnitView.Unit.Unhover();
+            {
+                if (cell.UnitView.Unit.IsPlayer)
+                    cell.UnitView.Unit.Unhover();
+                else
+                    cell.UnitView.Unit.Unhover(_battleService.ActiveUnit);
+            }
         }
 
         public void OnAwake()

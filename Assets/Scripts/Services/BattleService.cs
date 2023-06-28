@@ -24,8 +24,9 @@ namespace TurnBasedRPG.Services
         private readonly CanvasView _canvasView;
         private readonly SignalBus _signalBus;
 
+        public AUnit ActiveUnit { get; private set; }
+        
         private BattleData _battleData;
-        private AUnit _activeUnit;
         private readonly List<AUnit> _allUnits = new List<AUnit>();
 
         public BattleData BattleData => _battleData;
@@ -87,7 +88,7 @@ namespace TurnBasedRPG.Services
         {
         }
 
-        public void MoveTo(CellView targetCell) => _activeUnit.MoveTo(targetCell);
+        public void MoveTo(CellView targetCell) => ActiveUnit.MoveTo(targetCell);
 
         public void Attack(CellView targetCell)
         {
@@ -95,19 +96,19 @@ namespace TurnBasedRPG.Services
             if (target.Entity.Has<PlayerComponent>())
                 return;
             
-            _activeUnit.Attack(target);
+            ActiveUnit.Attack(target);
         }
 
         public void NextTurn()
         {
-            if (_activeUnit != null)
+            if (ActiveUnit != null)
             {
-                ref var stride = ref _activeUnit.Entity.GetComponent<StrideComponent>();
+                ref var stride = ref ActiveUnit.Entity.GetComponent<StrideComponent>();
                 stride.Value.SetMax();
-                ref var attackLeft = ref _activeUnit.Entity.GetComponent<AttacksLeftComponent>();
+                ref var attackLeft = ref ActiveUnit.Entity.GetComponent<AttacksLeftComponent>();
                 attackLeft.Value.SetMax();
                 
-                var currentUnitIndex = _allUnits.IndexOf(_activeUnit);
+                var currentUnitIndex = _allUnits.IndexOf(ActiveUnit);
                 currentUnitIndex += 1;
                 currentUnitIndex %= _allUnits.Count;
 
@@ -119,15 +120,15 @@ namespace TurnBasedRPG.Services
                 SetActiveUnit(_allUnits[0]);
             }
             
-            _activeUnit.StartTurn();
-            _signalBus.Fire(new SetActiveUnitSignal(_activeUnit));
+            ActiveUnit.StartTurn();
+            _signalBus.Fire(new SetActiveUnitSignal(ActiveUnit));
         }
 
         private void SetActiveUnit(AUnit activeUnit)
         {
-            _activeUnit?.Deselect();
-            _activeUnit = activeUnit;
-            _activeUnit.Select();
+            ActiveUnit?.Deselect();
+            ActiveUnit = activeUnit;
+            ActiveUnit.Select();
         }
 
         private CellView InstantiateCell(Vector3 position)
