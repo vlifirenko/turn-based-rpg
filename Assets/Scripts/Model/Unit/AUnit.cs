@@ -3,6 +3,7 @@ using Scellecs.Morpeh;
 using TurnBasedRPG.Ecs.Components.Unit;
 using TurnBasedRPG.Extensions;
 using TurnBasedRPG.Model.Config;
+using TurnBasedRPG.Model.Item;
 using TurnBasedRPG.View;
 using TurnBasedRPG.View.Ui;
 using TurnBasedRPG.View.Unit;
@@ -57,7 +58,9 @@ namespace TurnBasedRPG.Model.Unit
             _view.Animator.SetState(EAnimatorState.IdleCombat);
         }
 
-        public virtual void StartTurn() { }
+        public virtual void StartTurn()
+        {
+        }
 
         public void MoveTo(CellView targetCell, Action onMovementComplete = null)
         {
@@ -74,7 +77,7 @@ namespace TurnBasedRPG.Model.Unit
                 onMovementComplete = onMovementComplete
             };
         }
-        
+
         public void MoveTo(AUnit targetUnit, Action onMovementComplete = null)
         {
             if (_entity.Has<MovementComponent>())
@@ -85,7 +88,7 @@ namespace TurnBasedRPG.Model.Unit
             onMovementComplete += () => { animator.SetState(EAnimatorState.IdleCombat); };
 
             var targetCell = targetUnit.Entity.GetComponent<UnitComponent>().cellView;
-            
+
             _entity.AddComponent<MovementComponent>() = new MovementComponent
             {
                 destination = targetCell.Position,
@@ -104,17 +107,18 @@ namespace TurnBasedRPG.Model.Unit
             var targetCell = target.Entity.GetComponent<UnitComponent>().cellView;
             var distanceToTarget = Vector2.Distance(targetCell.Position, unitCell.Position);
 
-            var result = Mathf.RoundToInt(distanceToTarget) <= weapon.range;
+            var result = Mathf.RoundToInt(distanceToTarget) <= weapon.Range;
             if (!result)
-                UnityEngine.Debug.Log($"[Check Range] distance: {distanceToTarget}, weapon range: {weapon.range}");
+                Debug.Log($"[Check Range] distance: {distanceToTarget}, weapon range: {weapon.Range}");
 
             return result;
         }
-        
-        public ItemConfig GetEquippedWeapon()
+
+        public AWeapon GetEquippedWeapon()
         {
             // todo debug
-            var weapon = Config.items[0];
+            var config = Config.items[0];
+            var weapon = new SimpleWeapon(config);
 
             return weapon;
         }
@@ -133,7 +137,12 @@ namespace TurnBasedRPG.Model.Unit
             UiView.Selected.SetActive(true);
             if (activeUnit != null)
             {
-                activeUnit.UiView.WeaponPanel.SetActive(true);
+                var weapon = activeUnit.GetEquippedWeapon();
+                var view = activeUnit.UiView;
+
+
+                view.WeaponText.text = $"{weapon.Name}\nDamage {weapon.GetDamageText()}";
+                view.WeaponPanel.SetActive(true);
             }
         }
 
