@@ -48,12 +48,12 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
 
         private void Attack(Entity entity)
         {
-            var config = entity.GetComponent<UnitComponent>().unit.Config;
+            var unit = entity.GetComponent<UnitComponent>().unit;
             var attack = entity.GetComponent<AttackComponent>();
-            var might = _diceService.RollDice(EDice.D100) + config.might;
-            var defence = attack.target.Entity.GetComponent<UnitComponent>().unit.Config.defence;
+            var attackRate = _diceService.RollDice(EDice.D100) + unit.Might;
+            var defence = attack.target.Entity.GetComponent<UnitComponent>().unit.Defence;
 
-            if (might >= defence)
+            if (attackRate >= defence)
             {
                 var damage = _diceService.RollDice(EDice.D4, 2);
                 ref var targetVita = ref attack.target.Entity.GetComponent<VitaComponent>();
@@ -61,11 +61,11 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
                 targetVita.Value.Current = Mathf.Clamp(targetVita.Value.Current - damage, 0, targetVita.Value.Max);
                 _signalBus.Fire(new UnitUpdatedSignal(attack.target));
 
-                UnityEngine.Debug.Log($"Attack: {might}/{defence}, Damage: {damage}");
+                UnityEngine.Debug.Log($"Attack: {attackRate}/{defence}, Damage: {damage}");
             }
             else
             {
-                UnityEngine.Debug.Log($"Miss {might}/{defence}");
+                UnityEngine.Debug.Log($"Miss {attackRate}/{defence}");
             }
         }
         

@@ -22,13 +22,15 @@ namespace TurnBasedRPG.Model.Unit
         private int _initiative;
         
         public Entity Entity => _entity;
-        public UnitConfig Config => _config;
         public UnitView View => _view;
+        public Sprite Icon { get; }
+        public string Name { get; }
         public UiUnitView UiView { get; set; }
         public bool IsPlayer { get; set; }
         public int Defence { get; }
         public int Might { get; }
         public int DamageBonus { get; }
+
 
         protected AUnit(Entity entity, UnitConfig config, SignalBus signalBus)
         {
@@ -53,7 +55,7 @@ namespace TurnBasedRPG.Model.Unit
                 _initiative = value;
             }
         }
-
+        
         public void CreateView(Vector3 position, Quaternion rotation, Transform parent)
         {
             _view = Object.Instantiate(_config.prefab, position, rotation, parent);
@@ -124,7 +126,7 @@ namespace TurnBasedRPG.Model.Unit
         public AWeapon GetEquippedWeapon()
         {
             // todo debug
-            var config = Config.items[0];
+            var config = _config.items[0];
             var weapon = new SimpleWeapon(config)
             {
                 Owner = this

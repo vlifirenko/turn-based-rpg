@@ -10,6 +10,5 @@ namespace TurnBasedRPG.Ecs.Components.Unit
     {
         public AUnit unit;
         public CellView cellView;
-        public UiUnitVita uiView;
     }
 }

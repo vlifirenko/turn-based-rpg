@@ -41,15 +41,14 @@ namespace TurnBasedRPG.Services
         private void OnUnitUpdated(UnitUpdatedSignal signal)
         {
             var unit = signal.unit;
-            var config = unit.Entity.GetComponent<UnitComponent>().unit.Config;
             var vita = unit.Entity.GetComponent<VitaComponent>();
             var energy = unit.Entity.GetComponent<EnergyComponent>();
             var stride = unit.Entity.GetComponent<StrideComponent>();
             var attacksLeft = unit.Entity.GetComponent<AttacksLeftComponent>();
             var uiView = unit.UiView;
-            
-            uiView.Icon.sprite = config.icon;
-            uiView.NameText.text = config.name;
+
+            uiView.Icon.sprite = unit.Icon;
+            uiView.NameText.text = unit.Name;
             uiView.VitaSlider.value = vita.Value.Percent;
             uiView.VitaText.text = vita.Value.PercentText;
             uiView.EnergySlider.value = energy.Value.Percent;
