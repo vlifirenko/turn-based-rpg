@@ -43,11 +43,7 @@ namespace TurnBasedRPG.Services
         public void Initialize()
         {
             _battleData = new BattleData();
-            
-            _canvasView.NextTurnButton.OnClickAsObservable()
-                .Subscribe(_ => NextTurn())
-                .AddTo(_disposable);
-            
+
             _signalBus.GetStream<NextTurnSignal>()
                 .Subscribe(_ => NextTurn())
                 .AddTo(_disposable);

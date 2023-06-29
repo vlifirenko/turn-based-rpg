@@ -4,6 +4,7 @@ using TurnBasedRPG.Ecs.Components.Unit;
 using TurnBasedRPG.Signals;
 using TurnBasedRPG.View;
 using UniRx;
+using UnityEngine;
 using Zenject;
 
 namespace TurnBasedRPG.Services
@@ -12,12 +13,14 @@ namespace TurnBasedRPG.Services
     {
         private readonly SignalBus _signalBus;
         private readonly CanvasView _canvasView;
+        private readonly BattleService _battleService;
         private readonly CompositeDisposable _disposable = new CompositeDisposable();
 
-        public UiService(SignalBus signalBus, CanvasView canvasView)
+        public UiService(SignalBus signalBus, CanvasView canvasView, BattleService battleService)
         {
             _signalBus = signalBus;
             _canvasView = canvasView;
+            _battleService = battleService;
         }
 
         public void Initialize()
@@ -25,17 +28,26 @@ namespace TurnBasedRPG.Services
             _signalBus.GetStream<StrideChangedSignal>()
                 .Subscribe(OnStrideChanged)
                 .AddTo(_disposable);
-            
+
             _signalBus.GetStream<UnitUpdatedSignal>()
                 .Subscribe(OnUnitUpdated)
                 .AddTo(_disposable);
-            
+
             _signalBus.GetStream<AttacksLeftChangedSignal>()
                 .Subscribe(OnAttacksLeftChanged)
                 .AddTo(_disposable);
+
+            _canvasView.NextTurnButton.OnClickAsObservable()
+                .Subscribe(_ => _battleService.NextTurn())
+                .AddTo(_disposable);
+
+            Observable.EveryUpdate()
+                .Where(_ => Input.GetKeyDown(KeyCode.Space))
+                .Subscribe(x => _battleService.NextTurn())
+                .AddTo(_disposable);
         }
 
-        private void OnStrideChanged(StrideChangedSignal signal) 
+        private void OnStrideChanged(StrideChangedSignal signal)
             => signal.unit.UiView.StrideText.text = $"Stride: {signal.value.PercentText}";
 
         private void OnUnitUpdated(UnitUpdatedSignal signal)
