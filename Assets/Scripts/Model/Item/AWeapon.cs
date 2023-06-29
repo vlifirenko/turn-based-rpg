@@ -22,8 +22,8 @@ namespace TurnBasedRPG.Model.Item
 
         public string GetDamageText()
         {
-            var min = Damage.diceCount + Damage.bonus;
-            var max = Damage.diceCount * (int) Damage.dice + Damage.bonus;
+            var min = Damage.diceCount + Damage.bonus + Owner.DamageBonus;
+            var max = Damage.diceCount * (int) Damage.dice + Damage.bonus + Owner.DamageBonus;
 
             return $"{min}-{max}";
         }

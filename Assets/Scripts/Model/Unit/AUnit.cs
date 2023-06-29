@@ -20,19 +20,26 @@ namespace TurnBasedRPG.Model.Unit
         private readonly UnitConfig _config;
         private UnitView _view;
         private int _initiative;
+        
+        public Entity Entity => _entity;
+        public UnitConfig Config => _config;
+        public UnitView View => _view;
+        public UiUnitView UiView { get; set; }
+        public bool IsPlayer { get; set; }
+        public int Defence { get; }
+        public int Might { get; }
+        public int DamageBonus { get; }
 
         protected AUnit(Entity entity, UnitConfig config, SignalBus signalBus)
         {
             _entity = entity;
             _config = config;
             SignalBus = signalBus;
-        }
 
-        public Entity Entity => _entity;
-        public UnitConfig Config => _config;
-        public UnitView View => _view;
-        public UiUnitView UiView { get; set; }
-        public bool IsPlayer { get; set; }
+            Defence = config.defence;
+            Might = config.might;
+            DamageBonus = config.damageBonus;
+        }
 
         public int Initiative
         {
@@ -118,7 +125,10 @@ namespace TurnBasedRPG.Model.Unit
         {
             // todo debug
             var config = Config.items[0];
-            var weapon = new SimpleWeapon(config);
+            var weapon = new SimpleWeapon(config)
+            {
+                Owner = this
+            };
 
             return weapon;
         }
@@ -139,15 +149,21 @@ namespace TurnBasedRPG.Model.Unit
             {
                 var weapon = activeUnit.GetEquippedWeapon();
                 var view = activeUnit.UiView;
-                var chance = 0;
-                
-                // todo set chance
+                var chance = activeUnit.GetHitChance(this);
 
-                view.WeaponText.text = $"{weapon.Name}\nDamage {weapon.GetDamageText()}\nRange {weapon.Range}\nChance {chance}%";
+                //chance = Mathf.FloorToInt(chance * 100f);
+                view.WeaponText.text = 
+                    $"{weapon.Name}\nDamage {weapon.GetDamageText()}\nRange {weapon.Range}\nChance {chance}%";
                 view.WeaponPanel.SetActive(true);
             }
         }
 
+        private int GetHitChance(AUnit target)
+        {
+            var chance = 100 - target.Defence + Might;
+            return chance;
+        }
+        
         public void Unhover(AUnit activeUnit = null)
         {
             UiView.Selected.SetActive(false);

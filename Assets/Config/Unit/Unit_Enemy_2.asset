@@ -18,7 +18,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   type: 10
   vita: 21
-  defence: 37
+  defence: 40
   might: 3
   damageBonus: 2
   energy: 5

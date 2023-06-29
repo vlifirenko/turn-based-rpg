@@ -1,16 +1,18 @@
 ﻿using TurnBasedRPG.Model.Config;
 using TurnBasedRPG.Model.Enums;
+using TurnBasedRPG.Model.Unit;
 
 namespace TurnBasedRPG.Model.Item
 {
     public abstract class AItem
     {
-        public string ID { get; private set; }
-        public ItemConfig Config { get; private set; }
-        public string Name { get; private set; }
-        public string Description { get; private set; }
-        public int Cost { get; private set; }
-        public EItemSlot Slot { get; private set; }
+        public string ID { get; }
+        public ItemConfig Config { get; }
+        public string Name { get; }
+        public string Description { get; }
+        public int Cost { get; }
+        public EItemSlot Slot { get; }
+        public AUnit Owner { get; set; }
 
         protected AItem(ItemConfig config)
         {
