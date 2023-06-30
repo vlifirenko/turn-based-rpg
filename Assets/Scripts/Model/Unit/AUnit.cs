@@ -4,6 +4,7 @@ using TurnBasedRPG.Ecs.Components.Unit;
 using TurnBasedRPG.Extensions;
 using TurnBasedRPG.Model.Config;
 using TurnBasedRPG.Model.Item;
+using TurnBasedRPG.Model.Map;
 using TurnBasedRPG.View;
 using TurnBasedRPG.View.Ui;
 using TurnBasedRPG.View.Unit;
@@ -13,7 +14,7 @@ using Object = UnityEngine.Object;
 
 namespace TurnBasedRPG.Model.Unit
 {
-    public abstract class AUnit
+    public abstract class AUnit : ICellItem
     {
         protected readonly SignalBus SignalBus;
         private readonly Entity _entity;
@@ -23,6 +24,7 @@ namespace TurnBasedRPG.Model.Unit
         
         public Entity Entity => _entity;
         public UnitView View => _view;
+        public Cell Cell { get; set; }
         public Sprite Icon { get; }
         public string Name { get; }
         public UiUnitView UiView { get; set; }

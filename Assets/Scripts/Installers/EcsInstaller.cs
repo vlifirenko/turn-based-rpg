@@ -1,6 +1,4 @@
-﻿using System;
-using Scellecs.Morpeh;
-using TurnBasedRPG.Ecs.Components.Unit;
+﻿using Scellecs.Morpeh;
 using TurnBasedRPG.Ecs.Systems.Battle;
 using TurnBasedRPG.Ecs.Systems.Debug;
 using TurnBasedRPG.Ecs.Systems.Unit;
@@ -69,6 +67,7 @@ namespace TurnBasedRPG.Installers
         {
             Container.Bind<UnitService>().AsSingle();
             Container.Bind<DiceService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<MapService>().AsSingle();
             Container.BindInterfacesAndSelfTo<BattleService>().AsSingle();
             Container.BindInterfacesAndSelfTo<UiService>().AsSingle();
         }
