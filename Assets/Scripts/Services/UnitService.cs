@@ -16,19 +16,19 @@ namespace TurnBasedRPG.Services
         private readonly SceneData _sceneData;
         private readonly BattleService _battleService;
         private readonly SignalBus _signalBus;
+        private readonly MapService _mapService;
 
         public List<AUnit> PlayerUnits { get; private set; } = new List<AUnit>();
         public List<AUnit> EnemyUnits { get; private set; } = new List<AUnit>();
 
-        public UnitService(World world,
-            SceneData sceneData,
-            BattleService battleService,
-            SignalBus signalBus)
+        public UnitService(World world, SceneData sceneData, BattleService battleService, SignalBus signalBus,
+            MapService mapService)
         {
             _world = world;
             _sceneData = sceneData;
             _battleService = battleService;
             _signalBus = signalBus;
+            _mapService = mapService;
         }
 
         public AUnit CreateUnit(UnitConfig config, Vector2Int cellPosition, bool isPlayer = false)
@@ -46,25 +46,25 @@ namespace TurnBasedRPG.Services
                 unit = new EnemyUnit(entity, config, _signalBus);
                 EnemyUnits.Add(unit);
             }
-            
-            var cell = _battleService.GetCellByPosition(cellPosition.x, cellPosition.y);
 
-            var position = cell.transform.position;
+            var cell = _mapService.GetCellByPosition(cellPosition.x, cellPosition.y);
+
+            var position = cell.View.transform.position;
             var rotation = Quaternion.Euler(0,
                 isPlayer ? 0f : 180f,
                 0);
             unit.CreateView(position, rotation, _sceneData.UnitContainer);
             unit.InitializeView();
 
-            cell.UnitView = unit.View;
+            cell.Item = unit;
 
             ref var unitComponent = ref entity.AddComponent<UnitComponent>();
 
             unitComponent.unit = unit;
-            unitComponent.cellView = cell;
+            unitComponent.cellView = cell.View;
 
             entity.AddComponent<AnimatorComponent>().Value = unit.View.Animator;
-            
+
             entity.AddComponent<VitaComponent>().Value = new CurrentMax(config.vita);
             entity.AddComponent<EnergyComponent>().Value = new CurrentMax(config.energy);
             entity.AddComponent<StrideComponent>().Value = new CurrentMax(config.stride);

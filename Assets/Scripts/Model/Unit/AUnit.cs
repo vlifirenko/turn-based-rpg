@@ -40,6 +40,8 @@ namespace TurnBasedRPG.Model.Unit
             _config = config;
             SignalBus = signalBus;
 
+            Name = config.name;
+            Icon = config.icon;
             Defence = config.defence;
             Might = config.might;
             DamageBonus = config.damageBonus;

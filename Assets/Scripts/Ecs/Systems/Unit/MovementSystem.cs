@@ -14,15 +14,17 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
         private readonly BattleService _battleService;
         private readonly GlobalConfigInstaller.UnitsConfig _unitsConfig;
         private readonly SignalBus _signalBus;
+        private readonly MapService _mapService;
 
         private Filter _filter;
 
         public MovementSystem(BattleService battleService, GlobalConfigInstaller.UnitsConfig unitsConfig,
-            SignalBus signalBus)
+            SignalBus signalBus, MapService mapService)
         {
             _battleService = battleService;
             _unitsConfig = unitsConfig;
             _signalBus = signalBus;
+            _mapService = mapService;
         }
 
         public void OnAwake() => _filter = World.Filter.With<MovementComponent>();
@@ -49,22 +51,22 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
         private void FindNextCell(Entity entity)
         {
             ref var movement = ref entity.GetComponent<MovementComponent>();
-            var destinationCell = _battleService.GetCellByPosition(movement.destination.x,
+            var destinationCell = _mapService.GetCellByPosition(movement.destination.x,
                 movement.destination.y);
             var unitCell = entity.GetComponent<UnitComponent>().cellView;
             var position = unitCell.Position;
 
-            if (destinationCell.Position.x > position.x)
+            if (destinationCell.View.Position.x > position.x)
                 position.x++;
-            else if (destinationCell.Position.x < position.x)
+            else if (destinationCell.View.Position.x < position.x)
                 position.x--;
-            if (destinationCell.Position.y > position.y)
+            if (destinationCell.View.Position.y > position.y)
                 position.y++;
-            else if (destinationCell.Position.y < position.y)
+            else if (destinationCell.View.Position.y < position.y)
                 position.y--;
 
-            var targetCell = _battleService.GetCellByPosition(position.x, position.y);
-            movement.targetCell = targetCell;
+            var targetCell = _mapService.GetCellByPosition(position.x, position.y);
+            movement.targetCell = targetCell.View;
         }
 
         private void MoveTo(Entity entity, float deltaTime)

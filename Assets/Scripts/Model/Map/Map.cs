@@ -1,4 +1,6 @@
-﻿namespace TurnBasedRPG.Model.Map
+﻿using TurnBasedRPG.View;
+
+namespace TurnBasedRPG.Model.Map
 {
     public class Map
     {
@@ -11,7 +13,9 @@
 
         public void InteractWithCell()
         {
-            
         }
+
+        public void InitializeCell(CellView cellView)
+            => Cells[cellView.Position.x, cellView.Position.y] = new Cell(cellView);
     }
 }

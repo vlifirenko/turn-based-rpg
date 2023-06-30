@@ -18,7 +18,6 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
 
         public void OnAwake()
         {
-            _battleService.CreateMap();
             SetInitiative();
         }
 
