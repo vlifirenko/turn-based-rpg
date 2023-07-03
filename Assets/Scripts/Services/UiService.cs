@@ -1,6 +1,7 @@
 ﻿using System;
 using Scellecs.Morpeh;
 using TurnBasedRPG.Ecs.Components.Unit;
+using TurnBasedRPG.Services.Facade;
 using TurnBasedRPG.Signals;
 using TurnBasedRPG.View;
 using UniRx;
@@ -41,10 +42,14 @@ namespace TurnBasedRPG.Services
                 .Subscribe(_ => _battleService.NextTurn())
                 .AddTo(_disposable);
 
+            // debug
             Observable.EveryUpdate()
                 .Where(_ => Input.GetKeyDown(KeyCode.Space))
                 .Subscribe(x => _battleService.NextTurn())
                 .AddTo(_disposable);
+            //
+            
+            FloatingText.UiService = this;
         }
 
         private void OnStrideChanged(StrideChangedSignal signal)
@@ -72,6 +77,11 @@ namespace TurnBasedRPG.Services
         private void OnAttacksLeftChanged(AttacksLeftChangedSignal signal)
         {
             //todo _canvasView.UnitView.AttacksText.text = $"Attacks: {signal.value.PercentText}";
+        }
+
+        public void ShowFloatingText(Vector3 position, string text, Color color, float speed, float size)
+        {
+            throw new NotImplementedException();
         }
 
         public void Dispose() => _disposable?.Dispose();

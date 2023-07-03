@@ -2,6 +2,7 @@
 using TurnBasedRPG.Ecs.Components.Unit;
 using TurnBasedRPG.Model.Enums;
 using TurnBasedRPG.Services;
+using TurnBasedRPG.Services.Facade;
 using TurnBasedRPG.Signals;
 using UnityEngine;
 using Zenject;
@@ -52,6 +53,7 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
             var attack = entity.GetComponent<AttackComponent>();
             var attackRate = _diceService.RollDice(EDice.D100) + unit.Might;
             var defence = attack.target.Entity.GetComponent<UnitComponent>().unit.Defence;
+            var position = unit.View.transform.position;
 
             if (attackRate >= defence)
             {
@@ -61,10 +63,12 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
                 targetVita.Value.Current = Mathf.Clamp(targetVita.Value.Current - damage, 0, targetVita.Value.Max);
                 _signalBus.Fire(new UnitUpdatedSignal(attack.target));
 
-                UnityEngine.Debug.Log($"Attack: {attackRate}/{defence}, Damage: {damage}");
+                FloatingText.Show(position, $"Hit: {attackRate}/{defence}, Damage: {damage}");
+                UnityEngine.Debug.Log($"Hit: {attackRate}/{defence}, Damage: {damage}");
             }
             else
             {
+                FloatingText.Show(position, $"Miss {attackRate}/{defence}");
                 UnityEngine.Debug.Log($"Miss {attackRate}/{defence}");
             }
         }
@@ -72,5 +76,5 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
         public void Dispose()
         {
         }
-    }
+    }    
 }
