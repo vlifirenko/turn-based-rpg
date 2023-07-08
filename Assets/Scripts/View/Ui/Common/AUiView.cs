@@ -5,17 +5,10 @@ namespace TurnBasedRPG.View.Ui.Common
 {
     public abstract class AUiView : MonoBehaviour
     {
-        public GameObject GameObject { get;private set; }
+        public void Show() => gameObject.SetActive(true);
 
-        private void Awake()
-        {
-            GameObject = gameObject;
-        }
+        public void Hide() => gameObject.SetActive(false);
 
-        public void Show() => GameObject.SetActive(true);
-
-        public void Hide() => GameObject.SetActive(false);
-
-        public bool IsVisible() => GameObject.activeSelf;
+        public bool IsVisible() => gameObject.activeSelf;
     }
 }

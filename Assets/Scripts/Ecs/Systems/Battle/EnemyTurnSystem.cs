@@ -42,7 +42,7 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
 
         private void LookingForTarget(Entity entity)
         {
-            var unit = entity.GetComponent<UnitComponent>().unit;
+            var unit = entity.GetComponent<UnitComponent>().value;
             ref var enemyTurn = ref entity.GetComponent<EnemyTurnComponent>();
 
             AUnit nearestUnit = null;
@@ -87,7 +87,7 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
         private void AttackTarget(Entity entity)
         {
             var enemyTurn = entity.GetComponent<EnemyTurnComponent>();
-            var unit = entity.GetComponent<UnitComponent>().unit;
+            var unit = entity.GetComponent<UnitComponent>().value;
 
             unit.Attack(enemyTurn.target, () => EndTurn(entity));
         }

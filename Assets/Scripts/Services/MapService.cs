@@ -1,5 +1,6 @@
 ﻿using TurnBasedRPG.Installers;
 using TurnBasedRPG.Model.Map;
+using TurnBasedRPG.Strategy.Pathfinding;
 using TurnBasedRPG.View;
 using UnityEngine;
 using Zenject;
@@ -10,6 +11,7 @@ namespace TurnBasedRPG.Services
     {
         private readonly GlobalConfigInstaller.MapConfig _mapConfig;
         private readonly SceneData _sceneData;
+        private readonly IPathfindingStrategy _pathfinding;
         
         private Map _map;
 
@@ -17,15 +19,19 @@ namespace TurnBasedRPG.Services
         {
             _mapConfig = mapConfig;
             _sceneData = sceneData;
+
+            _pathfinding = new TestPathfinding();
         }
 
         public void Initialize()
         {
             var cellItems = new ICellItem[_mapConfig.width, _mapConfig.height];
+            
             CreateMap(cellItems);
+            _pathfinding.SetMap(_map);
         }
 
-        public void CreateMap(ICellItem[,] items)
+        private void CreateMap(ICellItem[,] items)
         {
             var cells = new Cell[items.GetLength(0), items.GetLength(1)];
 
@@ -63,6 +69,12 @@ namespace TurnBasedRPG.Services
             cell.transform.localScale = scale;
 
             return cell;
+        }
+
+        public CellView[] BuildPath(Vector2Int origin, Vector2Int destination)
+        {
+            //todo 
+            return new[] {new CellView()};
         }
     }
 }

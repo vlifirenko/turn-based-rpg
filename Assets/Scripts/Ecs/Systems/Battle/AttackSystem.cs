@@ -31,7 +31,7 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
         {
             foreach (var entity in _filter)
             {
-                var unit = entity.GetComponent<UnitComponent>().unit;
+                var unit = entity.GetComponent<UnitComponent>().value;
                 var attack = entity.GetComponent<AttackComponent>();
                 ref var attacksLeft = ref entity.GetComponent<AttacksLeftComponent>();
                 
@@ -49,10 +49,10 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
 
         private void Attack(Entity entity)
         {
-            var unit = entity.GetComponent<UnitComponent>().unit;
+            var unit = entity.GetComponent<UnitComponent>().value;
             var attack = entity.GetComponent<AttackComponent>();
             var attackRate = _diceService.RollDice(EDice.D100) + unit.Might;
-            var defence = attack.target.Entity.GetComponent<UnitComponent>().unit.Defence;
+            var defence = attack.target.Entity.GetComponent<UnitComponent>().value.Defence;
             var position = unit.View.transform.position;
 
             if (attackRate >= defence)
@@ -63,12 +63,12 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
                 targetVita.Value.Current = Mathf.Clamp(targetVita.Value.Current - damage, 0, targetVita.Value.Max);
                 _signalBus.Fire(new UnitUpdatedSignal(attack.target));
 
-                FloatingText.Show(position, $"Hit: {attackRate}/{defence}, Damage: {damage}");
+                FloatText.Show(position, $"Hit: {attackRate}/{defence}, Damage: {damage}");
                 UnityEngine.Debug.Log($"Hit: {attackRate}/{defence}, Damage: {damage}");
             }
             else
             {
-                FloatingText.Show(position, $"Miss {attackRate}/{defence}");
+                FloatText.Show(position, $"Miss {attackRate}/{defence}");
                 UnityEngine.Debug.Log($"Miss {attackRate}/{defence}");
             }
         }

@@ -1,4 +1,5 @@
-﻿using TurnBasedRPG.View.Unit;
+﻿using TurnBasedRPG.View.Common;
+using TurnBasedRPG.View.Unit;
 using UnityEngine;
 
 namespace TurnBasedRPG.View

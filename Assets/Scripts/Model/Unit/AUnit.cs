@@ -21,7 +21,7 @@ namespace TurnBasedRPG.Model.Unit
         private readonly UnitConfig _config;
         private UnitView _view;
         private int _initiative;
-        
+
         public Entity Entity => _entity;
         public UnitView View => _view;
         public Cell Cell { get; set; }
@@ -59,7 +59,9 @@ namespace TurnBasedRPG.Model.Unit
                 _initiative = value;
             }
         }
-        
+
+        public Vector2Int GetMapPosition => Entity.GetComponent<UnitComponent>().cellView.Position;
+
         public void CreateView(Vector3 position, Quaternion rotation, Transform parent)
         {
             _view = Object.Instantiate(_config.prefab, position, rotation, parent);
@@ -158,7 +160,7 @@ namespace TurnBasedRPG.Model.Unit
                 var chance = activeUnit.GetHitChance(this);
 
                 //chance = Mathf.FloorToInt(chance * 100f);
-                view.WeaponText.text = 
+                view.WeaponText.text =
                     $"{weapon.Name}\nDamage {weapon.GetDamageText()}\nRange {weapon.Range}\nChance {chance}%";
                 view.WeaponPanel.SetActive(true);
             }
@@ -169,7 +171,7 @@ namespace TurnBasedRPG.Model.Unit
             var chance = 100 - target.Defence + Might;
             return chance;
         }
-        
+
         public void Unhover(AUnit activeUnit = null)
         {
             UiView.Selected.SetActive(false);

@@ -2,6 +2,7 @@
 using TurnBasedRPG.Ecs.Components.Unit;
 using TurnBasedRPG.Installers;
 using TurnBasedRPG.Services;
+using TurnBasedRPG.Services.Facade;
 using TurnBasedRPG.Signals;
 using UnityEngine;
 using Zenject;
@@ -41,11 +42,25 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
                 }
 
                 var movement = entity.GetComponent<MovementComponent>();
+                if (movement.path == null)
+                    BuildPath(entity);
+
                 if (movement.targetCell == null)
                     FindNextCell(entity);
 
                 MoveTo(entity, deltaTime);
             }
+        }
+
+        private void BuildPath(Entity entity)
+        {
+            var unit = entity.GetComponent<UnitComponent>().value;
+            ref var movement = ref entity.GetComponent<MovementComponent>();
+            
+            var path = _mapService.BuildPath(unit.GetMapPosition, movement.destination);
+            movement.path = path;
+            
+            UnityEngine.Debug.Log("path " + path.Length);
         }
 
         private void FindNextCell(Entity entity)
@@ -73,7 +88,7 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
         {
             var movement = entity.GetComponent<MovementComponent>();
             var targetCell = movement.targetCell;
-            ref var unit = ref entity.GetComponent<UnitComponent>().unit;
+            ref var unit = ref entity.GetComponent<UnitComponent>().value;
             ref var cellView = ref entity.GetComponent<UnitComponent>().cellView;
             var destination = new Vector3(
                 targetCell.transform.position.x,
@@ -84,7 +99,7 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
                 unit.View.transform.position,
                 destination,
                 _unitsConfig.moveSpeed * deltaTime);
-            
+
             cellView.UnitView = null;
 
             if (Vector3.Distance(position, destination) > _unitsConfig.stopDistance)
@@ -93,7 +108,8 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
             {
                 ref var stride = ref entity.GetComponent<StrideComponent>();
                 stride.Value.Current -= 1;
-                _signalBus.Fire(new StrideChangedSignal(stride.Value, entity.GetComponent<UnitComponent>().unit));
+                FloatText.Show(unit.View.transform.position, "Stride -1");
+                _signalBus.Fire(new StrideChangedSignal(stride.Value, entity.GetComponent<UnitComponent>().value));
                 unit.View.transform.position = destination;
                 cellView = movement.targetCell;
                 cellView.UnitView = unit.View;

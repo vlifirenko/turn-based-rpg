@@ -1,6 +1,7 @@
 ﻿using Scellecs.Morpeh;
 using TurnBasedRPG.Model.Config;
 using TurnBasedRPG.Model.Unit;
+using TurnBasedRPG.View.Common;
 using UnityEngine;
 
 namespace TurnBasedRPG.View.Unit

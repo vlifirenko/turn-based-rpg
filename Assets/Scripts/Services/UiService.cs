@@ -1,9 +1,12 @@
 ﻿using System;
+using DG.Tweening;
 using Scellecs.Morpeh;
 using TurnBasedRPG.Ecs.Components.Unit;
 using TurnBasedRPG.Services.Facade;
 using TurnBasedRPG.Signals;
+using TurnBasedRPG.Utils;
 using TurnBasedRPG.View;
+using TurnBasedRPG.View.Ui;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -48,8 +51,8 @@ namespace TurnBasedRPG.Services
                 .Subscribe(x => _battleService.NextTurn())
                 .AddTo(_disposable);
             //
-            
-            FloatingText.UiService = this;
+
+            FloatText.UiService = this;
         }
 
         private void OnStrideChanged(StrideChangedSignal signal)
@@ -79,9 +82,27 @@ namespace TurnBasedRPG.Services
             //todo _canvasView.UnitView.AttacksText.text = $"Attacks: {signal.value.PercentText}";
         }
 
-        public void ShowFloatingText(Vector3 position, string text, Color color, float speed, float size)
+        public void ShowFloatingText(Vector3 position, string text, Color color, float duration, float size)
         {
-            throw new NotImplementedException();
+            var instance = _canvasView.FloatTextUiPool.GetItem() as UiFloatText;
+            instance.Pool = _canvasView.FloatTextUiPool;
+
+            var rectTransform = instance.GetComponent<RectTransform>();
+            var anchoredPosition = _canvasView.Canvas.WorldToCanvasPosition(position, Camera.main);
+
+            if (color == default)
+                color = Color.white;
+
+            rectTransform.anchoredPosition = anchoredPosition;
+            instance.text.text = text;
+            instance.text.color = color;
+            instance.text.fontSize = size;
+            
+            var textRectTransform = instance.text.GetComponent<RectTransform>(); 
+            textRectTransform.anchoredPosition = Vector2.zero;
+            textRectTransform.DOAnchorPosY(60f, duration).onComplete = () 
+                => instance.Pool.Recycle(instance);
+            instance.text.DOFade(0f, duration);
         }
 
         public void Dispose() => _disposable?.Dispose();

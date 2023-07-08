@@ -8,7 +8,7 @@ namespace TurnBasedRPG.Ecs.Components.Unit
 {
     public struct UnitComponent : IComponent
     {
-        public AUnit unit;
+        public AUnit value;
         public CellView cellView;
     }
 }
