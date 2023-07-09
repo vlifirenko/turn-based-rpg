@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TurnBasedRPG.Model.Map;
 using UnityEngine;
 
@@ -11,23 +12,29 @@ namespace TurnBasedRPG.Strategy.Pathfinding
         private Vector2Int _destination;
         private MapCell[,] _mapCells;
         private Vector2Int _position;
+        private float _range;
 
         public void SetMap(Map map)
         {
             _map = map;
         }
 
-        public Cell[] BuildPath(Vector2Int origin, Vector2Int destination)
+        public Cell[] BuildPath(Vector2Int origin, Vector2Int destination, float range)
         {
             _origin = origin;
             _destination = destination;
+            _range = range;
+            
             _mapCells = new MapCell[_map.Cells.GetLength(0), _map.Cells.GetLength(1)];
             for (var i = 0; i < _mapCells.GetLength(0); i++)
             {
                 for (var j = 0; j < _mapCells.GetLength(1); j++)
                 {
-                    _mapCells[i, j].position = new Vector2Int(i, j);
-                    _mapCells[i, j].cost = _map.Cells[i, j].Content == null ? 0f : 1f;
+                    _mapCells[i, j] = new MapCell
+                    {
+                        position = new Vector2Int(i, j),
+                        cost = _map.Cells[i, j].Content == null ? 0f : 1f
+                    };
                 }
             }
 
@@ -37,8 +44,29 @@ namespace TurnBasedRPG.Strategy.Pathfinding
         private Cell[] StartPathBuilding()
         {
             var path = new List<Cell>();
+
             _position = _origin;
             var nextCell = FindNextCell();
+            path.Add(nextCell);
+            _position = nextCell.Position;
+
+            var distance = Vector2Int.Distance(_position, _destination);
+            if (distance > _range)
+            {
+                var i = 0;
+                while (distance > _range)
+                {
+                    nextCell = FindNextCell();
+                    path.Add(nextCell);
+                    _position = nextCell.Position;
+
+                    distance = Vector2Int.Distance(_position, _destination);
+                    
+                    i++;
+                    if (i == 50)
+                        throw new Exception();
+                }
+            }
 
             return path.ToArray();
         }
@@ -46,21 +74,16 @@ namespace TurnBasedRPG.Strategy.Pathfinding
         private Cell FindNextCell()
         {
             var neighbours = GetAllFreeNeighbours(_position);
+            var nearestCell = GetNearestPathNeighbour(neighbours, _destination);
+            var cell = _map.Cells[nearestCell.position.x, nearestCell.position.y];
 
-            foreach (var mapCell in neighbours)
-            {
-                //Debug.Log(mapCell.position);
-            }
-
-            //var targetCell = _mapService.GetCellByPosition(position.x, position.y);
-            //movement.targetCell = targetCell.View;
-            return null;
+            return cell;
         }
 
         private MapCell[] GetAllFreeNeighbours(Vector2Int position)
         {
             // 1 2 3
-            // 8   4
+            // 8 * 4
             // 7 6 5
             var result = new List<MapCell>();
             // 1
@@ -99,7 +122,26 @@ namespace TurnBasedRPG.Strategy.Pathfinding
             return result.ToArray();
         }
 
-        private struct MapCell
+        private MapCell GetNearestPathNeighbour(MapCell[] neighbours, Vector2Int target)
+        {
+            MapCell nearestCell = default;
+            var nearestDistance = Mathf.Infinity;
+            foreach (var mapCell in neighbours)
+            {
+                var distance = Vector2Int.Distance(mapCell.position, target);
+                if (distance < nearestDistance)
+                {
+                    nearestCell = mapCell;
+                    nearestDistance = distance;
+                }
+            }
+
+            nearestCell.isVisited = true;
+
+            return nearestCell;
+        }
+
+        private class MapCell
         {
             public float cost;
             public bool isVisited;

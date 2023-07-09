@@ -1,7 +1,6 @@
 ﻿using Scellecs.Morpeh;
 using TurnBasedRPG.Ecs.Components.Unit;
 using TurnBasedRPG.Installers;
-using TurnBasedRPG.Model.Map;
 using TurnBasedRPG.Services;
 using TurnBasedRPG.Services.Facade;
 using TurnBasedRPG.Signals;
@@ -46,8 +45,8 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
                 if (movement.path == null)
                     BuildPath(entity);
 
-                if (movement.targetCell == null)
-                    FindNextCell(entity);
+                /*if (movement.targetCell == null)
+                    FindNextCell(entity);*/
 
                 MoveTo(entity, deltaTime);
             }
@@ -58,13 +57,13 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
             var unit = entity.GetComponent<UnitComponent>().value;
             ref var movement = ref entity.GetComponent<MovementComponent>();
 
-            var path = _mapService.BuildPath(unit.Cell.Position, movement.destination);
+            var path = _mapService.BuildPath(unit.Cell.Position, movement.destination, movement.range);
             movement.path = path;
 
             //UnityEngine.Debug.Log("path " + path.Length);
         }
 
-        private void FindNextCell(Entity entity)
+        /*private void FindNextCell(Entity entity)
         {
             var unit = entity.GetComponent<UnitComponent>().value;
             ref var movement = ref entity.GetComponent<MovementComponent>();
@@ -83,13 +82,20 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
             
             var targetCell = _mapService.GetCellByPosition(position.x, position.y);
             movement.targetCell = targetCell;
-        }
+        }*/
 
         private void MoveTo(Entity entity, float deltaTime)
         {
             ref var unit = ref entity.GetComponent<UnitComponent>().value;
-            var movement = entity.GetComponent<MovementComponent>();
-            var targetCell = movement.targetCell;
+            ref var movement = ref entity.GetComponent<MovementComponent>();
+
+            if (movement.pathIndex == movement.path.Length)
+            {
+                MovementEnd(entity);
+                return;
+            }
+
+            var targetCell = movement.path[movement.pathIndex];
             var destination = new Vector3(
                 targetCell.View.transform.position.x,
                 unit.View.transform.position.y,
@@ -125,7 +131,10 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
                 if (stride.Value.Current == 0 || unit.Cell.Position == movement.destination)
                     MovementEnd(entity);
                 else
-                    FindNextCell(entity);
+                {
+                    movement.pathIndex += 1;
+                    //MoveTo(entity, deltaTime);
+                }
             }
         }
 

@@ -75,7 +75,7 @@ namespace TurnBasedRPG.Model.Unit
         {
         }
 
-        public void MoveTo(Cell targetCell, Action onMovementComplete = null)
+        public void MoveTo(Cell targetCell, float range = 0, Action onMovementComplete = null)
         {
             if (_entity.Has<MovementComponent>())
                 return;
@@ -87,7 +87,8 @@ namespace TurnBasedRPG.Model.Unit
             _entity.AddComponent<MovementComponent>() = new MovementComponent
             {
                 destination = targetCell.Position,
-                onMovementComplete = onMovementComplete
+                onMovementComplete = onMovementComplete,
+                range = range
             };
         }
 
@@ -124,6 +125,8 @@ namespace TurnBasedRPG.Model.Unit
 
             return result;
         }
+
+        public int GetRange() => GetEquippedWeapon().Range;
 
         public AWeapon GetEquippedWeapon()
         {

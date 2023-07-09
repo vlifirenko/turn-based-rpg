@@ -71,7 +71,7 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
             else
             {
                 enemyTurn.stage = EEnemyTurnStage.MoveToTarget;
-                unit.MoveTo(cell, () =>
+                unit.MoveTo(cell, unit.GetRange(),() =>
                 {
                     if (unit.CheckRange(nearestUnit))
                     {

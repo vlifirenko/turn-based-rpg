@@ -70,7 +70,7 @@ namespace TurnBasedRPG.Services
             return cell;
         }
 
-        public Cell[] BuildPath(Vector2Int origin, Vector2Int destination) 
-            => _pathfinding.BuildPath(origin, destination);
+        public Cell[] BuildPath(Vector2Int origin, Vector2Int destination, float range) 
+            => _pathfinding.BuildPath(origin, destination, range);
     }
 }
