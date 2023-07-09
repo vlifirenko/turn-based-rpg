@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 385842f5e76f4545bdd1a308e27f30db, type: 3}
-  m_Name: Bandage
+  m_Name: BaleHook
   m_EditorClassIdentifier: 
-  id: IT#FC96
-  name: "\u041A\u043D\u0443\u0442"
+  id: IT#FC94
+  name: Bale Hook
   weaponDamage:
     diceCount: 1
     dice: 4
@@ -22,6 +22,11 @@ MonoBehaviour:
   distance: 10
   cost: 10
   charges: 0
-  range: 2
+  range: 1
   slot: 10
-  description: 
+  description: +5 Might
+  effects:
+  - type: 20
+    stat: 20
+    value: 5
+    duration: 0

@@ -6,6 +6,7 @@ using TurnBasedRPG.Services;
 using TurnBasedRPG.Signals;
 using TurnBasedRPG.Utils;
 using TurnBasedRPG.View;
+using TurnBasedRPG.View.Canvas;
 using TurnBasedRPG.View.Ui;
 using UniRx;
 using UnityEngine;

@@ -5,6 +5,7 @@ using TurnBasedRPG.Ecs.Systems.Unit;
 using TurnBasedRPG.Services;
 using TurnBasedRPG.Signals;
 using TurnBasedRPG.View;
+using TurnBasedRPG.View.Canvas;
 using UnityEngine;
 using Zenject;
 

@@ -10,18 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 385842f5e76f4545bdd1a308e27f30db, type: 3}
-  m_Name: Stiletto
+  m_Name: Whip
   m_EditorClassIdentifier: 
-  id: IT#FC96
-  name: "\u0421\u0442\u0438\u043B\u0435\u0442"
+  id: IT#FC95
+  name: Whip
   weaponDamage:
     diceCount: 1
     dice: 4
-    bonus: 0
+    bonus: 1
   isTwoHanded: 0
   distance: 10
-  cost: 10
+  cost: 30
   charges: 0
-  range: 2
+  range: 1
   slot: 10
   description: 
+  effects: []

@@ -10,18 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 385842f5e76f4545bdd1a308e27f30db, type: 3}
-  m_Name: Whip
+  m_Name: LeatherArmguards
   m_EditorClassIdentifier: 
-  id: IT#FC95
-  name: "\u041A\u043D\u0443\u0442"
+  id: LeatherArmguards
+  name: Leather Armguards
   weaponDamage:
     diceCount: 1
-    dice: 4
-    bonus: 1
+    dice: 6
+    bonus: 0
   isTwoHanded: 0
-  distance: 10
-  cost: 30
+  distance: 0
+  cost: 20
   charges: 0
-  range: 1
-  slot: 10
-  description: 
+  range: 0
+  slot: 40
+  description: +4 Defence
+  effects:
+  - type: 20
+    stat: 40
+    value: 4
+    duration: 0
