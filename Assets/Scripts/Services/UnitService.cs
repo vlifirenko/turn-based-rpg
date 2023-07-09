@@ -56,13 +56,11 @@ namespace TurnBasedRPG.Services
             unit.CreateView(position, rotation, _sceneData.UnitContainer);
             unit.InitializeView();
 
-            cell.Item = unit;
+            cell.Content = unit;
+            unit.Cell = cell;
 
-            ref var unitComponent = ref entity.AddComponent<UnitComponent>();
-
-            unitComponent.value = unit;
-            unitComponent.cellView = cell.View;
-
+            entity.AddComponent<UnitComponent>().value = unit;
+            
             entity.AddComponent<AnimatorComponent>().Value = unit.View.Animator;
 
             entity.AddComponent<VitaComponent>().Value = new CurrentMax(config.vita);

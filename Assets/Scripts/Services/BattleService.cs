@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Scellecs.Morpeh;
 using TurnBasedRPG.Ecs.Components.Unit;
 using TurnBasedRPG.Model;
+using TurnBasedRPG.Model.Map;
 using TurnBasedRPG.Model.Unit;
 using TurnBasedRPG.Signals;
 using TurnBasedRPG.View;
@@ -43,12 +44,12 @@ namespace TurnBasedRPG.Services
         {
         }
 
-        public void MoveTo(CellView targetCell) => ActiveUnit.MoveTo(targetCell);
+        public void MoveTo(Cell targetCell) => ActiveUnit.MoveTo(targetCell);
 
-        public void Attack(CellView targetCell)
+        public void Attack(Cell targetCell)
         {
-            var target = targetCell.UnitView.Unit;
-            if (target.Entity.Has<PlayerComponent>())
+            var target = targetCell.Content as AUnit;
+            if (target.IsPlayer)
                 return;
 
             ActiveUnit.Attack(target);

@@ -1,5 +1,6 @@
 ﻿using Scellecs.Morpeh;
 using TurnBasedRPG.Ecs.Components.Unit;
+using TurnBasedRPG.Model.Map;
 using TurnBasedRPG.Model.Unit;
 using TurnBasedRPG.Services;
 using TurnBasedRPG.Signals;
@@ -46,7 +47,7 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
             ref var enemyTurn = ref entity.GetComponent<EnemyTurnComponent>();
 
             AUnit nearestUnit = null;
-            CellView cellView = null;
+            Cell cell = null;
             var minDistance = Mathf.Infinity;
 
             foreach (var playerUnit in _unitService.PlayerUnits)
@@ -56,7 +57,7 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
                 {
                     minDistance = distance;
                     nearestUnit = playerUnit;
-                    cellView = playerUnit.Entity.GetComponent<UnitComponent>().cellView;
+                    cell = playerUnit.Entity.GetComponent<UnitComponent>().value.Cell;
                 }
             }
 
@@ -70,7 +71,7 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
             else
             {
                 enemyTurn.stage = EEnemyTurnStage.MoveToTarget;
-                unit.MoveTo(cellView, () =>
+                unit.MoveTo(cell, () =>
                 {
                     if (unit.CheckRange(nearestUnit))
                     {

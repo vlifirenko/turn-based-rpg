@@ -1,5 +1,6 @@
 ﻿using Scellecs.Morpeh;
 using TurnBasedRPG.Installers;
+using TurnBasedRPG.Model.Unit;
 using TurnBasedRPG.Services;
 using TurnBasedRPG.View;
 using UnityEngine;
@@ -59,10 +60,11 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
 
             if (hits > 0 && _raycastHits[0].transform.TryGetComponent<CellView>(out var cellView))
             {
-                if (cellView.UnitView == null)
+                if (cellView.Cell.Content == null)
                     return;
 
-                _battleService.SelectUnit(cellView.UnitView.Unit);
+                if (cellView.Cell.Content is AUnit unit)
+                    _battleService.SelectUnit(unit);
             }
         }
 
@@ -76,39 +78,39 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
 
             if (hits > 0 && _raycastHits[0].transform.TryGetComponent<CellView>(out var cellView))
             {
-                UnityEngine.Debug.Log($"{cellView.name}:{cellView.UnitView?.name}");
-                if (cellView.UnitView == null)
-                    _battleService.MoveTo(cellView);
+                //UnityEngine.Debug.Log($"{cellView.name}:{cellView.UnitView?.name}");
+                if (cellView.Cell.Content == null)
+                    _battleService.MoveTo(cellView.Cell);
                 else
-                    _battleService.Attack(cellView);
+                    _battleService.Attack(cellView.Cell);
             }
         }
 
-        private void HoverCell(CellView cell)
+        private void HoverCell(CellView cellView)
         {
-            var material = cell.GetComponent<Renderer>().material;
+            var material = cellView.GetComponent<Renderer>().material;
             material.SetColor("_BaseColor", Color.green);
-
-            if (cell.UnitView != null)
+            
+            if (cellView.Cell.Content is AUnit unit)
             {
-                if (cell.UnitView.Unit.IsPlayer)
-                    cell.UnitView.Unit.Hover();
+                if (unit.IsPlayer)
+                    unit.Hover();
                 else
-                    cell.UnitView.Unit.Hover(_battleService.ActiveUnit);
+                    unit.Hover(_battleService.ActiveUnit);
             }
         }
 
-        private void UnhoverCell(CellView cell)
+        private void UnhoverCell(CellView cellView)
         {
-            var material = cell.GetComponent<Renderer>().material;
+            var material = cellView.GetComponent<Renderer>().material;
             material.SetColor("_BaseColor", Color.white);
 
-            if (cell.UnitView != null)
+            if (cellView.Cell.Content is AUnit unit)
             {
-                if (cell.UnitView.Unit.IsPlayer)
-                    cell.UnitView.Unit.Unhover();
+                if (unit.IsPlayer)
+                    unit.Unhover();
                 else
-                    cell.UnitView.Unit.Unhover(_battleService.ActiveUnit);
+                    unit.Unhover(_battleService.ActiveUnit);
             }
         }
 

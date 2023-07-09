@@ -20,7 +20,7 @@ namespace TurnBasedRPG.Services
             _mapConfig = mapConfig;
             _sceneData = sceneData;
 
-            _pathfinding = new TestPathfinding();
+            _pathfinding = new DikstraPathfinding();
         }
 
         public void Initialize()
@@ -36,7 +36,6 @@ namespace TurnBasedRPG.Services
             var cells = new Cell[items.GetLength(0), items.GetLength(1)];
 
             _map = new Map(cells);
-            Debug.Log(_map);
 
             for (var i = 0; i < cells.GetLength(0); i++)
             {
@@ -48,10 +47,10 @@ namespace TurnBasedRPG.Services
                         j * (_mapConfig.cellSize.y + _mapConfig.cellSpacing.y));
                     var cellView = InstantiateCell(position);
 
-                    cellView.Position = new Vector2Int(i, j);
-                    _map.InitializeCell(cellView);
+                    _map.InitializeCell(cellView, new Vector2Int(i, j));
                 }
             }
+            
         }
         
         public Cell GetCellByPosition(int x, int y) => _map.Cells[x, y];
@@ -71,10 +70,7 @@ namespace TurnBasedRPG.Services
             return cell;
         }
 
-        public CellView[] BuildPath(Vector2Int origin, Vector2Int destination)
-        {
-            //todo 
-            return new[] {new CellView()};
-        }
+        public Cell[] BuildPath(Vector2Int origin, Vector2Int destination) 
+            => _pathfinding.BuildPath(origin, destination);
     }
 }

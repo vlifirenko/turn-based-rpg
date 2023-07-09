@@ -1,12 +1,10 @@
-﻿using TurnBasedRPG.View.Common;
-using TurnBasedRPG.View.Unit;
-using UnityEngine;
+﻿using TurnBasedRPG.Model.Map;
+using TurnBasedRPG.View.Common;
 
 namespace TurnBasedRPG.View
 {
     public class CellView : AView
     {
-        public Vector2Int Position { get; set; }
-        public UnitView UnitView { get; set; }
+        public Cell Cell { get; set; }
     }
 }

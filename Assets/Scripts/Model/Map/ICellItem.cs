@@ -1,6 +1,8 @@
-﻿namespace TurnBasedRPG.Model.Map
+﻿using TurnBasedRPG.Model.Unit;
+
+namespace TurnBasedRPG.Model.Map
 {
     public interface ICellItem
-    {   
+    {
     }
 }

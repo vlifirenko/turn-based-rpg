@@ -1,4 +1,5 @@
 ﻿using TurnBasedRPG.View;
+using UnityEngine;
 
 namespace TurnBasedRPG.Model.Map
 {
@@ -15,7 +16,11 @@ namespace TurnBasedRPG.Model.Map
         {
         }
 
-        public void InitializeCell(CellView cellView)
-            => Cells[cellView.Position.x, cellView.Position.y] = new Cell(cellView);
+        public void InitializeCell(CellView cellView, Vector2Int position)
+        {
+            var cell = new Cell(cellView, position);
+            Cells[position.x, position.y] = cell;
+            cellView.Cell = cell;
+        }
     }
 }
