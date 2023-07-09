@@ -13,6 +13,7 @@ namespace TurnBasedRPG.Model.Item
         public int Cost { get; }
         public EItemSlot Slot { get; }
         public AUnit Owner { get; set; }
+        public bool IsInInventory { get; set; }
 
         protected AItem(ItemConfig config)
         {

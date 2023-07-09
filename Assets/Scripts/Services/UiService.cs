@@ -41,6 +41,10 @@ namespace TurnBasedRPG.Services
             _signalBus.GetStream<AttacksLeftChangedSignal>()
                 .Subscribe(OnAttacksLeftChanged)
                 .AddTo(_disposable);
+            
+            _signalBus.GetStream<InventoryUpdatedSignal>()
+                .Subscribe(OnInventoryUpdated)
+                .AddTo(_disposable);
 
             _canvasView.NextTurnButton.OnClickAsObservable()
                 .Subscribe(_ => _battleService.NextTurn())
@@ -54,6 +58,11 @@ namespace TurnBasedRPG.Services
             //
 
             FloatText.UiService = this;
+        }
+
+        private void OnInventoryUpdated(InventoryUpdatedSignal signal)
+        {
+            Debug.Log("OnInventoryUpdated");
         }
 
         private void OnStrideChanged(StrideChangedSignal signal)

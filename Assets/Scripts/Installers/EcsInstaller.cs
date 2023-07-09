@@ -66,11 +66,12 @@ namespace TurnBasedRPG.Installers
 
         private void BindServices()
         {
+            Container.BindInterfacesAndSelfTo<UiService>().AsSingle();
             Container.Bind<UnitService>().AsSingle();
-            Container.Bind<DiceService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<InventoryService>().AsSingle();
             Container.BindInterfacesAndSelfTo<MapService>().AsSingle();
             Container.BindInterfacesAndSelfTo<BattleService>().AsSingle();
-            Container.BindInterfacesAndSelfTo<UiService>().AsSingle();
+            Container.Bind<DiceService>().AsSingle();
         }
 
         private void BindSignals()
@@ -82,6 +83,7 @@ namespace TurnBasedRPG.Installers
             Container.DeclareSignal<AttacksLeftChangedSignal>();
             Container.DeclareSignal<NextTurnSignal>();
             Container.DeclareSignal<UnitUpdatedSignal>();
+            Container.DeclareSignal<InventoryUpdatedSignal>();
         }
         
         private void BindInitializer<T>() where T : class, IInitializer
