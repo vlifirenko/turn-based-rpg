@@ -15,6 +15,7 @@ namespace TurnBasedRPG.Installers
     {
         [SerializeField] private SceneData sceneData; 
         [SerializeField] private CanvasView canvasView; 
+        [SerializeField] private CharactersCanvasView charactersCanvasView; 
         
         private World _world;
         private SystemsGroup _systems;
@@ -48,6 +49,7 @@ namespace TurnBasedRPG.Installers
         {
             Container.BindInstance(sceneData);
             Container.BindInstance(canvasView);
+            Container.BindInstance(charactersCanvasView);
         }
 
         private void BindSystems()

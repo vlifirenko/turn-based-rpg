@@ -13,12 +13,15 @@ namespace TurnBasedRPG.Services
     {
         private readonly GlobalConfigInstaller.UnitsConfig _unitsConfig;
         private readonly SignalBus _signalBus;
+        private readonly BattleService _battleService;
         private readonly List<AItem> _items = new();
 
-        public InventoryService(GlobalConfigInstaller.UnitsConfig unitsConfig, SignalBus signalBus)
+        public InventoryService(GlobalConfigInstaller.UnitsConfig unitsConfig, SignalBus signalBus,
+            BattleService battleService)
         {
             _unitsConfig = unitsConfig;
             _signalBus = signalBus;
+            _battleService = battleService;
         }
 
         public void Initialize()
@@ -30,7 +33,7 @@ namespace TurnBasedRPG.Services
                 item.IsInInventory = true;
                 _items.Add(item);
             }
-            
+
             _signalBus.Fire(new InventoryUpdatedSignal());
         }
 
@@ -43,10 +46,37 @@ namespace TurnBasedRPG.Services
                 case EItemSlot.Weapon:
                     return new SimpleWeapon(config);
                 case EItemSlot.Consumable:
-                    return new SimpleConsumable(config);
+                    return new Consumable(config);
                 default:
                     return new SimpleArmor(config);
             }
+        }
+
+        public void InventoryItemClick(AItem item)
+        {
+            switch (item)
+            {
+                case IUsable usable:
+                    usable.Use();
+                    break;
+                case IEquip equip:
+                    item.IsInInventory = false;
+                    equip.Equip(_battleService.ActiveUnit);
+                    break;
+            }
+
+            _signalBus.Fire(new InventoryUpdatedSignal());
+        }
+
+        public void EquipmentItemClick(AItem item)
+        {
+            if (item is IEquip equip)
+            {
+                item.IsInInventory = true;
+                equip.Unequip();
+            }
+
+            _signalBus.Fire(new InventoryUpdatedSignal());
         }
     }
 }

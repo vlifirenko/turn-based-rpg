@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using Scellecs.Morpeh;
 using TurnBasedRPG.Ecs.Components.Unit;
 using TurnBasedRPG.Extensions;
 using TurnBasedRPG.Model.Config;
+using TurnBasedRPG.Model.Enums;
 using TurnBasedRPG.Model.Item;
 using TurnBasedRPG.Model.Map;
-using TurnBasedRPG.View;
 using TurnBasedRPG.View.Ui;
 using TurnBasedRPG.View.Unit;
 using UnityEngine;
@@ -33,6 +34,8 @@ namespace TurnBasedRPG.Model.Unit
         public int Might { get; }
         public int DamageBonus { get; }
 
+        protected abstract EItemSlot[] AvailableSlots { get; }
+        private Dictionary<EItemSlot, AEquipment> _equipment = new();
 
         protected AUnit(Entity entity, UnitConfig config, SignalBus signalBus)
         {
@@ -45,6 +48,9 @@ namespace TurnBasedRPG.Model.Unit
             Defence = config.defence;
             Might = config.might;
             DamageBonus = config.damageBonus;
+
+            foreach (var slot in AvailableSlots)
+                _equipment.Add(slot, null);
         }
 
         public int Initiative
@@ -179,5 +185,7 @@ namespace TurnBasedRPG.Model.Unit
                 activeUnit.UiView.WeaponPanel.SetActive(false);
             }
         }
+
+        public AItem GetEquipmentInSlot(EItemSlot slot) => _equipment[slot];
     }
 }

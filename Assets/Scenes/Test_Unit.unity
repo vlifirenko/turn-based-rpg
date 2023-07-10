@@ -8188,6 +8188,10 @@ PrefabInstance:
       propertyPath: canvasView
       value: 
       objectReference: {fileID: 2014026394}
+    - target: {fileID: 174500235264317042, guid: a967e0c2ae1d8c847ab2401996b7d74d, type: 3}
+      propertyPath: charactersCanvasView
+      value: 
+      objectReference: {fileID: 1669642906}
     - target: {fileID: 174500235264317043, guid: a967e0c2ae1d8c847ab2401996b7d74d, type: 3}
       propertyPath: m_RootOrder
       value: 1

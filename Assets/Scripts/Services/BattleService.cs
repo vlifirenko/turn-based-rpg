@@ -85,6 +85,8 @@ namespace TurnBasedRPG.Services
             ActiveUnit?.Deselect();
             ActiveUnit = activeUnit;
             ActiveUnit.Select();
+            
+            _signalBus.Fire(new InventoryUpdatedSignal());
         }
 
         public void Dispose() => _disposable?.Dispose();

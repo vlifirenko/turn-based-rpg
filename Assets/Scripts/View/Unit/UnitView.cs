@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace TurnBasedRPG.View.Unit
 {
-    public class UnitView : AView, IEquippable
+    public class UnitView : AView, IEquippableUnit
     {
         [SerializeField] private UnitConfig config;
         [SerializeField] private Animator animator;
@@ -30,7 +30,7 @@ namespace TurnBasedRPG.View.Unit
         }
     }
 
-    public interface IEquippable
+    public interface IEquippableUnit
     {
         void Equip(AEquipmentItemView item);
         void Unequip(AEquipmentItemView item);

@@ -3,7 +3,7 @@ using TurnBasedRPG.Model.Enums;
 
 namespace TurnBasedRPG.Model.Item
 {
-    public abstract class AWeapon : AItem
+    public abstract class AWeapon : AEquipment
     {
         public WeaponDamage Damage { get; private set; }
         public bool IsTwoHanded { get; private set; }

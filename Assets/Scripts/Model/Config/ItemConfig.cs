@@ -2,6 +2,7 @@
 using TurnBasedRPG.Model.Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 namespace TurnBasedRPG.Model.Config
 {
@@ -10,7 +11,7 @@ namespace TurnBasedRPG.Model.Config
     {
         public string id;
         public string name;
-        [FormerlySerializedAs("damage")] public WeaponDamage weaponDamage;
+        public WeaponDamage weaponDamage;
         public bool isTwoHanded;
         public EItemDistance distance;
         public int cost;
@@ -19,6 +20,7 @@ namespace TurnBasedRPG.Model.Config
         public EItemSlot slot;
         public string description;
         public ItemEffect[] effects;
+        public Sprite icon;
     }
 
     [Serializable]

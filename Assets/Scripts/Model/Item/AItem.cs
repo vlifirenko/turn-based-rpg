@@ -1,6 +1,8 @@
 ﻿using TurnBasedRPG.Model.Config;
 using TurnBasedRPG.Model.Enums;
 using TurnBasedRPG.Model.Unit;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace TurnBasedRPG.Model.Item
 {
@@ -12,8 +14,8 @@ namespace TurnBasedRPG.Model.Item
         public string Description { get; }
         public int Cost { get; }
         public EItemSlot Slot { get; }
-        public AUnit Owner { get; set; }
         public bool IsInInventory { get; set; }
+        public Sprite Icon { get; set; }
 
         protected AItem(ItemConfig config)
         {
@@ -23,6 +25,7 @@ namespace TurnBasedRPG.Model.Item
             Description = config.description;
             Cost = config.cost;
             Slot = config.slot;
+            Icon = config.icon;
         }
     }
 }

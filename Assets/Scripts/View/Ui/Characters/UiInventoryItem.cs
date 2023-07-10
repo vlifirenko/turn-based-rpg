@@ -10,5 +10,6 @@ namespace TurnBasedRPG.View.Ui.Characters
         public Image icon;
         public GameObject info;
         public TMP_Text title;
+        public Button button;
     }
 }
