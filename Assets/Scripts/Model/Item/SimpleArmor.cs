@@ -2,7 +2,7 @@
 
 namespace TurnBasedRPG.Model.Item
 {
-    public class SimpleArmor : AItem
+    public class SimpleArmor : AEquipment
     {
         public SimpleArmor(ItemConfig config) : base(config)
         {

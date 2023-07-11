@@ -30,3 +30,4 @@ MonoBehaviour:
     stat: 10
     value: 6
     duration: 0
+  icon: {fileID: 21300000, guid: ab070fe17266e9d4fbe897af68624f88, type: 3}

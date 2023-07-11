@@ -4,7 +4,7 @@ namespace TurnBasedRPG.Model.Item
 {
     public interface IEquip
     {
-        void Equip(AUnit owner);
+        AItem Equip(AUnit owner);
         void Unequip();
     }
 }

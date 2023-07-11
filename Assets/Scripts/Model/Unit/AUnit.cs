@@ -35,7 +35,7 @@ namespace TurnBasedRPG.Model.Unit
         public int DamageBonus { get; }
 
         protected abstract EItemSlot[] AvailableSlots { get; }
-        private Dictionary<EItemSlot, AEquipment> _equipment = new();
+        private readonly Dictionary<EItemSlot, AEquipment> _equipment = new();
 
         protected AUnit(Entity entity, UnitConfig config, SignalBus signalBus)
         {
@@ -171,12 +171,6 @@ namespace TurnBasedRPG.Model.Unit
             }
         }
 
-        private int GetHitChance(AUnit target)
-        {
-            var chance = 100 - target.Defence + Might;
-            return chance;
-        }
-
         public void Unhover(AUnit activeUnit = null)
         {
             UiView.Selected.SetActive(false);
@@ -185,6 +179,25 @@ namespace TurnBasedRPG.Model.Unit
                 activeUnit.UiView.WeaponPanel.SetActive(false);
             }
         }
+
+        private int GetHitChance(AUnit target)
+        {
+            var chance = 100 - target.Defence + Might;
+            return chance;
+        }
+
+        public AItem Equip(AEquipment item)
+        {
+            AItem unequippedItem = null;
+            
+            if (_equipment[item.Slot] != null)
+                unequippedItem = _equipment[item.Slot];
+            _equipment[item.Slot] = item;
+
+            return unequippedItem;
+        }
+
+        public void Unequip(AEquipment item) => _equipment[item.Slot] = null;
 
         public AItem GetEquipmentInSlot(EItemSlot slot) => _equipment[slot];
     }

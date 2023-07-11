@@ -75,6 +75,8 @@ namespace TurnBasedRPG.Services
             {
                 var itemView = inventoryView.items[i];
 
+                itemView.button.onClick.RemoveAllListeners();
+
                 if (i < items.Length)
                 {
                     itemView.icon.enabled = true;
@@ -86,7 +88,6 @@ namespace TurnBasedRPG.Services
                 else
                 {
                     itemView.icon.enabled = false;
-                    itemView.button.onClick.RemoveAllListeners();
                 }
             }
 

@@ -46,7 +46,7 @@ namespace TurnBasedRPG.Services
                 case EItemSlot.Weapon:
                     return new SimpleWeapon(config);
                 case EItemSlot.Consumable:
-                    return new Consumable(config);
+                    return new ConsumableItem(config);
                 default:
                     return new SimpleArmor(config);
             }
@@ -61,7 +61,9 @@ namespace TurnBasedRPG.Services
                     break;
                 case IEquip equip:
                     item.IsInInventory = false;
-                    equip.Equip(_battleService.ActiveUnit);
+                    var unequippedItem = equip.Equip(_battleService.ActiveUnit);
+                    if (unequippedItem != null)
+                        unequippedItem.IsInInventory = true;
                     break;
             }
 

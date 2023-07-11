@@ -3,12 +3,12 @@ using TurnBasedRPG.Services;
 
 namespace TurnBasedRPG.Model.Item
 {
-    public class Consumable : AItem, IUsable
+    public class ConsumableItem : AItem, IUsable
     {
         public int Amount { get; set; }
         public int MaxAmount { get; set; }
 
-        public Consumable(ItemConfig config) : base(config)
+        public ConsumableItem(ItemConfig config) : base(config)
         {
         }
 

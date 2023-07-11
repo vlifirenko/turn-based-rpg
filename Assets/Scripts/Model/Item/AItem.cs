@@ -16,6 +16,7 @@ namespace TurnBasedRPG.Model.Item
         public EItemSlot Slot { get; }
         public bool IsInInventory { get; set; }
         public Sprite Icon { get; set; }
+        public ItemEffect[] Effects { get; set; }
 
         protected AItem(ItemConfig config)
         {
@@ -26,6 +27,7 @@ namespace TurnBasedRPG.Model.Item
             Cost = config.cost;
             Slot = config.slot;
             Icon = config.icon;
+            Effects = config.effects;
         }
     }
 }

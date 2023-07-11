@@ -11,13 +11,24 @@ namespace TurnBasedRPG.Model.Item
         {
         }
 
-        public virtual void Equip(AUnit owner)
+        public virtual AItem Equip(AUnit owner)
         {
             Owner = owner;
+            var unequppedItem = owner.Equip(this);
+            foreach (var itemEffect in Effects)
+            {
+            }
+
+            return unequppedItem;
         }
 
         public virtual void Unequip()
         {
+            Owner.Unequip(this);
+            foreach (var itemEffect in Effects)
+            {
+            }
+
             Owner = null;
         }
     }
