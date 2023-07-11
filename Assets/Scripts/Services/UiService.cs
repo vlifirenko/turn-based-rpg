@@ -100,6 +100,8 @@ namespace TurnBasedRPG.Services
                 foreach (var slot in equipView.slots)
                 {
                     var equipment = activeUnit.GetEquipmentInSlot(slot.slot);
+                    
+                    slot.button.onClick.RemoveAllListeners();
 
                     if (equipment != null)
                     {
@@ -110,7 +112,6 @@ namespace TurnBasedRPG.Services
                     else
                     {
                         slot.icon.enabled = false;
-                        slot.button.onClick.RemoveAllListeners();
                     }
                 }
             }

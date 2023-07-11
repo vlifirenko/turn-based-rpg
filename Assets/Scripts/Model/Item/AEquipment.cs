@@ -1,5 +1,6 @@
 ﻿using TurnBasedRPG.Model.Config;
 using TurnBasedRPG.Model.Unit;
+using UnityEngine;
 
 namespace TurnBasedRPG.Model.Item
 {

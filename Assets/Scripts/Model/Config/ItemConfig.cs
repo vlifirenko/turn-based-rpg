@@ -21,6 +21,8 @@ namespace TurnBasedRPG.Model.Config
         public string description;
         public ItemEffect[] effects;
         public Sprite icon;
+        public bool destroyAfterUsage;
+        public int amount;
     }
 
     [Serializable]

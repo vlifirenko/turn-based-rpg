@@ -29,5 +29,10 @@ namespace TurnBasedRPG.Model.Item
             Icon = config.icon;
             Effects = config.effects;
         }
+
+        public void Destroy()
+        {
+            
+        }
     }
 }

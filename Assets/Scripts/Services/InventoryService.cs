@@ -57,7 +57,8 @@ namespace TurnBasedRPG.Services
             switch (item)
             {
                 case IUsable usable:
-                    usable.Use();
+                    if (usable.Use())
+                        _items.Remove(item);
                     break;
                 case IEquip equip:
                     item.IsInInventory = false;
