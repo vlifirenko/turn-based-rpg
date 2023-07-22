@@ -1,9 +1,12 @@
-﻿using Scellecs.Morpeh;
+﻿using System;
+using Scellecs.Morpeh;
+using TurnBasedRPG.Model.Unit;
 
 namespace TurnBasedRPG.Ecs.Components.Unit
 {
     public struct AttackComponent : IComponent
     {
-        public Entity target;
+        public AUnit target;
+        public Action onComplete;
     }
 }

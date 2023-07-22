@@ -19,6 +19,7 @@ namespace TurnBasedRPG.Installers
             public StartUnit[] enemyUnits;
             public float stopDistance = 0.2f;
             public float moveSpeed = 1f;
+            public ItemConfig[] inventory;
         }
 
         [Serializable]

@@ -1,5 +1,6 @@
-﻿using Scellecs.Morpeh;
-using TurnBasedRPG.View;
+﻿using System;
+using Scellecs.Morpeh;
+using TurnBasedRPG.Model.Map;
 using UnityEngine;
 
 namespace TurnBasedRPG.Ecs.Components.Unit
@@ -7,6 +8,10 @@ namespace TurnBasedRPG.Ecs.Components.Unit
     public struct MovementComponent : IComponent
     {
         public Vector2Int destination;
-        public CellView targetCell;
+        //public Cell targetCell;
+        public Cell[] path;
+        public int pathIndex;
+        public float range;
+        public Action onMovementComplete;
     }
 }

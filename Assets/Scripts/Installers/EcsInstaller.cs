@@ -1,12 +1,11 @@
-﻿using System;
-using Scellecs.Morpeh;
-using TurnBasedRPG.Ecs.Components.Unit;
+﻿using Scellecs.Morpeh;
 using TurnBasedRPG.Ecs.Systems.Battle;
 using TurnBasedRPG.Ecs.Systems.Debug;
 using TurnBasedRPG.Ecs.Systems.Unit;
 using TurnBasedRPG.Services;
 using TurnBasedRPG.Signals;
 using TurnBasedRPG.View;
+using TurnBasedRPG.View.Canvas;
 using UnityEngine;
 using Zenject;
 
@@ -16,6 +15,7 @@ namespace TurnBasedRPG.Installers
     {
         [SerializeField] private SceneData sceneData; 
         [SerializeField] private CanvasView canvasView; 
+        [SerializeField] private CharactersCanvasView charactersCanvasView; 
         
         private World _world;
         private SystemsGroup _systems;
@@ -49,37 +49,43 @@ namespace TurnBasedRPG.Installers
         {
             Container.BindInstance(sceneData);
             Container.BindInstance(canvasView);
+            Container.BindInstance(charactersCanvasView);
         }
 
         private void BindSystems()
         {
             // initializers
-            BindInitializer<BattleInitializer>();
+            BindInitializer<BattleInitializer>(); // first create map and then units FIX
             BindInitializer<UnitInitializer>();
             
             // systems
             BindSystem<SelectCellSystem>();
             BindSystem<AttackSystem>();
+            BindSystem<EnemyTurnSystem>();
             BindSystem<MovementSystem>();
             BindSystem<DebugSystem>();
         }
 
         private void BindServices()
         {
-            Container.Bind<UnitService>().AsSingle();
-            Container.Bind<DiceService>().AsSingle();
-            Container.BindInterfacesAndSelfTo<BattleService>().AsSingle();
             Container.BindInterfacesAndSelfTo<UiService>().AsSingle();
+            Container.Bind<UnitService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<InventoryService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<MapService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<BattleService>().AsSingle();
+            Container.Bind<DiceService>().AsSingle();
         }
 
         private void BindSignals()
         {
             SignalBusInstaller.Install(Container);
             
-            Container.DeclareSignal<VitaChangedSignal>();
             Container.DeclareSignal<StrideChangedSignal>();
             Container.DeclareSignal<SetActiveUnitSignal>();
             Container.DeclareSignal<AttacksLeftChangedSignal>();
+            Container.DeclareSignal<NextTurnSignal>();
+            Container.DeclareSignal<UnitUpdatedSignal>();
+            Container.DeclareSignal<InventoryUpdatedSignal>();
         }
         
         private void BindInitializer<T>() where T : class, IInitializer

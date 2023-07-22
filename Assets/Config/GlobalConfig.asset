@@ -28,7 +28,12 @@ MonoBehaviour:
     - config: {fileID: 11400000, guid: d89b2e589b51f2f4e81a12626d3b9ecb, type: 2}
       position: {x: 7, y: 9}
     stopDistance: 0.01
-    moveSpeed: 5
+    moveSpeed: 20
+    inventory:
+    - {fileID: 11400000, guid: b39d0a76ea2abfe4ab22d6b9003eff03, type: 2}
+    - {fileID: 11400000, guid: 4224a342738794742b90f89319713b9d, type: 2}
+    - {fileID: 11400000, guid: 748646abc10212d41a86f5af16cc70d6, type: 2}
+    - {fileID: 11400000, guid: bcc066daa9c318f49b77c6277c6454a7, type: 2}
   mapConfig:
     width: 10
     height: 10

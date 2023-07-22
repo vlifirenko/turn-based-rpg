@@ -1,9 +1,12 @@
-﻿using Scellecs.Morpeh;
+﻿using System.Collections.Generic;
+using Scellecs.Morpeh;
 using TurnBasedRPG.Ecs.Components.Unit;
 using TurnBasedRPG.Model;
 using TurnBasedRPG.Model.Config;
+using TurnBasedRPG.Model.Unit;
 using TurnBasedRPG.View;
 using UnityEngine;
+using Zenject;
 
 namespace TurnBasedRPG.Services
 {
@@ -12,40 +15,60 @@ namespace TurnBasedRPG.Services
         private readonly World _world;
         private readonly SceneData _sceneData;
         private readonly BattleService _battleService;
+        private readonly SignalBus _signalBus;
+        private readonly MapService _mapService;
 
-        public UnitService(World world,
-            SceneData sceneData,
-            BattleService battleService)
+        public List<AUnit> PlayerUnits { get; private set; } = new List<AUnit>();
+        public List<AUnit> EnemyUnits { get; private set; } = new List<AUnit>();
+
+        public UnitService(World world, SceneData sceneData, BattleService battleService, SignalBus signalBus,
+            MapService mapService)
         {
             _world = world;
             _sceneData = sceneData;
             _battleService = battleService;
+            _signalBus = signalBus;
+            _mapService = mapService;
         }
 
-        public Entity CreateUnit(UnitConfig config, Vector2Int cellPosition)
+        public AUnit CreateUnit(UnitConfig config, Vector2Int cellPosition, bool isPlayer = false)
         {
             var entity = _world.CreateEntity();
-            var cell = _battleService.GetCellByPosition(cellPosition.x, cellPosition.y);
 
-            var position = cell.transform.position;
-            position.y += 1f;
-            var view = Object.Instantiate(config.prefab, position, Quaternion.identity, _sceneData.UnitContainer);
+            AUnit unit;
+            if (isPlayer)
+            {
+                unit = new PlayerUnit(entity, config, _signalBus);
+                PlayerUnits.Add(unit);
+            }
+            else
+            {
+                unit = new EnemyUnit(entity, config, _signalBus);
+                EnemyUnits.Add(unit);
+            }
 
-            cell.UnitView = view;
-            view.Entity = entity;
+            var cell = _mapService.GetCellByPosition(cellPosition.x, cellPosition.y);
 
-            ref var unit = ref entity.AddComponent<UnitComponent>();
+            var position = cell.View.transform.position;
+            var rotation = Quaternion.Euler(0,
+                isPlayer ? 0f : 180f,
+                0);
+            unit.CreateView(position, rotation, _sceneData.UnitContainer);
+            unit.InitializeView();
 
-            unit.config = config;
-            unit.view = view;
-            unit.cellView = cell;
+            cell.Content = unit;
+            unit.Cell = cell;
 
-            entity.AddComponent<VitaComponent>().Value = new CurrentMax(unit.config.vita);
-            entity.AddComponent<EnergyComponent>().Value = new CurrentMax(unit.config.energy);
-            entity.AddComponent<StrideComponent>().Value = new CurrentMax(unit.config.stride);
-            entity.AddComponent<AttacksLeftComponent>().Value = new CurrentMax(unit.config.attacks);
+            entity.AddComponent<UnitComponent>().value = unit;
+            
+            entity.AddComponent<AnimatorComponent>().Value = unit.View.Animator;
 
-            return entity;
+            entity.AddComponent<VitaComponent>().Value = new CurrentMax(config.vita);
+            entity.AddComponent<EnergyComponent>().Value = new CurrentMax(config.energy);
+            entity.AddComponent<StrideComponent>().Value = new CurrentMax(config.stride);
+            entity.AddComponent<AttacksLeftComponent>().Value = new CurrentMax(config.attacks);
+
+            return unit;
         }
     }
 }

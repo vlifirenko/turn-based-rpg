@@ -1,11 +1,8 @@
-﻿using UnityEngine;
+﻿using TurnBasedRPG.View.Ui.Common;
 
 namespace TurnBasedRPG.View.Ui
 {
-    public class UiUnitVitaContainer : AUiView
+    public class UiUnitVitaContainer : AUiContainer<AUiContainerItem>
     {
-        [SerializeField] private UiUnitVita prefab;
-
-        public UiUnitVita Prefab => prefab;
     }
 }
