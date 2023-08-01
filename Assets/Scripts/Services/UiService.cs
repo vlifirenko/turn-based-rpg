@@ -8,6 +8,7 @@ using TurnBasedRPG.Signals;
 using TurnBasedRPG.Utils;
 using TurnBasedRPG.View.Canvas;
 using TurnBasedRPG.View.Ui;
+using TurnBasedRPG.View.Ui.Canvas;
 using UniRx;
 using UnityEngine;
 using Zenject;

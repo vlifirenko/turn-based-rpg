@@ -17,8 +17,7 @@ namespace TurnBasedRPG.Model.Item
             Owner = owner;
             var unequppedItem = owner.Equip(this);
             foreach (var itemEffect in Effects)
-            {
-            }
+                ApplyEffect(itemEffect);
 
             return unequppedItem;
         }
@@ -27,10 +26,19 @@ namespace TurnBasedRPG.Model.Item
         {
             Owner.Unequip(this);
             foreach (var itemEffect in Effects)
-            {
-            }
+                CancelEffect(itemEffect);
 
             Owner = null;
+        }
+
+        private void ApplyEffect(ItemEffect itemEffect)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void CancelEffect(ItemEffect itemEffect)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
