@@ -19,6 +19,7 @@ namespace TurnBasedRPG.View.Unit
         public Animator Animator => animator;
 
         public GameObject Selected => selected;
+        
         public void Equip(AEquipmentItemView item)
         {
             throw new System.NotImplementedException();
