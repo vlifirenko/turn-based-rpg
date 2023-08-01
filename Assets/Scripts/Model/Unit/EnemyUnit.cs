@@ -9,7 +9,7 @@ namespace TurnBasedRPG.Model.Unit
     public class EnemyUnit : AUnit
     {
         protected override EItemSlot[] AvailableSlots => new[] {EItemSlot.Weapon};
-        
+
         public EnemyUnit(Entity entity, UnitConfig config, SignalBus signalBus) : base(entity, config, signalBus)
         {
         }

@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54cfda69dc7846e7b02c23940c3cae77, type: 3}
+  m_Name: GlobalConfig_TurnBased
+  m_EditorClassIdentifier: 
+  unitsConfig:
+    startUnits:
+    - config: {fileID: 11400000, guid: 88194cb8bb9da9849b68838dd4ed56db, type: 2}
+      position: {x: 0, y: 0}
+    - config: {fileID: 11400000, guid: e3b05da560bbcc2479720ad478a5bef5, type: 2}
+      position: {x: 1, y: 0}
+    - config: {fileID: 11400000, guid: 407b8911e6ac2d74c92afebf6878b03c, type: 2}
+      position: {x: 2, y: 0}
+    enemyUnits:
+    - config: {fileID: 11400000, guid: feca4f6a239a77c4f9f70bc6432c8043, type: 2}
+      position: {x: 9, y: 9}
+    - config: {fileID: 11400000, guid: 80f80e22fa25e0849a85e77d4a91c029, type: 2}
+      position: {x: 8, y: 9}
+    - config: {fileID: 11400000, guid: d89b2e589b51f2f4e81a12626d3b9ecb, type: 2}
+      position: {x: 7, y: 9}
+    stopDistance: 0.01
+    moveSpeed: 20
+    inventory:
+    - {fileID: 11400000, guid: b39d0a76ea2abfe4ab22d6b9003eff03, type: 2}
+    - {fileID: 11400000, guid: 4224a342738794742b90f89319713b9d, type: 2}
+    - {fileID: 11400000, guid: 748646abc10212d41a86f5af16cc70d6, type: 2}
+    - {fileID: 11400000, guid: bcc066daa9c318f49b77c6277c6454a7, type: 2}
+  mapConfig:
+    width: 10
+    height: 10
+    cellSize: {x: 2, y: 2}
+    cellSpacing: {x: 0, y: 0}
+  layersConfig:
+    cell:
+      serializedVersion: 2
+      m_Bits: 64

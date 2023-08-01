@@ -1,6 +1,7 @@
 ﻿using TurnBasedRPG.Model.Enums;
 using TurnBasedRPG.View.Unit;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace TurnBasedRPG.Model.Config
 {
@@ -11,7 +12,7 @@ namespace TurnBasedRPG.Model.Config
         public string id;
         public string name;
         public Sprite icon;
-        public EUnitClass type;
+        [FormerlySerializedAs("type")] public EUnitClass unitClass;
         public int vita;
         public int defence;
         public int might;
