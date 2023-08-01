@@ -79,6 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d57610a897147908d5a4c8a6228966f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDiablo: 1
   sceneData: {fileID: 0}
   canvasView: {fileID: 0}
   charactersCanvasView: {fileID: 0}

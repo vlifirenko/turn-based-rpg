@@ -14,21 +14,24 @@ namespace TurnBasedRPG.Services
     {
         private readonly World _world;
         private readonly SceneData _sceneData;
-        private readonly BattleService _battleService;
         private readonly SignalBus _signalBus;
-        private readonly MapService _mapService;
+        //private readonly BattleService _battleService;
+        //private readonly TBMapService _tbMapService;
 
         public List<AUnit> PlayerUnits { get; private set; } = new List<AUnit>();
         public List<AUnit> EnemyUnits { get; private set; } = new List<AUnit>();
 
-        public UnitService(World world, SceneData sceneData, BattleService battleService, SignalBus signalBus,
-            MapService mapService)
+        public UnitService(World world, SceneData sceneData,
+            //BattleService battleService,
+            SignalBus signalBus
+            //TBMapService tbMapService
+            )
         {
             _world = world;
             _sceneData = sceneData;
-            _battleService = battleService;
+            //_battleService = battleService;
             _signalBus = signalBus;
-            _mapService = mapService;
+            //_tbMapService = tbMapService;
         }
 
         public AUnit CreateUnit(UnitConfig config, Vector2Int cellPosition, bool isPlayer = false)
@@ -47,17 +50,21 @@ namespace TurnBasedRPG.Services
                 EnemyUnits.Add(unit);
             }
 
-            var cell = _mapService.GetCellByPosition(cellPosition.x, cellPosition.y);
+            //var cell = _tbMapService.GetCellByPosition(cellPosition.x, cellPosition.y);
 
-            var position = cell.View.transform.position;
+            /*var position = cell.View.transform.position;
             var rotation = Quaternion.Euler(0,
                 isPlayer ? 0f : 180f,
-                0);
+                0);*/
+            
+            var position = Vector3.zero;
+            var rotation = Quaternion.identity;
+            
             unit.CreateView(position, rotation, _sceneData.UnitContainer);
             unit.InitializeView();
 
-            cell.Content = unit;
-            unit.Cell = cell;
+            //cell.Content = unit;
+            //unit.Cell = cell;
 
             entity.AddComponent<UnitComponent>().value = unit;
             

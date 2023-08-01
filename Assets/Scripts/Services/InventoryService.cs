@@ -13,15 +13,16 @@ namespace TurnBasedRPG.Services
     {
         private readonly GlobalConfigInstaller.UnitsConfig _unitsConfig;
         private readonly SignalBus _signalBus;
-        private readonly BattleService _battleService;
+        //private readonly BattleService _battleService;
         private readonly List<AItem> _items = new();
 
-        public InventoryService(GlobalConfigInstaller.UnitsConfig unitsConfig, SignalBus signalBus,
-            BattleService battleService)
+        public InventoryService(GlobalConfigInstaller.UnitsConfig unitsConfig, SignalBus signalBus
+            /*,
+            BattleService battleService*/)
         {
             _unitsConfig = unitsConfig;
             _signalBus = signalBus;
-            _battleService = battleService;
+            //_battleService = battleService;
         }
 
         public void Initialize()
@@ -62,9 +63,9 @@ namespace TurnBasedRPG.Services
                     break;
                 case IEquip equip:
                     item.IsInInventory = false;
-                    var unequippedItem = equip.Equip(_battleService.ActiveUnit);
+                    /*var unequippedItem = equip.Equip(_battleService.ActiveUnit);
                     if (unequippedItem != null)
-                        unequippedItem.IsInInventory = true;
+                        unequippedItem.IsInInventory = true;*/
                     break;
             }
 

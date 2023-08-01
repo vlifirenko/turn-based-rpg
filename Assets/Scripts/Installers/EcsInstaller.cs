@@ -14,10 +14,11 @@ namespace TurnBasedRPG.Installers
 {
     public class EcsInstaller : MonoInstaller
     {
-        [SerializeField] private SceneData sceneData; 
-        [SerializeField] private CanvasView canvasView; 
-        [SerializeField] private CharactersCanvasView charactersCanvasView; 
-        
+        [SerializeField] private bool isDiablo;
+        [SerializeField] private SceneData sceneData;
+        [SerializeField] private CanvasView canvasView;
+        [SerializeField] private CharactersCanvasView charactersCanvasView;
+
         private World _world;
         private SystemsGroup _systems;
 
@@ -41,7 +42,7 @@ namespace TurnBasedRPG.Installers
             _world.UpdateByUnity = false;
 
             Container.BindInstance(_world);
-            
+
             _systems = _world.CreateSystemsGroup();
             _world.AddSystemsGroup(order: 0, _systems);
         }
@@ -56,15 +57,26 @@ namespace TurnBasedRPG.Installers
         private void BindSystems()
         {
             // initializers
-            BindInitializer<BattleInitializer>(); // first create map and then units FIX
+            if (!isDiablo)
+            {
+                BindInitializer<BattleInitializer>(); // first create map and then units FIX
+            }
+
             BindInitializer<UnitInitializer>();
-            
+
             // systems
-            BindSystem<SelectCellSystem>();
-            BindSystem<AttackSystem>();
-            BindSystem<EnemyTurnSystem>();
-            BindSystem<MovementSystem>();
-            BindSystem<DebugSystem>();
+            if (!isDiablo)
+            {
+                BindSystem<SelectCellSystem>();
+                BindSystem<AttackSystem>();
+                BindSystem<EnemyTurnSystem>();
+                BindSystem<TBMovementSystem>();
+                BindSystem<DebugSystem>();
+            }
+            else
+            {
+                BindSystem<ARPGMovement>();
+            }
         }
 
         private void BindServices()
@@ -72,23 +84,32 @@ namespace TurnBasedRPG.Installers
             Container.BindInterfacesAndSelfTo<UiService>().AsSingle();
             Container.Bind<UnitService>().AsSingle();
             Container.BindInterfacesAndSelfTo<InventoryService>().AsSingle();
-            Container.BindInterfacesAndSelfTo<MapService>().AsSingle();
-            Container.BindInterfacesAndSelfTo<BattleService>().AsSingle();
+            
+            if (!isDiablo)
+            {
+                Container.BindInterfacesAndSelfTo<TBMapService>().AsSingle();
+                Container.BindInterfacesAndSelfTo<BattleService>().AsSingle();
+            }
+
             Container.Bind<DiceService>().AsSingle();
         }
 
         private void BindSignals()
         {
             SignalBusInstaller.Install(Container);
-            
-            Container.DeclareSignal<StrideChangedSignal>();
-            Container.DeclareSignal<SetActiveUnitSignal>();
-            Container.DeclareSignal<AttacksLeftChangedSignal>();
-            Container.DeclareSignal<NextTurnSignal>();
-            Container.DeclareSignal<UnitUpdatedSignal>();
+
+            if (!isDiablo)
+            {
+                Container.DeclareSignal<StrideChangedSignal>();
+                Container.DeclareSignal<SetActiveUnitSignal>();
+                Container.DeclareSignal<AttacksLeftChangedSignal>();
+                Container.DeclareSignal<NextTurnSignal>();
+            }
+
             Container.DeclareSignal<InventoryUpdatedSignal>();
+            Container.DeclareSignal<UnitUpdatedSignal>();
         }
-        
+
         private void BindInitializer<T>() where T : class, IInitializer
         {
             Container.Bind<T>().AsSingle();

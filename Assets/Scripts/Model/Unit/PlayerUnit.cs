@@ -10,8 +10,7 @@ namespace TurnBasedRPG.Model.Unit
         protected override EItemSlot[] AvailableSlots => new[]
         {
             EItemSlot.Back, EItemSlot.Belt, EItemSlot.Chest, EItemSlot.Hand, EItemSlot.Head, EItemSlot.Legs,
-            EItemSlot.Neck, EItemSlot.Ring, EItemSlot.Shield, EItemSlot.Weapon,
-            EItemSlot.Consumable, EItemSlot.Consumable, EItemSlot.Consumable, EItemSlot.Consumable, EItemSlot.Consumable
+            EItemSlot.Neck, EItemSlot.Ring, EItemSlot.Shield, EItemSlot.Weapon
         };
 
         public PlayerUnit(Entity entity, UnitConfig config, SignalBus signalBus) : base(entity, config, signalBus)

@@ -20,17 +20,18 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
 
         private readonly GlobalConfigInstaller.UnitsConfig _unitsConfig;
         private readonly UnitService _unitService;
-        private readonly BattleService _battleService;
+        //private readonly BattleService _battleService;
         private readonly CanvasView _canvasView;
         private readonly SignalBus _signalBus;
         private readonly CompositeDisposable _disposable = new CompositeDisposable();
 
         public UnitInitializer(GlobalConfigInstaller.UnitsConfig unitsConfig, UnitService unitService,
-            BattleService battleService, CanvasView canvasView, SignalBus signalBus)
+            //BattleService battleService,
+            CanvasView canvasView, SignalBus signalBus)
         {
             _unitsConfig = unitsConfig;
             _unitService = unitService;
-            _battleService = battleService;
+            //_battleService = battleService;
             _canvasView = canvasView;
             _signalBus = signalBus;
         }
@@ -43,7 +44,7 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
 
                 unit.Entity.AddComponent<PlayerComponent>();
                 unit.IsPlayer = true;
-                _battleService.AddUnit(unit);
+                //_battleService.AddUnit(unit);
                 InstantiateUnitUi(unit);
             }
 
@@ -52,11 +53,11 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
                 var unit = _unitService.CreateUnit(item.config, item.position);
 
                 unit.Entity.AddComponent<EnemyComponent>();
-                _battleService.AddUnit(unit);
+                //_battleService.AddUnit(unit);
                 InstantiateUnitUi(unit);
             }
 
-            _battleService.NextTurn();
+            //_battleService.NextTurn();
         }
 
         private void InstantiateUnitUi(AUnit unit)

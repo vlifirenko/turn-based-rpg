@@ -16,7 +16,7 @@ MonoBehaviour:
   id: 1
   name: Arcanist
   icon: {fileID: 0}
-  type: 10
+  unitClass: 10
   vita: 100
   defence: 30
   might: 3
@@ -26,4 +26,3 @@ MonoBehaviour:
   attacks: 1
   items:
   - {fileID: 11400000, guid: ba15645f3a1028047a32a93d1b4ea84a, type: 2}
-  - {fileID: 11400000, guid: b39d0a76ea2abfe4ab22d6b9003eff03, type: 2}

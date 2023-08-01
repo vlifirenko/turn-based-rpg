@@ -19,40 +19,40 @@ namespace TurnBasedRPG.Services
     {
         private readonly SignalBus _signalBus;
         private readonly CanvasView _canvasView;
-        private readonly BattleService _battleService;
+        //private readonly BattleService _battleService;
         private readonly CharactersCanvasView _characterCanvasView;
         private readonly InventoryService _inventoryService;
         private readonly CompositeDisposable _disposable = new CompositeDisposable();
 
-        public UiService(SignalBus signalBus, CanvasView canvasView, BattleService battleService,
+        public UiService(SignalBus signalBus, CanvasView canvasView,// BattleService battleService,
             CharactersCanvasView characterCanvasView, InventoryService inventoryService)
         {
             _signalBus = signalBus;
             _canvasView = canvasView;
-            _battleService = battleService;
+            //_battleService = battleService;
             _characterCanvasView = characterCanvasView;
             _inventoryService = inventoryService;
         }
 
         public void Initialize()
         {
-            _signalBus.GetStream<StrideChangedSignal>()
+            /*_signalBus.GetStream<StrideChangedSignal>()
                 .Subscribe(OnStrideChanged)
-                .AddTo(_disposable);
+                .AddTo(_disposable);*/
 
             _signalBus.GetStream<UnitUpdatedSignal>()
                 .Subscribe(OnUnitUpdated)
                 .AddTo(_disposable);
 
-            _signalBus.GetStream<AttacksLeftChangedSignal>()
+            /*_signalBus.GetStream<AttacksLeftChangedSignal>()
                 .Subscribe(OnAttacksLeftChanged)
-                .AddTo(_disposable);
+                .AddTo(_disposable);*/
 
             _signalBus.GetStream<InventoryUpdatedSignal>()
                 .Subscribe(OnInventoryUpdated)
                 .AddTo(_disposable);
 
-            _canvasView.NextTurnButton.OnClickAsObservable()
+            /*_canvasView.NextTurnButton.OnClickAsObservable()
                 .Subscribe(_ => _battleService.NextTurn())
                 .AddTo(_disposable);
 
@@ -61,7 +61,7 @@ namespace TurnBasedRPG.Services
                 .Where(_ => Input.GetKeyDown(KeyCode.Space))
                 .Subscribe(x => _battleService.NextTurn())
                 .AddTo(_disposable);
-            //
+            //*/
 
             FloatText.UiService = this;
         }
@@ -94,7 +94,7 @@ namespace TurnBasedRPG.Services
 
             // equip
             var equipView = _characterCanvasView.slotContainer;
-            var activeUnit = _battleService.ActiveUnit;
+            /*var activeUnit = _battleService.ActiveUnit;
 
             if (activeUnit != null)
             {
@@ -115,7 +115,7 @@ namespace TurnBasedRPG.Services
                         slot.icon.enabled = false;
                     }
                 }
-            }
+            }*/
         }
 
         private void OnEquipmentItemClick(AItem item) => _inventoryService.EquipmentItemClick(item);

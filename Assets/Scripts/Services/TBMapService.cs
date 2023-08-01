@@ -7,7 +7,7 @@ using Zenject;
 
 namespace TurnBasedRPG.Services
 {
-    public class MapService : IInitializable
+    public class TBMapService : IInitializable
     {
         private readonly GlobalConfigInstaller.MapConfig _mapConfig;
         private readonly SceneData _sceneData;
@@ -15,7 +15,7 @@ namespace TurnBasedRPG.Services
         
         private Map _map;
 
-        public MapService(GlobalConfigInstaller.MapConfig mapConfig, SceneData sceneData)
+        public TBMapService(GlobalConfigInstaller.MapConfig mapConfig, SceneData sceneData)
         {
             _mapConfig = mapConfig;
             _sceneData = sceneData;

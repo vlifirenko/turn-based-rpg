@@ -9,23 +9,23 @@ using Zenject;
 
 namespace TurnBasedRPG.Ecs.Systems.Unit
 {
-    public class MovementSystem : ISystem
+    public class TBMovementSystem : ISystem
     {
         public World World { get; set; }
         private readonly BattleService _battleService;
         private readonly GlobalConfigInstaller.UnitsConfig _unitsConfig;
         private readonly SignalBus _signalBus;
-        private readonly MapService _mapService;
+        private readonly TBMapService _tbMapService;
 
         private Filter _filter;
 
-        public MovementSystem(BattleService battleService, GlobalConfigInstaller.UnitsConfig unitsConfig,
-            SignalBus signalBus, MapService mapService)
+        public TBMovementSystem(BattleService battleService, GlobalConfigInstaller.UnitsConfig unitsConfig,
+            SignalBus signalBus, TBMapService tbMapService)
         {
             _battleService = battleService;
             _unitsConfig = unitsConfig;
             _signalBus = signalBus;
-            _mapService = mapService;
+            _tbMapService = tbMapService;
         }
 
         public void OnAwake() => _filter = World.Filter.With<MovementComponent>();
@@ -57,7 +57,7 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
             var unit = entity.GetComponent<UnitComponent>().value;
             ref var movement = ref entity.GetComponent<MovementComponent>();
 
-            var path = _mapService.BuildPath(unit.Cell.Position, movement.destination, movement.range);
+            var path = _tbMapService.BuildPath(unit.Cell.Position, movement.destination, movement.range);
             movement.path = path;
 
             //UnityEngine.Debug.Log("path " + path.Length);
