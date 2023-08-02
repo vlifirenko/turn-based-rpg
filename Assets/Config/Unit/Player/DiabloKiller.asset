@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09201c0e4aff479f98d9ea69a98db950, type: 3}
   m_Name: DiabloKiller
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1096060995904320734, guid: 0db8c8bd7c0f7b14597e5566e274bc30, type: 3}
+  prefab: {fileID: 3097406559747528961, guid: 75698af6c89bad240bbf5093c7fd471d, type: 3}
   id: 1
   name: Arcanist
   icon: {fileID: 0}
@@ -22,7 +22,7 @@ MonoBehaviour:
   might: 3
   damageBonus: 2
   energy: 5
-  stride: 4
+  stride: 5
   attacks: 1
   items:
   - {fileID: 11400000, guid: ba15645f3a1028047a32a93d1b4ea84a, type: 2}

@@ -22,12 +22,10 @@ namespace TurnBasedRPG.View.Unit
         
         public void Equip(AEquipmentItemView item)
         {
-            throw new System.NotImplementedException();
         }
 
         public void Unequip(AEquipmentItemView item)
         {
-            throw new System.NotImplementedException();
         }
     }
 

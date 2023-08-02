@@ -83,14 +83,14 @@ namespace TurnBasedRPG.Model.Unit
 
         public void MoveTo(Cell targetCell, float range = 0, Action onMovementComplete = null)
         {
-            if (_entity.Has<MovementComponent>())
+            if (_entity.Has<TBMovementComponent>())
                 return;
 
             var animator = _entity.GetComponent<AnimatorComponent>().Value;
             animator.SetState(EAnimatorState.Move);
             onMovementComplete += () => { animator.SetState(EAnimatorState.IdleCombat); };
 
-            _entity.AddComponent<MovementComponent>() = new MovementComponent
+            _entity.AddComponent<TBMovementComponent>() = new TBMovementComponent
             {
                 destination = targetCell.Position,
                 onMovementComplete = onMovementComplete,
@@ -100,7 +100,7 @@ namespace TurnBasedRPG.Model.Unit
 
         public void MoveTo(AUnit targetUnit, Action onMovementComplete = null)
         {
-            if (_entity.Has<MovementComponent>())
+            if (_entity.Has<TBMovementComponent>())
                 return;
 
             var animator = _entity.GetComponent<AnimatorComponent>().Value;
@@ -109,7 +109,7 @@ namespace TurnBasedRPG.Model.Unit
 
             var targetCell = targetUnit.Cell;
 
-            _entity.AddComponent<MovementComponent>() = new MovementComponent
+            _entity.AddComponent<TBMovementComponent>() = new TBMovementComponent
             {
                 destination = targetCell.Position,
                 onMovementComplete = onMovementComplete

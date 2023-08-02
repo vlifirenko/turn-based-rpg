@@ -28,7 +28,7 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
             _tbMapService = tbMapService;
         }
 
-        public void OnAwake() => _filter = World.Filter.With<MovementComponent>();
+        public void OnAwake() => _filter = World.Filter.With<TBMovementComponent>();
 
         public void OnUpdate(float deltaTime)
         {
@@ -41,7 +41,7 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
                     return;
                 }
 
-                var movement = entity.GetComponent<MovementComponent>();
+                var movement = entity.GetComponent<TBMovementComponent>();
                 if (movement.path == null)
                     BuildPath(entity);
 
@@ -55,7 +55,7 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
         private void BuildPath(Entity entity)
         {
             var unit = entity.GetComponent<UnitComponent>().value;
-            ref var movement = ref entity.GetComponent<MovementComponent>();
+            ref var movement = ref entity.GetComponent<TBMovementComponent>();
 
             var path = _tbMapService.BuildPath(unit.Cell.Position, movement.destination, movement.range);
             movement.path = path;
@@ -87,7 +87,7 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
         private void MoveTo(Entity entity, float deltaTime)
         {
             ref var unit = ref entity.GetComponent<UnitComponent>().value;
-            ref var movement = ref entity.GetComponent<MovementComponent>();
+            ref var movement = ref entity.GetComponent<TBMovementComponent>();
 
             if (movement.pathIndex == movement.path.Length)
             {
@@ -140,8 +140,8 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
 
         private static void MovementEnd(Entity entity)
         {
-            entity.GetComponent<MovementComponent>().onMovementComplete?.Invoke();
-            entity.RemoveComponent<MovementComponent>();
+            entity.GetComponent<TBMovementComponent>().onMovementComplete?.Invoke();
+            entity.RemoveComponent<TBMovementComponent>();
         }
 
         public void Dispose()

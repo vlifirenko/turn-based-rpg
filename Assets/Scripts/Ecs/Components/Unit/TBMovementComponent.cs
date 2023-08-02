@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace TurnBasedRPG.Ecs.Components.Unit
 {
-    public struct MovementComponent : IComponent
+    public struct TBMovementComponent : IComponent
     {
         public Vector2Int destination;
         //public Cell targetCell;

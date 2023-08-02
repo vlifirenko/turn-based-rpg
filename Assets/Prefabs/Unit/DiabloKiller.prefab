@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1096060995904320728, guid: 0db8c8bd7c0f7b14597e5566e274bc30, type: 3}
       propertyPath: m_Name
-      value: Unit_Player Variant
+      value: DiabloKiller
       objectReference: {fileID: 0}
     - target: {fileID: 1096060995904320735, guid: 0db8c8bd7c0f7b14597e5566e274bc30, type: 3}
       propertyPath: m_RootOrder
@@ -60,10 +60,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1096060995904320734, guid: 0db8c8bd7c0f7b14597e5566e274bc30, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1096060995904320728, guid: 0db8c8bd7c0f7b14597e5566e274bc30, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3097406559747528961}
     - targetCorrespondingSourceObject: {fileID: 1096060995904320728, guid: 0db8c8bd7c0f7b14597e5566e274bc30, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2028925669904192268}
@@ -73,6 +77,22 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1096060995904320728, guid: 0db8c8bd7c0f7b14597e5566e274bc30, type: 3}
   m_PrefabInstance: {fileID: 3163149285383582887}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3097406559747528961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2652688553176727679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0b492c7bae84d809aa51f0aa7747eda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  config: {fileID: 11400000, guid: 88194cb8bb9da9849b68838dd4ed56db, type: 2}
+  animator: {fileID: 6643375847929481221}
+  selected: {fileID: 6465596541844590424}
+  characterController: {fileID: 2028925669904192268}
 --- !u!143 &2028925669904192268
 CharacterController:
   m_ObjectHideFlags: 0
@@ -99,3 +119,13 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!1 &6465596541844590424 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8241493071061433343, guid: 0db8c8bd7c0f7b14597e5566e274bc30, type: 3}
+  m_PrefabInstance: {fileID: 3163149285383582887}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &6643375847929481221 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8635582632453651618, guid: 0db8c8bd7c0f7b14597e5566e274bc30, type: 3}
+  m_PrefabInstance: {fileID: 3163149285383582887}
+  m_PrefabAsset: {fileID: 0}

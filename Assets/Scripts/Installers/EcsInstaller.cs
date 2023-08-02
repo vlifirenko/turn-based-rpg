@@ -75,7 +75,8 @@ namespace TurnBasedRPG.Installers
             }
             else
             {
-                BindSystem<ARPGMovement>();
+                BindSystem<ARPGInputSystem>();
+                BindSystem<ARPGMovementSystem>();
             }
         }
 
