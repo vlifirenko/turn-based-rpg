@@ -148,7 +148,7 @@ namespace TurnBasedRPG.Model.Unit
 
         public void Attack(AUnit target, Action onAttackComplete = null)
         {
-            Entity.AddComponent<AttackComponent>() = new AttackComponent
+            Entity.AddComponent<TBAttackComponent>() = new TBAttackComponent
             {
                 target = target,
                 onComplete = onAttackComplete

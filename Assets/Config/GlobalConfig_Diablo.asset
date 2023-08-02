@@ -19,14 +19,6 @@ MonoBehaviour:
     enemyUnits:
     - config: {fileID: 11400000, guid: 7215cd7d7c3c23e459658066351b2ef0, type: 2}
       position: {x: 0, y: 0}
-    - config: {fileID: 11400000, guid: 7215cd7d7c3c23e459658066351b2ef0, type: 2}
-      position: {x: 0, y: 0}
-    - config: {fileID: 11400000, guid: 7215cd7d7c3c23e459658066351b2ef0, type: 2}
-      position: {x: 0, y: 0}
-    - config: {fileID: 11400000, guid: 7215cd7d7c3c23e459658066351b2ef0, type: 2}
-      position: {x: 0, y: 0}
-    - config: {fileID: 11400000, guid: 7215cd7d7c3c23e459658066351b2ef0, type: 2}
-      position: {x: 0, y: 0}
     stopDistance: 0.01
     moveSpeed: 20
     inventory:
@@ -43,3 +35,6 @@ MonoBehaviour:
     cell:
       serializedVersion: 2
       m_Bits: 64
+    damageable:
+      serializedVersion: 2
+      m_Bits: 128

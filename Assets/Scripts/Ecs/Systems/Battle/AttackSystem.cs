@@ -25,14 +25,14 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
             _unitService = unitService;
         }
 
-        public void OnAwake() => _filter = World.Filter.With<AttackComponent>();
+        public void OnAwake() => _filter = World.Filter.With<TBAttackComponent>();
 
         public void OnUpdate(float deltaTime)
         {
             foreach (var entity in _filter)
             {
                 var unit = entity.GetComponent<UnitComponent>().value;
-                var attack = entity.GetComponent<AttackComponent>();
+                var attack = entity.GetComponent<TBAttackComponent>();
                 ref var attacksLeft = ref entity.GetComponent<AttacksLeftComponent>();
                 
                 if (attacksLeft.Value.Current > 0 && unit.CheckRange(attack.target))
@@ -43,14 +43,14 @@ namespace TurnBasedRPG.Ecs.Systems.Battle
                 }
 
                 attack.onComplete?.Invoke();
-                entity.RemoveComponent<AttackComponent>();
+                entity.RemoveComponent<TBAttackComponent>();
             }
         }
 
         private void Attack(Entity entity)
         {
             var unit = entity.GetComponent<UnitComponent>().value;
-            var attack = entity.GetComponent<AttackComponent>();
+            var attack = entity.GetComponent<TBAttackComponent>();
             var attackRate = _diceService.RollDice(EDice.D100) + unit.Might;
             var defence = attack.target.Entity.GetComponent<UnitComponent>().value.Defence;
             var position = unit.View.transform.position;

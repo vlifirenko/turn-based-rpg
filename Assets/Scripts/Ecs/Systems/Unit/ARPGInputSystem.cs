@@ -17,11 +17,12 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
         {
             foreach (var entity in _filter)
             {
-                HandleInput(entity);
+                HandleMovement(entity);
+                HandleAttack(entity);
             }
         }
 
-        private static void HandleInput(Entity entity)
+        private static void HandleMovement(Entity entity)
         {
             var horizontal = Input.GetAxis("Horizontal");
             var vertical = Input.GetAxis("Vertical");
@@ -35,7 +36,7 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
 
             var direction = new Vector3(horizontal, 0, vertical);
             
-            UnityEngine.Debug.Log(direction);
+            //UnityEngine.Debug.Log(direction);
 
             if (entity.Has<ARPGMovementComponent>())
             {
@@ -49,6 +50,15 @@ namespace TurnBasedRPG.Ecs.Systems.Unit
                     direction = direction,
                     speed = entity.GetComponent<StrideComponent>().Value.Current
                 };
+            }
+        }
+
+        private void HandleAttack(Entity entity)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                if (!entity.Has<ARPGAttackComponent>())
+                    entity.AddComponent<ARPGAttackComponent>();
             }
         }
 

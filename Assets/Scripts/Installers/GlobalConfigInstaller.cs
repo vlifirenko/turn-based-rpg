@@ -42,6 +42,7 @@ namespace TurnBasedRPG.Installers
         public struct LayersConfig
         {
             public LayerMask cell;
+            public LayerMask damageable;
         }
 
         public override void InstallBindings()

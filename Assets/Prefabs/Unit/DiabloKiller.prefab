@@ -12,9 +12,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: DiabloKiller
       objectReference: {fileID: 0}
+    - target: {fileID: 1096060995904320728, guid: 0db8c8bd7c0f7b14597e5566e274bc30, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 1096060995904320735, guid: 0db8c8bd7c0f7b14597e5566e274bc30, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1096060995904320735, guid: 0db8c8bd7c0f7b14597e5566e274bc30, type: 3}
       propertyPath: m_LocalPosition.x

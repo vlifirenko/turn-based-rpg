@@ -77,6 +77,8 @@ namespace TurnBasedRPG.Installers
             {
                 BindSystem<ARPGInputSystem>();
                 BindSystem<ARPGMovementSystem>();
+                BindSystem<ARPGAttackSystem>();
+                BindSystem<DamageSystem>();
             }
         }
 
